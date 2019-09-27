@@ -2,7 +2,7 @@
 
 This is a Senior Design Project by Istanbul Bilgi University Computer Engineering students.
 
-The main idea behind the application is to help people adopt doggies and moggies from local shelters.
+The main idea behind the application is to help people adopt doggies and moggies from their local shelters.
 
 This app encourages people to adopt animals that need a new start.
 
