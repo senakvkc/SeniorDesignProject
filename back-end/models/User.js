@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 const GENDERS = require('./enums/Gender');
-const CITIES = require('./enums/City');
 const USER_TYPES = require('./enums/UserType');
 
 // this will be our data base's data structure
@@ -38,20 +37,22 @@ const UserSchema = new Schema(
       default: 'NONE'
     },
     address: {
-      type: String,
+      type: String
     },
     city: {
-      type: String,
-      enum: CITIES,
+      type: String
     },
     country: {
       type: String,
       default: 'Türkiye'
     },
     userType: {
-      type: String
+      type: String,
       enum: USER_TYPES,
       default: 'USER'
+    },
+    birthdate: {
+      type: Date
     },
     isActive: {
       type: Boolean,
@@ -60,9 +61,6 @@ const UserSchema = new Schema(
     isBlocked: {
       type: Boolean,
       default: false
-    },
-    birthDate: {
-      type: Date
     },
     resetPasswordToken: {
       type: String
@@ -95,7 +93,7 @@ const UserSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'Animal'
       }
-    ],
+    ]
   },
   { timestamps: true }
 );

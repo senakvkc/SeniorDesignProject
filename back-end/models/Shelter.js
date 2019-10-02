@@ -2,7 +2,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
-const CITIES = require('./enums/City');
 
 // this will be our data base's data structure
 const ShelterSchema = new Schema(
@@ -18,8 +17,7 @@ const ShelterSchema = new Schema(
       type: String
     },
     city: {
-      type: String,
-      enum: CITIES
+      type: String
     },
     country: {
       type: String,
