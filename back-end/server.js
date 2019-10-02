@@ -59,8 +59,8 @@ const upload = multer({
 const cors = require('cors');
 const logger = require('morgan');
 
-const gqlSchema = require('./grahpql/schema/index');
-const gqlResolvers = require('./grahpql/resolvers/index');
+const gqlSchema = require('./graphql/schema/index');
+const gqlResolvers = require('./graphql/resolvers/index');
 
 const app = express();
 const router = express.Router();
@@ -103,7 +103,11 @@ app.use(
 
 const DB_URL = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`;
 mongoose
-  .connect(DB_URL, { useNewUrlParser: true, useCreateIndex: true })
+  .connect(DB_URL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+  })
   .then(() => {
     console.log('Connected to database.');
     app.listen(process.env.APP_PORT);
