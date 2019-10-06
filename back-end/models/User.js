@@ -91,7 +91,7 @@ const UserSchema = new Schema(
     shelters: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Animal'
+        ref: 'Shelter'
       }
     ]
   },
