@@ -55,55 +55,166 @@ export const BOTTOM_NAV_TABS = [
 
 export const STORIES = [
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
   },
   {
-    image: 'https://picsum.photos/100/100',
+    image: 'https://placedog.net/100/100',
     text: _.uniqueId('user_')
+  }
+];
+
+export const MENU_ITEMS = [
+  {
+    id: 0,
+    icon: 'search'
+  },
+  {
+    id: 1,
+    icon: 'wallet'
+  },
+  {
+    id: 2,
+    icon: 'information-circle-outline'
+  }
+];
+
+export const CAROUSEL_ITEMS = [
+  {
+    id: _.uniqueId('carousel_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('carousel_')
+  },
+  {
+    id: _.uniqueId('carousel_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('carousel_')
+  },
+  {
+    id: _.uniqueId('carousel_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('carousel_')
+  },
+  {
+    id: _.uniqueId('carousel_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('carousel_')
+  },
+  {
+    id: _.uniqueId('carousel_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('carousel_')
+  },
+  {
+    id: _.uniqueId('carousel_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('carousel_')
+  }
+];
+
+export const LAST_ITEMS = [
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
+  },
+  {
+    id: _.uniqueId('shelter_'),
+    thumbnail: 'https://placedog.net/400/150',
+    title: _.uniqueId('shelter_')
   }
 ];
