@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AppLoading } from 'expo';
 import {
   FlatList,
   Text,
   StyleSheet,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity,
+  Dimensions,
+  Platform,
+  View,
+  ScrollView
 } from 'react-native';
 import {
   Container,
@@ -16,20 +21,37 @@ import {
   Right,
   Button,
   Icon,
-  Title
+  Title,
+  Card,
+  CardItem
 } from 'native-base';
-
+import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import BottomNavigation, {
   FullTab
 } from 'react-native-material-bottom-navigation';
 
+import _ from 'lodash';
+
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { BOTTOM_NAV_TABS, STORIES } from '../../contants';
+import {
+  BOTTOM_NAV_TABS,
+  STORIES,
+  CAROUSEL_ITEMS,
+  MENU_ITEMS,
+  LAST_ITEMS
+} from '../../contants';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const Homepage = props => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('homepage');
+  const carouselRef = useRef(null);
+
+  const goForward = () => {
+    carouselRef.current.snapToNext();
+  };
 
   async function loadFonts() {
     await Font.loadAsync({
@@ -66,18 +88,72 @@ const Homepage = props => {
   );
 
   const showStory = () => {
-    console.log('clicked');
+    console.log('story');
+  };
+
+  const showLastItem = () => {
+    console.log('last item');
+  };
+
+  const adoptPet = () => {
+    console.log('adopt pet');
   };
 
   const Story = ({ story }) => {
-    console.log(story);
     return (
       <Container>
         <TouchableHighlight onPress={showStory} underlayColor="#ffffff">
-          <Image source={{ uri: story.image }} style={styles.storyImage} />
+          <View>
+            <Image source={{ uri: story.image }} style={styles.storyImage} />
+            <Text style={styles.storyText}>{story.text}</Text>
+          </View>
         </TouchableHighlight>
-        <Text style={styles.storyText}>{story.text}</Text>
       </Container>
+    );
+  };
+
+  const SheltyCard = ({ item }) => {
+    return (
+      <TouchableHighlight onPress={showLastItem} underlayColor="#ffffff">
+        <View>
+          <Card style={styles.lastItemContainer}>
+            <CardItem cardBody style={styles.lastItemBody}>
+              <Image
+                source={{ uri: item.thumbnail }}
+                style={styles.lastItemImage}
+              />
+            </CardItem>
+            <CardItem footer style={styles.lastItemFooter}>
+              <Left>
+                <Text style={styles.lastItemText}>{item.title}</Text>
+              </Left>
+              <Right>
+                <Button transparent onPress={adoptPet}>
+                  <Icon name="paw" style={styles.lastItemIcon} />
+                  <Text style={styles.lastItemText}>Sahiplen</Text>
+                </Button>
+              </Right>
+            </CardItem>
+          </Card>
+        </View>
+      </TouchableHighlight>
+    );
+  };
+
+  const renderCarouselItem = ({ item, index }, parallaxProps) => {
+    return (
+      <View style={styles.carouselItem}>
+        <ParallaxImage
+          source={{ uri: item.thumbnail }}
+          containerStyle={styles.carouselImageContainer}
+          style={styles.carouselImage}
+          parallaxFactor={0.4}
+          {...parallaxProps}
+        />
+        <Text style={styles.carouselTitle} numberOfLines={2}>
+          {item.title}
+        </Text>
+      </View>
     );
   };
 
@@ -97,41 +173,65 @@ const Homepage = props => {
             <Title style={styles.menuItem}>Shelty</Title>
           </Body>
           <Right>
-            <Button style={styles.menuItem}>
-              <Icon name="search" style={styles.headerIcon} />
-            </Button>
-            <Button style={styles.menuItem}>
-              <Icon name="wallet" style={styles.headerIcon} />
-            </Button>
-            <Button style={styles.menuItem}>
-              <Icon
-                name="information-circle-outline"
-                style={styles.headerIcon}
-              />
-            </Button>
+            {_.map(MENU_ITEMS, MENU_ITEM => (
+              <Button key={MENU_ITEM.id} style={styles.menuItem}>
+                <Icon name={MENU_ITEM.icon} style={styles.headerIcon} />
+              </Button>
+            ))}
           </Right>
         </Header>
         {/* Stories */}
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          data={STORIES}
-          renderItem={({ item }) => <Story story={item} />}
-          keyExtractor={item => item.text}
-        />
-
+        <View style={styles.storyContainer}>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={STORIES}
+            renderItem={({ item }) => <Story story={item} />}
+            keyExtractor={item => item.text}
+          />
+        </View>
+        {/* Emergency - Carousel */}
+        <ScrollView>
+          <View>
+            <Text style={styles.carouselHeader}>Yuva Arayanlar</Text>
+            <Carousel
+              ref={carouselRef}
+              sliderWidth={screenWidth}
+              sliderHeight={screenWidth}
+              itemWidth={screenWidth - 60}
+              data={CAROUSEL_ITEMS}
+              renderItem={renderCarouselItem}
+              hasParallaxImages={true}
+            />
+          </View>
+          {/* Last Items */}
+          <View style={styles.lastContainer}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={LAST_ITEMS}
+              renderItem={({ item }) => <SheltyCard item={item} />}
+              keyExtractor={item => item.text}
+            />
+          </View>
+        </ScrollView>
         {/* Bottom Navigation */}
-        <BottomNavigation
-          onTabPress={newTab => setActiveTab({ activeTab: newTab.key })}
-          renderTab={renderTab}
-          tabs={BOTTOM_NAV_TABS}
-        />
+        <View style={styles.bottomNavContainer}>
+          <BottomNavigation
+            onTabPress={newTab => setActiveTab({ activeTab: newTab.key })}
+            renderTab={renderTab}
+            tabs={BOTTOM_NAV_TABS}
+          />
+        </View>
       </Container>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  bottomNavContainer: {
+    flex: 1,
+    justifyContent: 'flex-end'
+  },
   headerContainer: {
     backgroundColor: '#f9f9f9'
   },
@@ -148,8 +248,7 @@ const styles = StyleSheet.create({
     color: '#504746'
   },
   storyContainer: {
-    flex: 1,
-    flexDirection: 'row'
+    height: 90
   },
   storyImage: {
     width: 50,
@@ -158,11 +257,78 @@ const styles = StyleSheet.create({
     borderColor: '#f56565',
     borderWidth: 1,
     overflow: 'hidden',
-    margin: 5
+    marginTop: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 0
   },
   storyText: {
     fontSize: 10,
     textAlign: 'center'
+  },
+  carouselHeader: {
+    marginLeft: 30,
+    marginBottom: 10
+  },
+  carouselItem: {
+    width: screenWidth - 60,
+    height: 150
+  },
+  carouselImageContainer: {
+    flex: 1,
+    marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
+    backgroundColor: 'white',
+    borderRadius: 8
+  },
+  carouselImage: {
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: 'contain'
+  },
+  carouselTitle: {
+    fontSize: 14,
+    position: 'relative',
+    top: -30,
+    left: 20,
+    marginBottom: 10,
+    color: '#f0f0f0'
+  },
+  hairline: {
+    width: 50,
+    height: 2,
+    backgroundColor: '#f0f0f0'
+  },
+  lastContainer: {
+    marginBottom: 60
+  },
+  lastItemContainer: {
+    borderRadius: 15,
+    marginLeft: 15,
+    marginRight: 15
+  },
+  lastItemImage: {
+    height: 150,
+    width: null,
+    flex: 1,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
+  },
+  lastItemBody: {
+    borderRadius: 15
+  },
+  lastItemIcon: {
+    fontSize: 12,
+    marginRight: 5
+  },
+  lastItemFooter: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderRadius: 15,
+    height: 40,
+    borderColor: '#b89685',
+    borderBottomWidth: 3
+  },
+  lastItemText: {
+    fontSize: 12
   }
 });
 
