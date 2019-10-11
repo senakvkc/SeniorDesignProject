@@ -20,17 +20,17 @@ import {
   Body,
   Right,
   Button,
-  Icon,
   Title,
   Card,
   CardItem
 } from 'native-base';
+
+import { Icon } from 'react-native-elements';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
-import BottomNavigation, {
-  FullTab
-} from 'react-native-material-bottom-navigation';
 
 import _ from 'lodash';
+
+
 
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -40,7 +40,12 @@ import {
   CAROUSEL_ITEMS,
   MENU_ITEMS,
   LAST_ITEMS
-} from '../../contants';
+} from '../../constants';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Profile from '../Profile';
+import Blog from '../Blog';
+import Shelters from '../Shelters';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -197,7 +202,7 @@ const Homepage = props => {
             <Carousel
               ref={carouselRef}
               sliderWidth={screenWidth}
-              sliderHeight={screenWidth}
+              sliderHeight={150}
               itemWidth={screenWidth - 60}
               data={CAROUSEL_ITEMS}
               renderItem={renderCarouselItem}
@@ -214,14 +219,6 @@ const Homepage = props => {
             />
           </View>
         </ScrollView>
-        {/* Bottom Navigation */}
-        <View style={styles.bottomNavContainer}>
-          <BottomNavigation
-            onTabPress={newTab => setActiveTab({ activeTab: newTab.key })}
-            renderTab={renderTab}
-            tabs={BOTTOM_NAV_TABS}
-          />
-        </View>
       </Container>
     </>
   );
@@ -253,7 +250,7 @@ const styles = StyleSheet.create({
   storyImage: {
     width: 50,
     height: 50,
-    borderRadius: 50,
+    borderRadius: 10,
     borderColor: '#f56565',
     borderWidth: 1,
     overflow: 'hidden',
@@ -332,4 +329,38 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Homepage;
+
+const BottomTabNavigator = createBottomTabNavigator(
+  {
+    Homepage: Homepage,
+    Shelters: Shelters,
+    Blog: Blog,
+    Profile: Profile
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        if (routeName === 'Homepage') {
+          iconName = 'home';
+        } else if (routeName === 'Shelters') {
+          iconName = 'barcode';
+        } else if (routeName === 'Blog') {
+          iconName = 'paper';
+        } else if (routeName === 'Profile') {
+          iconName = 'person';
+        }
+
+        // You can return any component that you like here!
+        return <Icon name={iconName} size={25} color={tintColor} />;
+      }
+    }),
+    tabBarOptions: {
+      activeTintColor: '#B89685',
+      inactiveTintColor: '#504746'
+    }
+  }
+);
+
+export default createAppContainer(BottomTabNavigator);

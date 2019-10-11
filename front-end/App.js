@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import Homepage from './components/common/Homepage';
+import Homepage from './scenes/Homepage';
 
 export default function App() {
   return (
