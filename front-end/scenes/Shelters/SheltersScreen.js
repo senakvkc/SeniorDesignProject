@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const Shelters = props => {
+const SheltersScreen = props => {
   return <Text>Shelters</Text>;
 };
 
-export default Shelters;
+export default SheltersScreen;

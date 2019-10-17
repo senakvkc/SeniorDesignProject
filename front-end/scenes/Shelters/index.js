@@ -1,3 +1,3 @@
-import Shelters from './Shelters';
+import SheltersScreen from './SheltersScreen';
 
-export default Shelters;
+export default SheltersScreen;

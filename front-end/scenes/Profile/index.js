@@ -1,3 +1,3 @@
-import Profile from './Profile';
+import ProfileScreen from './ProfileScreen';
 
-export default Profile;
+export default ProfileScreen;

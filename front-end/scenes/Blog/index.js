@@ -1,3 +1,3 @@
-import Blog from './Blog';
+import BlogScreen from './BlogScreen';
 
-export default Blog;
+export default BlogScreen;
