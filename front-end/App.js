@@ -9,6 +9,7 @@ import ProfileScreen from './scenes/Profile';
 import { Icon } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import NewPostScreen from './scenes/NewPost/NewPostScreen';
+import './i18n';
 
 const HomeStack = createStackNavigator({
   Home: {
