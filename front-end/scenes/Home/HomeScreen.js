@@ -52,34 +52,9 @@ const HomeScreen = (props, { navigation }) => {
     });
   }
 
-  const openCamera = () => {
-    console.log('openCamera');
-  };
-
-  const showSettings = () => {
-    console.log('showSettings');
-  };
-
-  const makeDonate = () => {
-    console.log('makeDonate');
-  };
-
-  const openSearch = () => {
-    console.log('openSearch');
-  };
-
   useEffect(() => {
     loadFonts().then(() => {
       setIsLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
-    props.navigation.setParams({
-      openCamera,
-      makeDonate,
-      openSearch,
-      showSettings
     });
   }, []);
 
@@ -141,42 +116,6 @@ const HomeScreen = (props, { navigation }) => {
     </>
   );
 };
-
-HomeScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: 'Shelty',
-  headerLeft: (
-    <Button
-      icon={<Icon name="camera" type="feather" color="#b89685" size={20} />}
-      type="clear"
-      containerStyle={styles.headerLeftButton}
-      onPress={navigation.getParam('openCamera')}
-    />
-  ),
-  headerRight: (
-    <>
-      <Button
-        icon={<Icon name="search" type="feather" color="#504746" size={20} />}
-        type="clear"
-        onPress={navigation.getParam('openSearch')}
-      />
-      <Button
-        icon={
-          <Icon name="credit-card" type="feather" color="#504746" size={20} />
-        }
-        type="clear"
-        onPress={navigation.getParam('makeDonate')}
-      />
-      <Button
-        icon={
-          <Icon name="more-vertical" type="feather" color="#504746" size={20} />
-        }
-        type="clear"
-        containerStyle={styles.headerRightButton}
-        onPress={navigation.getParam('showSettings')}
-      />
-    </>
-  )
-});
 
 const styles = StyleSheet.create({
   carouselItem: {
