@@ -10,10 +10,7 @@ import { Icon, Button } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import './i18n';
-
-const openCamera = () => {
-  console.log("camera");
-}
+import SheltyCamera from './components/SheltyCamera';
 
 const openSearch = () => {
   console.log("search");
@@ -33,7 +30,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
       icon={<Icon name="camera" type="feather" color="#b89685" size={20} />}
       type="clear"
       containerStyle={styles.headerLeftButton}
-      onPress={openCamera}
+      onPress={() => navigation.navigate('SheltyCamera')}
     />
   ),
   headerRight: (
@@ -66,8 +63,24 @@ const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: NAVIGATION_OPTIONS
+  },
+  SheltyCamera: {
+    screen: SheltyCamera,
+    navigationOptions: {
+      header: null,
+    }
+  }
+},
+{
+  navigationOptions: ({ navigation }) => {
+    let tabBarVisible = navigation.state.routes[navigation.state.index].routeName !== 'SheltyCamera';
+    
+    return {
+      tabBarVisible
+    }
   }
 });
+
 
 const SheltersStack = createStackNavigator({
   Shelters: {
@@ -118,7 +131,7 @@ const MainTabs = createBottomTabNavigator(
     Profile: {
       screen: ProfileStack,
       navigationOptions: {}
-    }
+    },
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -152,7 +165,8 @@ const MainTabs = createBottomTabNavigator(
       activeTintColor: '#b89685',
       inactiveTintColor: '#504746',
       showLabel: false
-    }
+    },
+    
   }
 );
 
