@@ -7,17 +7,20 @@ const Schema = mongoose.Schema;
 const ShelterSchema = new Schema(
   {
     name: {
-      type: String
+      type: String,
+      required: true
     },
     code: {
       type: Number,
       unique: true
     },
     address: {
-      type: String
+      type: String,
+      required: true
     },
     city: {
-      type: String
+      type: String,
+      required: true
     },
     country: {
       type: String,
