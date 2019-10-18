@@ -8,8 +8,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
+import { withTranslation } from 'react-i18next';
 
-const AnimalCard = ({ item }) => {
+const AnimalCard = ({t, item }) => {
   const goToAnimalProfile = () => {
     console.log('show item');
   };
@@ -48,15 +49,15 @@ const AnimalCard = ({ item }) => {
           <View style={styles.cardRightBody}>
             <View style={styles.cardRightBodyItem}>
               <Icon name="map-pin" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>Barınağın Adı</Text>
+              <Text style={styles.cardRightBodyItemText}>{t('nameOfShelter')}</Text>
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="calendar" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>Randevu Al</Text>
+              <Text style={styles.cardRightBodyItemText}>{t('makeAnAppointment')}</Text>
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="award" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>Profil</Text>
+              <Text style={styles.cardRightBodyItemText}>{t('profile')}</Text>
             </View>
           </View>
 
@@ -64,7 +65,7 @@ const AnimalCard = ({ item }) => {
             <Button
               onPress={adoptPet}
               icon={<Icon name="heart" type="feather" size={12} color="#fff" />}
-              title="Sahiplen"
+              title={t('adopt')}
               buttonStyle={styles.adoptButton}
               titleStyle={styles.adoptButtonTitle}
             ></Button>
@@ -159,4 +160,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AnimalCard;
+export default withTranslation()(AnimalCard);

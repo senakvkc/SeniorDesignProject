@@ -1,3 +1,12 @@
 {
-    "shelters": "Barınaklar"
+    "shelters": "Barınaklar",
+    "newPost": "Yeni Yazı",
+    "nameOfShelter": "Barınağın Adı",
+    "makeAnAppointment": "Randevu Al",
+    "profile": "Profil",
+    "adopt": "Sahiplen",
+    "blog": "Blog",
+    "species": "Cinsi",
+    "femaleAnimal": "Dişi",
+    "maleAnimal": "Erkek"
 }
