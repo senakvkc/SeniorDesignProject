@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export const BOTTOM_NAV_TABS = [
   {
-    key: 'homepage',
+    key: 'home',
     icon: 'home',
     label: 'Anasayfa',
     barColor: '#f9f9f9',
