@@ -18,11 +18,10 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'tr',
+    lng: 'tr',
     resources,
 
     // have a common namespace used around the full app
-    // ns: ['common'],
-    // defaultNS: 'common',
 
     debug: true,
 

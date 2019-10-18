@@ -6,38 +6,94 @@ import SheltersScreen from './scenes/Shelters';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import BlogScreen from './scenes/Blog';
 import ProfileScreen from './scenes/Profile';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import './i18n';
 
+const openCamera = () => {
+  console.log("camera");
+}
+
+const openSearch = () => {
+  console.log("search");
+}
+
+const openDonate = () => {
+  console.log("donate");
+}
+const openSettings = () => {
+  console.log("settings");
+}
+
+const NAVIGATION_OPTIONS = ({ navigation }) => ({
+  headerTitle: navigation.state.routeName,
+  headerLeft: (
+    <Button
+      icon={<Icon name="camera" type="feather" color="#b89685" size={20} />}
+      type="clear"
+      containerStyle={styles.headerLeftButton}
+      onPress={openCamera}
+    />
+  ),
+  headerRight: (
+    <>
+      <Button
+        icon={<Icon name="search" type="feather" color="#504746" size={20} />}
+        type="clear"
+        onPress={openSearch}
+      />
+      <Button
+        icon={
+          <Icon name="credit-card" type="feather" color="#504746" size={20} />
+        }
+        type="clear"
+        onPress={openDonate}
+      />
+      <Button
+        icon={
+          <Icon name="more-vertical" type="feather" color="#504746" size={20} />
+        }
+        type="clear"
+        containerStyle={styles.headerRightButton}
+        onPress={openSettings}
+      />
+    </>
+  )
+});
+
 const HomeStack = createStackNavigator({
   Home: {
-    screen: HomeScreen
+    screen: HomeScreen,
+    navigationOptions: NAVIGATION_OPTIONS
   }
 });
 
 const SheltersStack = createStackNavigator({
   Shelters: {
-    screen: SheltersScreen
+    screen: SheltersScreen,
+    navigationOptions: NAVIGATION_OPTIONS
   }
 });
 
 const NewPostStack = createStackNavigator({
   NewPost: {
-    screen: NewPostScreen
+    screen: NewPostScreen,
+    navigationOptions: NAVIGATION_OPTIONS
   }
 });
 
 const BlogStack = createStackNavigator({
   Blog: {
-    screen: BlogScreen
+    screen: BlogScreen,
+    navigationOptions: NAVIGATION_OPTIONS
   }
 });
 
 const ProfileStack = createStackNavigator({
   Profile: {
-    screen: ProfileScreen
+    screen: ProfileScreen,
+    navigationOptions: NAVIGATION_OPTIONS
   }
 });
 
@@ -90,7 +146,7 @@ const MainTabs = createBottomTabNavigator(
             key={routeName}
           />
         );
-      }
+      },
     }),
     tabBarOptions: {
       activeTintColor: '#b89685',
