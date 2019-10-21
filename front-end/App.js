@@ -10,6 +10,7 @@ import { Icon, Button } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import './i18n';
+import { COLORS, SIZES } from './constants/theme';
 
 const openCamera = () => {
   console.log("camera");
@@ -30,7 +31,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerTitle: navigation.state.routeName,
   headerLeft: (
     <Button
-      icon={<Icon name="camera" type="feather" color="#b89685" size={20} />}
+      icon={<Icon name="camera" type="feather" color={COLORS.PRIMARY} size={SIZES.MENU_ICON} />}
       type="clear"
       containerStyle={styles.headerLeftButton}
       onPress={openCamera}
@@ -39,20 +40,20 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerRight: (
     <>
       <Button
-        icon={<Icon name="search" type="feather" color="#504746" size={20} />}
+        icon={<Icon name="search" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />}
         type="clear"
         onPress={openSearch}
       />
       <Button
         icon={
-          <Icon name="credit-card" type="feather" color="#504746" size={20} />
+          <Icon name="credit-card" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />
         }
         type="clear"
         onPress={openDonate}
       />
       <Button
         icon={
-          <Icon name="more-vertical" type="feather" color="#504746" size={20} />
+          <Icon name="more-vertical" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />
         }
         type="clear"
         containerStyle={styles.headerRightButton}
@@ -141,16 +142,16 @@ const MainTabs = createBottomTabNavigator(
           <Icon
             type="feather"
             name={iconName}
-            size={routeName === 'NewPost' ? 35 : 20}
-            color={routeName === 'NewPost' ? '#D6692C' : tintColor}
+            size={routeName === 'NewPost' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON}
+            color={routeName === 'NewPost' ? COLORS.ORANGE : tintColor}
             key={routeName}
           />
         );
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#b89685',
-      inactiveTintColor: '#504746',
+      activeTintColor: COLORS.PRIMARY,
+      inactiveTintColor: COLORS.TEXT,
       showLabel: false
     }
   }
@@ -165,11 +166,6 @@ class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  customIcon: {
-    fontSize: 30,
-    color: '#D6692C'
-  },
-  bottomTab: {}
 });
 
 export default App;
