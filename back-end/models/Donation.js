@@ -4,40 +4,35 @@ const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 // this will be our data base's data structure
-const ShelterSchema = new Schema(
+const DonationSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true
-    },
-    code: {
-      type: String,
-      required: true,
-      unique: true
-    },
-    address: {
-      type: String,
-      required: true
-    },
-    city: {
-      type: String,
-      required: true
-    },
-    country: {
-      type: String,
-      default: 'Türkiye',
-      required: true
-    },
-    owner: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
-    animals: [
+    amount: {
+      type: Number,
+      required: true
+    },
+    logs: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Animal'
+        logType: {
+          type: String,
+          enum: LOG_TYPES
+        },
+        amount: {
+          type: Number,
+          required: true
+        },
+        target: {
+          type: String
+        }
       }
     ],
+    usedAmount: {
+      type: Number,
+      default: 0
+    },
 
     createdBy: {
       type: String
@@ -57,7 +52,7 @@ const ShelterSchema = new Schema(
   { timestamps: true }
 );
 
-ShelterSchema.plugin(uniqueValidator);
+DonationSchema.plugin(uniqueValidator);
 
 // export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model('Shelter', ShelterSchema);
+module.exports = mongoose.model('Donation', DonationSchema);
