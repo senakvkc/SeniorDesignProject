@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+export const PHOTOS_DIR = 'shelty';
+
 export const BOTTOM_NAV_TABS = [
   {
     key: 'home',

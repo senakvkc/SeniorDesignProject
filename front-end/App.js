@@ -8,24 +8,26 @@ import BlogScreen from './scenes/Blog';
 import ProfileScreen from './scenes/Profile';
 import { Icon, Button } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
-import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import './i18n';
+import _ from 'lodash';
 import { COLORS, SIZES } from './constants/theme';
 
-const openCamera = () => {
-  console.log("camera");
-}
+import NewPostScreen from './scenes/NewPost/NewPostScreen';
+import SheltyCamera from './components/SheltyCamera';
+import TakenPhoto from './components/TakenPhoto';
 
 const openSearch = () => {
-  console.log("search");
-}
+  console.log('search');
+};
 
 const openDonate = () => {
-  console.log("donate");
-}
+  console.log('donate');
+};
 const openSettings = () => {
-  console.log("settings");
-}
+  console.log('settings');
+};
+
+const screensWithHiddenBottomBar = ['SheltyCamera', 'TakenPhoto'];
 
 const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerTitle: navigation.state.routeName,
@@ -34,7 +36,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
       icon={<Icon name="camera" type="feather" color={COLORS.PRIMARY} size={SIZES.MENU_ICON} />}
       type="clear"
       containerStyle={styles.headerLeftButton}
-      onPress={openCamera}
+      onPress={() => navigation.navigate('SheltyCamera')}
     />
   ),
   headerRight: (
@@ -63,12 +65,38 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   )
 });
 
-const HomeStack = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: NAVIGATION_OPTIONS
+const HomeStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: NAVIGATION_OPTIONS
+    },
+    SheltyCamera: {
+      screen: SheltyCamera,
+      navigationOptions: {
+        header: null
+      }
+    },
+    TakenPhoto: {
+      screen: TakenPhoto,
+      navigationOptions: {
+        header: null
+      }
+    }
+  },
+  {
+    navigationOptions: ({ navigation }) => {
+      let tabBarVisible = !_.includes(
+        screensWithHiddenBottomBar,
+        navigation.state.routes[navigation.state.index].routeName
+      );
+
+      return {
+        tabBarVisible
+      };
+    }
   }
-});
+);
 
 const SheltersStack = createStackNavigator({
   Shelters: {
@@ -147,7 +175,7 @@ const MainTabs = createBottomTabNavigator(
             key={routeName}
           />
         );
-      },
+      }
     }),
     tabBarOptions: {
       activeTintColor: COLORS.PRIMARY,
