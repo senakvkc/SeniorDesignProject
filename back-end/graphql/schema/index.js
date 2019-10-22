@@ -7,9 +7,10 @@ module.exports = buildSchema(`
       lastName: String
       username: String
       email: String!
-      password: String!
+      password: String
       profilePicture: String
       gender: Gender
+      phone: String
       address: String
       city: String
       country: String
@@ -92,7 +93,7 @@ module.exports = buildSchema(`
     }
 
     input UserLoginInput {
-      email: String
+      emailOrPhone: String
       password: String
       expiration: Int
     }
@@ -104,12 +105,12 @@ module.exports = buildSchema(`
       getUsers: [User!]
       getUserById(userId: ID!): User
       getUserByUsername(username: String!): User
-      
     }
     
     type RootMutation {
       register(userRegisterInput: UserRegisterInput!): User
       resetPassword(newPassword: String!, token: String!): User
+      confirmAccount(confirmId: String!): Boolean
     }
 
     schema {

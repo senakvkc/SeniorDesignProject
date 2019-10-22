@@ -69,6 +69,9 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false
     },
+    confirmId: {
+      type: String
+    },
     resetPasswordToken: {
       type: String
     },
