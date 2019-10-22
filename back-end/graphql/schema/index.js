@@ -64,8 +64,6 @@ module.exports = buildSchema(`
     enum AnimalType {
       CAT
       DOG
-      BIRD
-      NONE
     }
     
     enum Gender {
@@ -73,6 +71,7 @@ module.exports = buildSchema(`
       FEMALE
     }
 
+     
     type AuthData {
       userId: ID!
       token: String!
