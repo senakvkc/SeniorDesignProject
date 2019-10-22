@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 const GENDERS = require('./enums/Gender');
-const ANIMAL_TYPES = require('./enums/Animal');
+const CAT_BREEDS = require('./enums/CatBreed');
+const DOG_BREEDS = require('./enums/DogBreed');
+const ANIMAL_TYPES = require('./enums/AnimalType');
 
 // this will be our data base's data structure
 const AnimalSchema = new Schema(
@@ -12,8 +14,14 @@ const AnimalSchema = new Schema(
       type: String
     },
     code: {
-      type: Number,
-      unique: true
+      type: String,
+      unique: true,
+      required: true
+    },
+    breed: {
+      type: String,
+      enum: [...CAT_BREEDS, ...DOG_BREEDS],
+      required: true
     },
     birthdate: {
       type: Date
@@ -21,13 +29,29 @@ const AnimalSchema = new Schema(
     gender: {
       type: String,
       enum: GENDERS,
-      default: 'NONE'
+      default: 'NONE',
+      required: true
     },
     animalType: {
       type: String,
       enum: ANIMAL_TYPES,
-      default: 'NONE'
+      required: true
     },
+    description: {
+      type: String
+    },
+    healthProblems: {
+      type: String
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    shelter: {
+      type: Schema.Types.ObjectId,
+      ref: 'Shelter'
+    },
+
     createdBy: {
       type: String
     },
@@ -41,19 +65,7 @@ const AnimalSchema = new Schema(
     updatedAt: {
       type: Date,
       default: Date.now()
-    },
-    owner: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      }
-    ],
-    shelter: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Shelter'
-      }
-    ]
+    }
   },
   { timestamps: true }
 );

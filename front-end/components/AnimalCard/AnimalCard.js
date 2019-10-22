@@ -10,7 +10,7 @@ import {
 import { Icon, Button } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
 
-const AnimalCard = ({t, item }) => {
+const AnimalCard = ({ t, item }) => {
   const goToAnimalProfile = () => {
     console.log('show item');
   };
@@ -49,11 +49,15 @@ const AnimalCard = ({t, item }) => {
           <View style={styles.cardRightBody}>
             <View style={styles.cardRightBodyItem}>
               <Icon name="map-pin" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>{t('nameOfShelter')}</Text>
+              <Text style={styles.cardRightBodyItemText}>
+                {t('nameOfShelter')}
+              </Text>
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="calendar" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>{t('makeAnAppointment')}</Text>
+              <Text style={styles.cardRightBodyItemText}>
+                {t('makeAnAppointment')}
+              </Text>
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="award" type="feather" size={12} />
