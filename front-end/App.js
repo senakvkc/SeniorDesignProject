@@ -8,20 +8,25 @@ import BlogScreen from './scenes/Blog';
 import ProfileScreen from './scenes/Profile';
 import { Icon, Button } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
-import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import './i18n';
+import _ from 'lodash';
+
+import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import SheltyCamera from './components/SheltyCamera';
+import TakenPhoto from './components/TakenPhoto';
 
 const openSearch = () => {
-  console.log("search");
-}
+  console.log('search');
+};
 
 const openDonate = () => {
-  console.log("donate");
-}
+  console.log('donate');
+};
 const openSettings = () => {
-  console.log("settings");
-}
+  console.log('settings');
+};
+
+const screensWithHiddenBottomBar = ['SheltyCamera', 'TakenPhoto'];
 
 const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerTitle: navigation.state.routeName,
@@ -59,28 +64,38 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   )
 });
 
-const HomeStack = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: NAVIGATION_OPTIONS
+const HomeStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: NAVIGATION_OPTIONS
+    },
+    SheltyCamera: {
+      screen: SheltyCamera,
+      navigationOptions: {
+        header: null
+      }
+    },
+    TakenPhoto: {
+      screen: TakenPhoto,
+      navigationOptions: {
+        header: null
+      }
+    }
   },
-  SheltyCamera: {
-    screen: SheltyCamera,
-    navigationOptions: {
-      header: null,
-    }
-  }
-},
-{
-  navigationOptions: ({ navigation }) => {
-    let tabBarVisible = navigation.state.routes[navigation.state.index].routeName !== 'SheltyCamera';
-    
-    return {
-      tabBarVisible
-    }
-  }
-});
+  {
+    navigationOptions: ({ navigation }) => {
+      let tabBarVisible = !_.includes(
+        screensWithHiddenBottomBar,
+        navigation.state.routes[navigation.state.index].routeName
+      );
 
+      return {
+        tabBarVisible
+      };
+    }
+  }
+);
 
 const SheltersStack = createStackNavigator({
   Shelters: {
@@ -131,7 +146,7 @@ const MainTabs = createBottomTabNavigator(
     Profile: {
       screen: ProfileStack,
       navigationOptions: {}
-    },
+    }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -159,14 +174,13 @@ const MainTabs = createBottomTabNavigator(
             key={routeName}
           />
         );
-      },
+      }
     }),
     tabBarOptions: {
       activeTintColor: '#b89685',
       inactiveTintColor: '#504746',
       showLabel: false
-    },
-    
+    }
   }
 );
 
