@@ -12,6 +12,8 @@ const xoauth2 = require('xoauth2');
 const StringUtil = require('../../util/StringUtil');
 
 const User = require('../../models/User');
+const Post = require('../../models/Post');
+
 const { fetchUserData } = require('./common');
 const { createToken } = require('../../util/TokenUtil');
 
@@ -19,44 +21,10 @@ module.exports = {
   //
   // queries
   //
-  getUsers: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error({
-        text: 'Yetkisiz erişim.',
-        code: 1
-      });
-    }
 
-    try {
-      const users = await User.find();
-      return users.map(user => {
-        return fetchUserData(user);
-      });
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  },
-
-  getUserByUsername: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error({
-        text: 'Yetkisiz erişim.',
-        code: 1
-      });
-    }
-
-    const { username } = args;
-
-    try {
-      const user = await User.findOne({ username });
-      return fetchUserData(user);
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  },
-
+  /* ======================= */
+  /* USER QUERIES            */
+  /* ======================= */
   login: async args => {
     const { userLoginInput } = args;
     const { emailOrPhone, password, expiration } = userLoginInput;
@@ -107,6 +75,130 @@ module.exports = {
       expiration,
       user
     };
+  },
+
+  getUsers: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    try {
+      const users = await User.find();
+      return users.map(user => {
+        return fetchUserData(user);
+      });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+
+  getUserById: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    const { userId } = args;
+
+    try {
+      const user = await User.findById(userId);
+      return fetchUserData(user);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+
+  getUserByUsername: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    const { username } = args;
+
+    try {
+      const user = await User.findOne({ username });
+      return fetchUserData(user);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+
+  getUserByPhone: async (args, req) => {
+    // TODO: Yetki kontrolü
+    
+    const { phone } = args;
+    try {
+      const user = await User.findOne({ phone });
+      return fetchUserData(user);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+
+  getLast10Posts: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    try {
+      // sorting newest to oldest
+      const posts = await Post.find().sort({ createdAt: -1 }).limit(10);
+      return posts;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+
+  getPostById: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    const { postId } = args;
+
+    try {
+      const post = await Post.findById(postId);
+      return post;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+
+  getPostsWithPage: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    const { offset, limit } = args;
+
+    try {
+      const posts = await Post.find().skip(offset).sort({ createdAt: -1 }).limit(limit);
+      return posts;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+
+  getPostsByUser: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    const { userId } = args;
+
+    try {
+      const posts = await Post.find({ user: userId }).sort({ createdAt: - 1});
+      return posts;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+
+  getPostsByUserWithPage: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    const { userId, offset, limit } = args;
+
+    try {
+      const posts = await Post.find({ user: userId }).skip(offset).sort({ createdAt: -1 }).limit(limit);
+      return posts;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   },
 
   //

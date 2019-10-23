@@ -23,6 +23,12 @@ const CommentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'SharedPhotos'
     },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+      }
+    ],
     createdBy: {
       type: String
     },
@@ -36,7 +42,7 @@ const CommentSchema = new Schema(
     updatedAt: {
       type: Date,
       default: Date.now()
-    }
+    },
   },
   { timestamps: true }
 );
