@@ -5,7 +5,7 @@ module.exports = buildSchema(`
       _id: ID!
       firstName: String
       lastName: String
-      username: String!
+      username: String
       email: String!
       password: String!
       profilePicture: String
@@ -27,25 +27,13 @@ module.exports = buildSchema(`
       shelters: [Shelter]
     }
 
-    enum UserType {
-      USER
-      SHELTER_OWNER
-    }
-
-    enum AnimalType {
-      CAT
-      DOG
-      BIRD
-      NONE
-    }
-
     type Shelter {
       _id: ID!
       name: String!
       code: Int!
       address: String!
       city: String!
-      country: String
+      country: String!
       createdBy: String
       updatedBy: String
       createdAt: String
@@ -67,6 +55,23 @@ module.exports = buildSchema(`
       updatedAt: String
     }
 
+    enum UserType {
+      USER
+      SHELTER_OWNER
+      VET
+    }
+
+    enum AnimalType {
+      CAT
+      DOG
+    }
+    
+    enum Gender {
+      MALE
+      FEMALE
+    }
+
+     
     type AuthData {
       userId: ID!
       token: String!
@@ -79,15 +84,11 @@ module.exports = buildSchema(`
       token: String
     }
     
-    enum Gender {
-      MALE
-      FEMALE
-    }
 
     input UserRegisterInput {
-      username: String!
       email: String!
       password: String!
+      phone: String!
     }
 
     input UserLoginInput {
@@ -99,11 +100,11 @@ module.exports = buildSchema(`
     type RootQuery {
       login(userLoginInput: UserLoginInput): AuthData
       forgotPassword(emailOrUsername: String!): ForgotPasswordData
-
+      
       getUsers: [User!]
       getUserById(userId: ID!): User
       getUserByUsername(username: String!): User
-
+      
     }
     
     type RootMutation {

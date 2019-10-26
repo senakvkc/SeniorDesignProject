@@ -27,6 +27,11 @@ const UserSchema = new Schema(
       type: String,
       required: true
     },
+    phone: {
+      type: String,
+      required: true,
+      unique: true
+    },
     profilePicture: {
       type: String,
       default: `/images/user/${Math.floor(Math.random() * 10) + 1}.svg` // random number between 1 and 10
@@ -34,7 +39,8 @@ const UserSchema = new Schema(
     gender: {
       type: String,
       enum: GENDERS,
-      default: 'NONE'
+      default: 'NONE',
+      required: true
     },
     address: {
       type: String
@@ -49,14 +55,15 @@ const UserSchema = new Schema(
     userType: {
       type: String,
       enum: USER_TYPES,
-      default: 'USER'
+      default: 'USER',
+      required: true
     },
     birthdate: {
       type: Date
     },
     isActive: {
       type: Boolean,
-      default: true
+      default: false
     },
     isBlocked: {
       type: Boolean,
@@ -67,6 +74,66 @@ const UserSchema = new Schema(
     },
     resetPasswordExpiration: {
       type: String
+    },
+    animals: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Animal'
+      }
+    ],
+    shelter: {
+      type: Schema.Types.ObjectId,
+      ref: 'Shelter'
+    },
+    clinic: {
+      type: Schema.Types.ObjectId,
+      ref: 'Clinic'
+    },
+    stories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Story'
+      }
+    ],
+    posts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+      }
+    ],
+    loginHistory: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'LoginHistory'
+      }
+    ],
+    donations: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Donation'
+      }
+    ],
+    sharedPhotos: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'SharedPhoto'
+      }
+    ],
+    suggestions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Suggestion'
+      }
+    ],
+    favoritedAnimals: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Animal'
+      }
+    ],
+    isApproved: {
+      type: Boolean,
+      default: false
     },
     createdBy: {
       type: String
@@ -81,19 +148,7 @@ const UserSchema = new Schema(
     updatedAt: {
       type: Date,
       default: Date.now()
-    },
-    animals: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Animal'
-      }
-    ],
-    shelters: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Shelter'
-      }
-    ]
+    }
   },
   { timestamps: true }
 );
