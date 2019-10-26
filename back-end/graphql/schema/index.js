@@ -106,7 +106,6 @@ module.exports = buildSchema(`
       getUserByUsername(username: String!): User
       
     }
-    
     type RootMutation {
       register(userRegisterInput: UserRegisterInput!): User
       resetPassword(newPassword: String!, token: String!): User

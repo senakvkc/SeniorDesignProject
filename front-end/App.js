@@ -12,9 +12,15 @@ import './i18n';
 import _ from 'lodash';
 import { COLORS, SIZES } from './constants/theme';
 
+import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
+
 import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import SheltyCamera from './components/SheltyCamera';
 import TakenPhoto from './components/TakenPhoto';
+import LoginScreen from './scenes/Login';
 
 const openSearch = () => {
   console.log('search');
@@ -33,7 +39,14 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerTitle: navigation.state.routeName,
   headerLeft: (
     <Button
-      icon={<Icon name="camera" type="feather" color={COLORS.PRIMARY} size={SIZES.MENU_ICON} />}
+      icon={
+        <Icon
+          name="camera"
+          type="feather"
+          color={COLORS.PRIMARY}
+          size={SIZES.MENU_ICON}
+        />
+      }
       type="clear"
       containerStyle={styles.headerLeftButton}
       onPress={() => navigation.navigate('SheltyCamera')}
@@ -42,20 +55,37 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerRight: (
     <>
       <Button
-        icon={<Icon name="search" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />}
+        icon={
+          <Icon
+            name="search"
+            type="feather"
+            color={COLORS.TEXT}
+            size={SIZES.MENU_ICON}
+          />
+        }
         type="clear"
         onPress={openSearch}
       />
       <Button
         icon={
-          <Icon name="credit-card" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />
+          <Icon
+            name="credit-card"
+            type="feather"
+            color={COLORS.TEXT}
+            size={SIZES.MENU_ICON}
+          />
         }
         type="clear"
         onPress={openDonate}
       />
       <Button
         icon={
-          <Icon name="more-vertical" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />
+          <Icon
+            name="more-vertical"
+            type="feather"
+            color={COLORS.TEXT}
+            size={SIZES.MENU_ICON}
+          />
         }
         type="clear"
         containerStyle={styles.headerRightButton}
@@ -170,7 +200,9 @@ const MainTabs = createBottomTabNavigator(
           <Icon
             type="feather"
             name={iconName}
-            size={routeName === 'NewPost' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON}
+            size={
+              routeName === 'NewPost' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON
+            }
             color={routeName === 'NewPost' ? COLORS.ORANGE : tintColor}
             key={routeName}
           />
@@ -187,13 +219,26 @@ const MainTabs = createBottomTabNavigator(
 
 const AppNavigator = createAppContainer(MainTabs);
 
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://192.168.56.1/graphql'
+});
+
+const client = new ApolloClient({
+  cache,
+  link
+});
+
 class App extends Component {
   render() {
-    return <AppNavigator />;
+    return (
+      <ApolloProvider client={client}>
+        <LoginScreen />
+      </ApolloProvider>
+    );
   }
 }
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});
 
 export default App;
