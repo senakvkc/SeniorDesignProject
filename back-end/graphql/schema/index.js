@@ -7,9 +7,10 @@ module.exports = buildSchema(`
       lastName: String
       username: String
       email: String!
-      password: String!
+      password: String
       profilePicture: String
       gender: Gender
+      phone: String
       address: String
       city: String
       country: String
@@ -92,7 +93,7 @@ module.exports = buildSchema(`
     }
 
     input UserLoginInput {
-      email: String
+      emailOrPhone: String
       password: String
       expiration: Int
     }
@@ -104,12 +105,39 @@ module.exports = buildSchema(`
       getUsers: [User!]
       getUserById(userId: ID!): User
       getUserByUsername(username: String!): User
+      getUserByPhone(phone: String!): User
       
+      getLast10Posts: [Post]
+      getPostById(postId: ID!): Post
+      getPostsWithPage(offset: Int!, limit: Int!): [Post]
+      getPostsByUser(userId: ID!): [Post]
+      getPostsByUserWithPage(userId: ID!, offset: Int!, limit: Int!): [Post]
+
+      getCommentsOfPost(postId: ID!): [Comment]
+
+      getLast10Shelters: [Shelter]
+      getShelterById(shelterId: ID!): Shelter
+      getSheltersWithPage(offset: Int!, limit: Int!): [Shelter]
+      getShelterByCode(code: String!): Shelter
+      getSheltersByCity(city: String!): [Shelter]
+      getShelterByName(name: String!): Shelter
+
+      getLast15Stories: [Story]
+      getLastStoriesOfUser(userId: ID!): [Story]
     }
     
     type RootMutation {
       register(userRegisterInput: UserRegisterInput!): User
       resetPassword(newPassword: String!, token: String!): User
+      confirmAccount(confirmId: String!): Boolean
+
+      addPost(postInput: PostInput): Post
+      updatePost(postId: ID!, postInput: PostInput): Post
+      deletePost(postId: ID!): Post
+
+      addComment(sourceId: ID!, commentInput: CommentInput): Comment
+      updateComment(commentId: ID!, commentInput: CommentInput): Comment
+      deleteComment(commentId: ID!): Comment
     }
 
     schema {

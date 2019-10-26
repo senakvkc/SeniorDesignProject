@@ -8,5 +8,6 @@
     "blog": "Blog",
     "species": "Cinsi",
     "femaleAnimal": "Dişi",
-    "maleAnimal": "Erkek"
+    "maleAnimal": "Erkek",
+    "noAccessToCamera": "Kamera yetkisi gerekli."
 }
