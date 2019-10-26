@@ -12,6 +12,11 @@ import './i18n';
 import _ from 'lodash';
 import { COLORS, SIZES } from './constants/theme';
 
+import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
+
 import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import SheltyCamera from './components/SheltyCamera';
 import TakenPhoto from './components/TakenPhoto';
@@ -214,9 +219,23 @@ const MainTabs = createBottomTabNavigator(
 
 const AppNavigator = createAppContainer(MainTabs);
 
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://192.168.56.1/graphql'
+});
+
+const client = new ApolloClient({
+  cache,
+  link
+});
+
 class App extends Component {
   render() {
-    return <LoginScreen />;
+    return (
+      <ApolloProvider client={client}>
+        <LoginScreen />
+      </ApolloProvider>
+    );
   }
 }
 
