@@ -8,6 +8,8 @@ const i18n = require('i18n');
 const shortId = require('shortid');
 const uuidv1 = require('uuid/v1');
 const xoauth2 = require('xoauth2');
+const { ObjectId } = require('mongodb');
+const { ApolloError, AuthenticationError } = require('apollo-server');
 
 const StringUtil = require('../../util/StringUtil');
 
@@ -15,7 +17,9 @@ const User = require('../../models/User');
 const Post = require('../../models/Post');
 
 const { fetchUserData } = require('./common');
-const { createToken } = require('../../util/TokenUtil');
+const { createToken, verifyToken } = require('../../util/TokenUtil');
+
+const validator = require('../../validator/validator');
 
 module.exports = {
   //
@@ -25,56 +29,25 @@ module.exports = {
   /* ======================= */
   /* USER QUERIES            */
   /* ======================= */
-  login: async args => {
-    const { userLoginInput } = args;
-    const { emailOrPhone, password, expiration } = userLoginInput;
+  currentUser: async authorization => {
+    const bearerLength = 'Bearer '.length;
+    console.log(authorization);
+    if (authorization && authorization.length > bearerLength) {
+      const token = authorization.slice(bearerLength);
 
-    console.log(userLoginInput);
+      const { ok, result } = await new Promise(resolve =>
+        verifyToken(resolve, token, process.env.SECRET_KEY)
+      );
 
-    // validate fields.
-    if (_.isEmpty(_.trim(password)) || _.isEmpty(_.trim(emailOrPhone))) {
-      throw new Error({
-        text: i18n.__('noEmptyFields'),
-        code: 1
-      });
+      if (ok) {
+        const user = await User.findOne({ _id: ObjectId(result._id) });
+        return user;
+      } else {
+        return null;
+      }
     }
 
-    // find user
-    const user = await User.findOne({
-      $or: [{ email: emailOrPhone }, { phone: emailOrPhone }]
-    });
-
-    // check if user exists.
-    if (!user) {
-      throw new Error({
-        text: i18n.__('invalidAccountInfo'),
-        code: 1
-      });
-    }
-
-    // check if user's password is qeual with given password
-    const isEqual = await bcrypt.compare(password, user.password);
-
-    if (!isEqual) {
-      throw new Error({
-        text: i18n.__('invalidAccountInfo'),
-        code: 1
-      });
-    }
-
-    // create token.
-    const token = createToken(
-      user.id,
-      user.email,
-      process.env.SECRET_KEY,
-      expiration
-    );
-    return {
-      userId: user.id,
-      token,
-      expiration,
-      user
-    };
+    return null;
   },
 
   getUsers: async (args, req) => {
@@ -121,7 +94,7 @@ module.exports = {
 
   getUserByPhone: async (args, req) => {
     // TODO: Yetki kontrolü
-    
+
     const { phone } = args;
     try {
       const user = await User.findOne({ phone });
@@ -137,7 +110,9 @@ module.exports = {
 
     try {
       // sorting newest to oldest
-      const posts = await Post.find().sort({ createdAt: -1 }).limit(10);
+      const posts = await Post.find()
+        .sort({ createdAt: -1 })
+        .limit(10);
       return posts;
     } catch (err) {
       console.error(err);
@@ -165,7 +140,10 @@ module.exports = {
     const { offset, limit } = args;
 
     try {
-      const posts = await Post.find().skip(offset).sort({ createdAt: -1 }).limit(limit);
+      const posts = await Post.find()
+        .skip(offset)
+        .sort({ createdAt: -1 })
+        .limit(limit);
       return posts;
     } catch (err) {
       console.error(err);
@@ -179,7 +157,7 @@ module.exports = {
     const { userId } = args;
 
     try {
-      const posts = await Post.find({ user: userId }).sort({ createdAt: - 1});
+      const posts = await Post.find({ user: userId }).sort({ createdAt: -1 });
       return posts;
     } catch (err) {
       console.error(err);
@@ -193,7 +171,10 @@ module.exports = {
     const { userId, offset, limit } = args;
 
     try {
-      const posts = await Post.find({ user: userId }).skip(offset).sort({ createdAt: -1 }).limit(limit);
+      const posts = await Post.find({ user: userId })
+        .skip(offset)
+        .sort({ createdAt: -1 })
+        .limit(limit);
       return posts;
     } catch (err) {
       console.error(err);
@@ -204,73 +185,103 @@ module.exports = {
   //
   // mutations
   //
-  register: async args => {
-    const { userRegisterInput } = args;
-    const { email, phone, password } = userRegisterInput;
 
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    const phoneRegex = /5\d{9}/;
-
+  login: async ({ emailOrPhone, password }) => {
     // validate fields.
-    if (
-      _.isEmpty(_.trim(password)) ||
-      _.isEmpty(_.trim(email)) ||
-      _.isEmpty(_.trim(phone))
-    ) {
+    const isFieldsValidated = validator.isFieldsEmpty({
+      emailOrPhone,
+      password
+    });
+
+    // check if given email or phone is valid.
+    const isEmailOrPhoneValid = validator.isEmailOrPhoneValid(
+      emailOrPhone,
+      emailOrPhone
+    );
+
+    console.log(emailOrPhone, password);
+    // if everything is validated, then check if user actually exists.
+    const user = await User.findOne({
+      $or: [{ email: emailOrPhone }, { phone: emailOrPhone }]
+    });
+    if (!user) {
+      throw new AuthenticationError(i18n.__('invalidAccountInfo'));
+    }
+  },
+
+  getPostsWithPage: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    if (!isEqual) {
       throw new Error({
-        text: i18n.__('noEmptyFields'),
+        text: i18n.__('invalidAccountInfo'),
         code: 1
       });
     }
+  },
 
-    // check if email is valid.
-    if (!emailRegex.test(email)) {
-      throw new Error({
-        text: i18n.__('invalidEmail'),
-        code: 1
-      });
+    // if everything is fine, we can create token now.
+    const token = createToken(user.id, user.email, process.env.SECRET_KEY);
+
+    // return logged in user data.
+    // TODO: Set password: null
+    return {
+      userId: user.id,
+      token,
+      user
+    };
+  },
+
+  register: async ({ userRegisterInput }) => {
+    const { email, username, phone, password } = userRegisterInput;
+    console.log(userRegisterInput);
+    // validate fields.
+    const isFieldsValidated = validator.isFieldsEmpty({
+      email,
+      phone,
+      username,
+      password
+    });
+
+    // check if given email or phone is valid.
+    const isEmailOrPhoneValid = validator.isEmailOrPhoneValid(email, phone);
+
+    const isUsernameValid = validator.isUsernameValid(username);
+
+    // check if user exists
+    const user = await User.findOne({ $or: [{ email }, { phone }] });
+    if (user) {
+      throw new ApolloError(i18n.__('userAlreadyExists'), 'ALREADY_EXISTS');
     }
 
-    // check if phone is valid.
-    if (!phoneRegex.test(phone)) {
-      throw new Error({
-        text: i18n.__('invalidPhone'),
-        code: 1
-      });
+    const usernameCheck = await User.findOne({ username });
+    if (usernameCheck) {
+      throw new ApolloError(i18n.__('usernameAlreadyExists'), 'ALREADY_EXISTS');
     }
 
-    try {
-      // check if user exists
-      const user = await User.findOne({ $or: [{ email }, { phone }] });
-      if (user) {
-        throw new Error({
-          text: i18n.__('userAlreadyExists'),
-          code: 1
-        });
-      }
+    // if everything is fine, then we can start creating our new user.
+    // hash password first!
+    const hashedPass = await bcrypt.hash(password, 12);
+    // since user has to confirm the new account, we create a new confirmId for the new user.
+    const confirmId = uuidv1();
 
-      // hash pass
-      const hashedPass = await bcrypt.hash(password, 12);
-      const confirmId = uuidv1();
+    // create new user
+    const newUser = new User({
+      email,
+      phone,
+      username,
+      password: hashedPass,
+      confirmId
+    });
 
-      // create new user
-      const newUser = new User({
-        email,
-        phone,
-        username: `user_${uuidv1()}`,
-        password: hashedPass,
-        confirmId
-      });
+    // save to database
+    const res = await newUser.save();
 
-      // save to database
-      const res = await newUser.save();
+    const token = createToken(res.id, email, process.env.SECRET_KEY);
 
-      const token = createToken(res.id, email, process.env.SECRET_KEY, 1);
-
-      // send a confirmation email to user
-      // create email provider.
-      const emailProvider = nodemailer.createTransport({
+    // send a confirmation email to user
+    // create email provider.
+    /* const emailProvider = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
         secure: false, // true for 465, false for other ports
@@ -294,14 +305,13 @@ module.exports = {
           accessToken: process.env.GMAIL_CLIENT_ACCESS_TOKEN
         }
       });
-
-      console.log(mail);
-
-      return { ...res._doc, password: null, token };
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+      */
+    // TODO: Set password: null
+    return {
+      userId: res.id,
+      token,
+      user: res._doc
+    };
   },
 
   confirmAccount: async args => {

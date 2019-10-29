@@ -4,17 +4,17 @@ const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const shortid = require('shortid');
-const i18n = require("i18n");
+const i18n = require('i18n');
 
 i18n.configure({
-  locales:['tr', 'en'],
-  fallbacks: { 'tr': 'tr' },
+  locales: ['tr', 'en'],
+  fallbacks: { tr: 'tr' },
   defaultLocale: 'tr',
   directory: __dirname + '/translation',
   prefix: 'translation-',
   queryParameter: 'lang',
   api: {
-    '__': 't'
+    __: 't'
   },
   objectNotation: true
 });

@@ -9,7 +9,8 @@ import {
   Dimensions,
   Platform,
   View,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';

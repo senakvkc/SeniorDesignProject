@@ -1,7 +1,18 @@
-import React from 'react';
-import { Text, View, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Button, AsyncStorage } from 'react-native';
 
 const ProfileScreen = props => {
+  const [userData, setUserData] = useState(null);
+
+  const getCurrentUser = async () => {
+    const userToken = await AsyncStorage.getItem('userToken');
+    setUserData(JSON.parse(userToken));
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
   return (
     <View>
       <Text>Profile</Text>

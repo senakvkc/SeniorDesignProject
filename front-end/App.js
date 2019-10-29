@@ -1,13 +1,17 @@
+if (__DEV__) {
+  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
+}
+
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from './scenes/Home';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import SheltersScreen from './scenes/Shelters';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import BlogScreen from './scenes/Blog';
 import ProfileScreen from './scenes/Profile';
 import { Icon, Button } from 'react-native-elements';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage } from 'react-native';
 import './i18n';
 import _ from 'lodash';
 import { COLORS, SIZES } from './constants/theme';
@@ -21,9 +25,12 @@ import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import SheltyCamera from './components/SheltyCamera';
 import TakenPhoto from './components/TakenPhoto';
 import LoginScreen from './scenes/Login';
+import RegisterScreen from './scenes/Register';
+import AuthLoadingScreen from './scenes/AuthLoading';
 
-const openSearch = () => {
-  console.log('search');
+const openSearch = async navigation => {
+  await AsyncStorage.removeItem('userToken');
+  navigation.navigate('Login');
 };
 
 const openDonate = () => {
@@ -64,7 +71,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
           />
         }
         type="clear"
-        onPress={openSearch}
+        onPress={() => openSearch(navigation)}
       />
       <Button
         icon={
@@ -156,6 +163,24 @@ const ProfileStack = createStackNavigator({
   }
 });
 
+const AuthStack = createStackNavigator(
+  {
+    Login: {
+      screen: LoginScreen
+    },
+    Register: {
+      screen: RegisterScreen
+    }
+  },
+
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+);
+
 const MainTabs = createBottomTabNavigator(
   {
     Home: {
@@ -217,11 +242,22 @@ const MainTabs = createBottomTabNavigator(
   }
 );
 
-const AppNavigator = createAppContainer(MainTabs);
+const AppNavigator = createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoadingScreen,
+      AuthStack: AuthStack,
+      MainTabs: MainTabs
+    },
+    {
+      initialRouteName: 'AuthLoading'
+    }
+  )
+);
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: 'http://192.168.56.1/graphql'
+  uri: 'http://192.168.1.4:8080/graphql'
 });
 
 const client = new ApolloClient({
@@ -233,7 +269,7 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <LoginScreen />
+        <AppNavigator />
       </ApolloProvider>
     );
   }
