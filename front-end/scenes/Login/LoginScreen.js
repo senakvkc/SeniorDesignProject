@@ -8,11 +8,20 @@ import {
   TextInput,
   Dimensions,
   TouchableOpacity,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/react-hooks';
+import {
+  validateEmptyFields,
+  validateEmailAndPhone,
+  validatePhone,
+  validateEmail
+} from '../../utils/Validator';
 
 import bgImage from '../../assets/login.jpg';
 import logo from '../../assets/logo.png';
@@ -22,77 +31,69 @@ import { Button } from 'react-native-elements';
 
 const { width: WIDTH } = Dimensions.get('window');
 
-const LoginScreen = ({ t }) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [emailOrPhone, setEmailOrPhone] = useState(null);
-  const [password, setPassword] = useState(null);
-
-  handleLogin = () => {
-    // validation -> if valid login -> if not error
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    const phoneRegex = /(05|5)([0-9]){9}/;
-
-    // validate fields.
-    if (_.isEmpty(_.trim(password)) || _.isEmpty(_.trim(emailOrPhone))) {
-      Alert.alert('Tüm alanları doldurun.');
-      return;
+const LOGIN_MUTATION = gql`
+  mutation login($emailOrPhone: String!, $password: String!) {
+    login(emailOrPhone: $emailOrPhone, password: $password) {
+      userId
+      token
+      user {
+        _id
+      }
     }
+  }
+`;
 
-    // check if email or phone is valid.
-    if (
-      !_.isEqual(_.first(emailRegex.exec(emailOrPhone)), emailOrPhone) &&
-      !_.isEqual(_.first(phoneRegex.exec(emailOrPhone)), emailOrPhone)
-    ) {
-      Alert.alert('Geçersiz e-posta/telefon.');
+const LoginScreen = ({ t, navigation }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [emailOrPhone, setEmailOrPhone] = useState('rawsly@gmail.com');
+  const [password, setPassword] = useState('123456');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [logUserIn, { data }] = useMutation(LOGIN_MUTATION);
+
+  const isLoginDisabled = validateEmptyFields({ emailOrPhone, password });
+
+  const handleLogin = async () => {
+    // validate email / phone
+    const isEmailOrPhoneValid =
+      validatePhone(emailOrPhone) || validateEmail(emailOrPhone);
+
+    if (!isEmailOrPhoneValid) {
+      Alert.alert(t('invalidEmailOrPhone'), t('invalidLoginInfoDesc'), [
+        {
+          text: t('tryAgain'),
+          onPress: () => console.log('tekrar deneniyor.')
+        }
+      ]);
+
       return;
     }
 
     // now, send request to backend.
-    const userLoginInput = {
-      emailOrPhone,
-      password,
-      expiration: 60
-    };
-
-    const loginQuery = {
-      query: `
-        query login($userLoginInput: UserLoginInput){
-          login(userLoginInput: $userLoginInput) {
-            userId
-            token
-            expiration
-          }
-        }
-      `,
-      variables: {
-        userLoginInput
-      }
-    };
-
-    fetch(`http://192.168.56.1:8080/graphql`, {
-      method: 'POST',
-      body: JSON.stringify(loginQuery),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    setIsLoading(true);
+    await logUserIn({
+      variables: { emailOrPhone, password }
     })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error(`Something went wrong.`);
-        }
-
-        return res.json();
-      })
-      .then(resData => {
-        if (resData.data && resData.data.login && resData.data.login.token) {
-          const { userId, token, expiration, user } = resData.data.login;
-          console.log(resData);
-        }
+      .then(async res => {
+        setIsLoading(false);
+        await AsyncStorage.setItem('userToken', JSON.stringify(res.data.login));
+        navigation.navigate('Home');
       })
       .catch(err => {
-        console.log(err);
-        throw err;
+        const jsonError = JSON.parse(JSON.stringify(err));
+        console.log(jsonError.message);
+        Alert.alert(
+          t('defaultError'),
+          _.replace(jsonError.message, 'GraphQL error: ', ''),
+          [
+            {
+              text: t('tryAgain'),
+              onPress: () => console.log('tekrar deneniyor.')
+            }
+          ]
+        );
+        setIsLoading(false);
+        return;
       });
   };
 
@@ -117,7 +118,7 @@ const LoginScreen = ({ t }) => {
         <TextInput
           style={styles.input}
           value={emailOrPhone}
-          placeholder={t('emailInput')}
+          placeholder={t('emailOrPhoneInput')}
           placeholderTextColor={COLORS.INPUT}
           underlineColorAndroid="transparent"
           onChangeText={text => setEmailOrPhone(text)}
@@ -166,12 +167,16 @@ const LoginScreen = ({ t }) => {
           title={t('login')}
           onPress={handleLogin}
           buttonStyle={styles.loginButton}
+          disabled={isLoginDisabled}
+          disabledStyle={{ backgroundColor: COLORS.SECONDARY }}
+          disabledTitleStyle={{ color: COLORS.WHITE }}
+          loading={isLoading}
         />
       </View>
       <View style={styles.registerContainer}>
         <Button
           title={t('registerText')}
-          onPress={() => console.log('register')}
+          onPress={() => navigation.navigate('Register')}
           titleStyle={styles.registerButton}
           type="clear"
         />
@@ -217,7 +222,7 @@ const styles = StyleSheet.create({
   },
   inputIcon: {
     position: 'absolute',
-    top: 18,
+    top: SIZES.INPUT_TEXT + 4,
     left: 15
   },
   inputContainer: {
@@ -226,15 +231,14 @@ const styles = StyleSheet.create({
   },
   buttonEye: {
     position: 'absolute',
-    top: 18,
+    top: SIZES.INPUT_TEXT + 4,
     right: 15
   },
   loginButton: {
     width: WIDTH - 55,
     height: 50,
     borderRadius: 50,
-    backgroundColor: COLORS.BUTTON_PRIMARY,
-    color: COLORS.WHITE_SOFT
+    backgroundColor: COLORS.BUTTON_PRIMARY
   },
   forgotPasswordContainer: {
     width: WIDTH - 55,

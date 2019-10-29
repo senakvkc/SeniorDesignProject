@@ -18,5 +18,5 @@ export const SIZES = Object.freeze({
   NEW_POST_ICON: 35,
   NORMAL_TEXT: 14,
   TITLE_TEXT: 20,
-  INPUT_TEXT: 28
+  INPUT_TEXT: 20
 });

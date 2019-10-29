@@ -75,7 +75,6 @@ module.exports = buildSchema(`
     type AuthData {
       userId: ID!
       token: String!
-      expiration: Int!
       user: User!
     }
     
@@ -89,26 +88,22 @@ module.exports = buildSchema(`
       email: String!
       password: String!
       phone: String!
-    }
-
-    input UserLoginInput {
-      email: String
-      password: String
-      expiration: Int
+      username: String!
     }
 
     type RootQuery {
-      login(userLoginInput: UserLoginInput): AuthData
       forgotPassword(emailOrUsername: String!): ForgotPasswordData
-      
+      currentUser: User
       getUsers: [User!]
       getUserById(userId: ID!): User
       getUserByUsername(username: String!): User
-      
+      getUserByPhone(phone: String!): User
     }
+
     type RootMutation {
-      register(userRegisterInput: UserRegisterInput!): User
-      resetPassword(newPassword: String!, token: String!): User
+      login(emailOrPhone: String!, password: String!): AuthData
+
+      register(userRegisterInput: UserRegisterInput!): AuthData
     }
 
     schema {
