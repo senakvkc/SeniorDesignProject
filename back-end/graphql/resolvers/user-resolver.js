@@ -31,7 +31,6 @@ module.exports = {
   /* ======================= */
   currentUser: async authorization => {
     const bearerLength = 'Bearer '.length;
-    console.log(authorization);
     if (authorization && authorization.length > bearerLength) {
       const token = authorization.slice(bearerLength);
 
@@ -207,18 +206,6 @@ module.exports = {
     if (!user) {
       throw new AuthenticationError(i18n.__('invalidAccountInfo'));
     }
-  },
-
-  getPostsWithPage: async (args, req) => {
-    // TODO: Yetki kontrolü
-
-    if (!isEqual) {
-      throw new Error({
-        text: i18n.__('invalidAccountInfo'),
-        code: 1
-      });
-    }
-  },
 
     // if everything is fine, we can create token now.
     const token = createToken(user.id, user.email, process.env.SECRET_KEY);
@@ -230,6 +217,17 @@ module.exports = {
       token,
       user
     };
+  },
+
+  getPostsWithPage: async (args, req) => {
+    // TODO: Yetki kontrolü
+
+    if (!isEqual) {
+      throw new Error({
+        text: i18n.__('invalidAccountInfo'),
+        code: 1
+      });
+    }
   },
 
   register: async ({ userRegisterInput }) => {
