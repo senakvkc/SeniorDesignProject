@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+export const LAN_ADDRESS = 'http://192.168.1.5';
+
 export const PHOTOS_DIR = 'shelty';
 
 export const BOTTOM_NAV_TABS = [

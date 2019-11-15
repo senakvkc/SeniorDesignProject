@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   cardLeftPanel: {
-    flex: 3,
+    flex: 2,
     marginBottom: 20,
     marginRight: 10,
     borderRadius: 8,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     borderColor: '#b89685'
   },
   cardRightPanel: {
-    flex: 2,
+    flex: 3,
     marginLeft: 10,
     marginBottom: 20
   },

@@ -4,29 +4,32 @@ if (__DEV__) {
 
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
-import HomeScreen from './scenes/Home';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import SheltersScreen from './scenes/Shelters';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import BlogScreen from './scenes/Blog';
-import ProfileScreen from './scenes/Profile';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Icon, Button } from 'react-native-elements';
 import { StyleSheet, AsyncStorage } from 'react-native';
-import './i18n';
 import _ from 'lodash';
-import { COLORS, SIZES } from './constants/theme';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 
+import HomeScreen from './scenes/Home';
+import SheltersScreen from './scenes/Shelters';
+import BlogScreen from './scenes/Blog';
+import ProfileScreen from './scenes/Profile';
+import SettingsScreen from './scenes/Settings';
 import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import SheltyCamera from './components/SheltyCamera';
 import TakenPhoto from './components/TakenPhoto';
 import LoginScreen from './scenes/Login';
 import RegisterScreen from './scenes/Register';
 import AuthLoadingScreen from './scenes/AuthLoading';
+
+import './i18n';
+import { COLORS, SIZES } from './constants/theme';
+import { LAN_ADDRESS } from './constants';
 
 const openSearch = async navigation => {
   await AsyncStorage.removeItem('userToken');
@@ -36,8 +39,8 @@ const openSearch = async navigation => {
 const openDonate = () => {
   console.log('donate');
 };
-const openSettings = () => {
-  console.log('settings');
+const openSettings = navigation => {
+  navigation.navigate('Settings');
 };
 
 const screensWithHiddenBottomBar = ['SheltyCamera', 'TakenPhoto'];
@@ -88,7 +91,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
       <Button
         icon={
           <Icon
-            name="more-vertical"
+            name="settings"
             type="feather"
             color={COLORS.TEXT}
             size={SIZES.MENU_ICON}
@@ -96,7 +99,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
         }
         type="clear"
         containerStyle={styles.headerRightButton}
-        onPress={openSettings}
+        onPress={() => openSettings(navigation)}
       />
     </>
   )
@@ -118,6 +121,12 @@ const HomeStack = createStackNavigator(
       screen: TakenPhoto,
       navigationOptions: {
         header: null
+      }
+    },
+    Settings: {
+      screen: SettingsScreen,
+      navigationOptions: {
+        headerTitle: 'Settings'
       }
     }
   },
@@ -257,7 +266,7 @@ const AppNavigator = createAppContainer(
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: 'http://192.168.1.4:8080/graphql'
+  uri: `${LAN_ADDRESS}:8080/graphql`
 });
 
 const client = new ApolloClient({
