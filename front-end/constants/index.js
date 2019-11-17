@@ -1,6 +1,8 @@
 import _ from 'lodash';
+import moment from 'moment';
 
-export const LAN_ADDRESS = 'http://192.168.1.5';
+// export const LAN_ADDRESS = 'http://192.168.1.5';
+export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const PORT = '19000';
 
@@ -280,5 +282,158 @@ export const SHARED_PHOTOS = [
     id: _.uniqueId('sharedPhoto_'),
     source: 'https://placedog.net/400/400',
     title: _.uniqueId('sharedPhoto_')
+  }
+];
+
+export const POSTS = [
+  {
+    id: _.uniqueId('posts_'),
+    title: _.uniqueId('posts_'),
+    description:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.',
+    content:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers. Ur givin me a spook heckin angery woofer puggo boof heck, borking doggo borkf borkdrive. Adorable doggo most angery pupper I have ever seen maximum borkdrive doing me a frighten pupper, extremely cuuuuuute pats fluffer sub woofer super chub, adorable doggo lotsa pats long bois.',
+    featuredImage: 'https://placedog.net/200/250',
+    fullName: 'John Doe',
+    comments: [
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      }
+    ],
+    createdAt: moment()
+  },
+  {
+    id: _.uniqueId('posts_'),
+    title: _.uniqueId('posts_'),
+    description:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.',
+    content:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers. Ur givin me a spook heckin angery woofer puggo boof heck, borking doggo borkf borkdrive. Adorable doggo most angery pupper I have ever seen maximum borkdrive doing me a frighten pupper, extremely cuuuuuute pats fluffer sub woofer super chub, adorable doggo lotsa pats long bois.',
+    featuredImage: 'https://placedog.net/200/250',
+    fullName: 'John Doe',
+    comments: [
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      }
+    ],
+    createdAt: moment()
+  },
+  {
+    id: _.uniqueId('posts_'),
+    title: _.uniqueId('posts_'),
+    description:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.',
+    content:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers. Ur givin me a spook heckin angery woofer puggo boof heck, borking doggo borkf borkdrive. Adorable doggo most angery pupper I have ever seen maximum borkdrive doing me a frighten pupper, extremely cuuuuuute pats fluffer sub woofer super chub, adorable doggo lotsa pats long bois.',
+    featuredImage: 'https://placedog.net/200/250',
+    fullName: 'John Doe',
+    comments: [
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      }
+    ],
+    createdAt: moment()
+  },
+  {
+    id: _.uniqueId('posts_'),
+    title: _.uniqueId('posts_'),
+    description:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.',
+    content:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers. Ur givin me a spook heckin angery woofer puggo boof heck, borking doggo borkf borkdrive. Adorable doggo most angery pupper I have ever seen maximum borkdrive doing me a frighten pupper, extremely cuuuuuute pats fluffer sub woofer super chub, adorable doggo lotsa pats long bois.',
+    featuredImage: 'https://placedog.net/200/250',
+    fullName: 'John Doe',
+    comments: [
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      }
+    ],
+    createdAt: moment()
+  },
+  {
+    id: _.uniqueId('posts_'),
+    title: _.uniqueId('posts_'),
+    description:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.',
+    content:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers. Ur givin me a spook heckin angery woofer puggo boof heck, borking doggo borkf borkdrive. Adorable doggo most angery pupper I have ever seen maximum borkdrive doing me a frighten pupper, extremely cuuuuuute pats fluffer sub woofer super chub, adorable doggo lotsa pats long bois.',
+    featuredImage: 'https://placedog.net/200/250',
+    fullName: 'John Doe',
+    comments: [
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      }
+    ],
+    createdAt: moment()
+  },
+  {
+    id: _.uniqueId('posts_'),
+    title: _.uniqueId('posts_'),
+    description:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.',
+    content:
+      'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers. Ur givin me a spook heckin angery woofer puggo boof heck, borking doggo borkf borkdrive. Adorable doggo most angery pupper I have ever seen maximum borkdrive doing me a frighten pupper, extremely cuuuuuute pats fluffer sub woofer super chub, adorable doggo lotsa pats long bois.',
+    featuredImage: 'https://placedog.net/200/250',
+    fullName: 'John Doe',
+    comments: [
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      },
+      {
+        content:
+          'Shoob what a nice floof wrinkler fluffer many pats smol, maximum borkdrive long water shoob many pats. Pupper wrinkler long water shoob puggorino doing me a frighten blep, borkf you are doin me a concern boofers.'
+      }
+    ],
+    createdAt: moment()
   }
 ];
