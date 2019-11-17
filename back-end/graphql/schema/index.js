@@ -8,6 +8,7 @@ module.exports = buildSchema(`
       username: String
       email: String!
       password: String
+      about: String
       profilePicture: String
       gender: Gender
       phone: String
@@ -70,8 +71,8 @@ module.exports = buildSchema(`
     enum Gender {
       MALE
       FEMALE
+      NONE
     }
-
      
     type AuthData {
       userId: ID!

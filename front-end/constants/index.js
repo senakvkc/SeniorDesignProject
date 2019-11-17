@@ -2,6 +2,8 @@ import _ from 'lodash';
 
 export const LAN_ADDRESS = 'http://192.168.1.5';
 
+export const PORT = '19000';
+
 export const PHOTOS_DIR = 'shelty';
 
 export const BOTTOM_NAV_TABS = [
@@ -220,5 +222,63 @@ export const LAST_ITEMS = [
     id: _.uniqueId('shelter_'),
     thumbnail: 'https://placedog.net/400/150',
     title: _.uniqueId('shelter_')
+  }
+];
+
+export const SHARED_PHOTOS = [
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
+  },
+  {
+    id: _.uniqueId('sharedPhoto_'),
+    source: 'https://placedog.net/400/400',
+    title: _.uniqueId('sharedPhoto_')
   }
 ];

@@ -6,11 +6,14 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
-  Dimensions
+  Dimensions,
+  FlatList
 } from 'react-native';
 import { Image, Button, Icon } from 'react-native-elements';
 
 import { COLORS } from '../../constants/theme';
+import { SHARED_PHOTOS } from '../../constants';
+import { AppLoading } from 'expo';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -19,6 +22,7 @@ const ProfileScreen = props => {
 
   const getCurrentUser = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
+    console.log(JSON.parse(userToken));
     setUserData(JSON.parse(userToken));
   };
 
@@ -26,18 +30,33 @@ const ProfileScreen = props => {
     console.log('profile settings');
   };
 
+  const getFullName = () => {
+    const { user } = userData;
+    return user.firstName + ' ' + user.lastName;
+  };
+
   useEffect(() => {
     getCurrentUser();
   }, []);
 
-  return (
+  const SharedPhoto = ({ item }) => (
+    <Image
+      source={{ uri: item.source }}
+      resizeMode="cover"
+      containerStyle={styles.sharedPhoto}
+    />
+  );
+
+  return !userData ? (
+    <AppLoading />
+  ) : (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.detailContainer}>
           <View style={styles.detailLeftContainer}>
             <Image
               resizeMode="cover"
-              source={{ uri: 'https://placedog.net/100/100' }}
+              source={{ uri: userData.user.profilePicture }}
               containerStyle={styles.profileImage}
               PlaceholderContent={<ActivityIndicator />}
             />
@@ -52,9 +71,10 @@ const ProfileScreen = props => {
 
           <View style={styles.detailRightContainer}>
             <View style={styles.innerDetailLeft}>
-              <Text style={styles.nameText}>John Doe</Text>
-              <Text style={styles.roleText}>Hayvansever</Text>
+              <Text style={styles.nameText}>{getFullName()}</Text>
+              <Text style={styles.roleText}>{userData.user.userType}</Text>
               <View style={styles.line} />
+
               <View style={styles.detailInfo}>
                 <Icon
                   type="feather"
@@ -62,31 +82,27 @@ const ProfileScreen = props => {
                   color={COLORS.PRIMARY}
                   size={12}
                 />
-                <Text style={styles.detailText}>
-                  Kısa bir hakkında yazısı...
-                </Text>
+                <Text style={styles.detailText}>{userData.user.about}</Text>
               </View>
+
               <View style={styles.detailInfo}>
                 <Icon
                   type="feather"
-                  name="book-open"
+                  name="mail"
                   color={COLORS.PRIMARY}
                   size={12}
                 />
-                <Text style={styles.detailText}>
-                  Kısa bir hakkında yazısı...
-                </Text>
+                <Text style={styles.detailText}>{userData.user.email}</Text>
               </View>
+
               <View style={styles.detailInfo}>
                 <Icon
                   type="feather"
-                  name="book-open"
+                  name="smartphone"
                   color={COLORS.PRIMARY}
                   size={12}
                 />
-                <Text style={styles.detailText}>
-                  Kısa bir hakkında yazısı...
-                </Text>
+                <Text style={styles.detailText}>{userData.user.phone}</Text>
               </View>
             </View>
             <View style={styles.innerDetailRight}>
@@ -107,60 +123,12 @@ const ProfileScreen = props => {
         </View>
 
         <View style={styles.photosContainer}>
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
-          />
-          <Image
-            source={{ uri: 'https://placedog.net/100/100' }}
-            resizeMode="cover"
-            containerStyle={styles.sharedPhoto}
+          <FlatList
+            numColumns={3}
+            showsVerticalScrollIndicator={false}
+            data={SHARED_PHOTOS}
+            renderItem={({ item }) => <SharedPhoto item={item} key={item.id} />}
+            keyExtractor={item => item.id}
           />
         </View>
       </View>
@@ -189,8 +157,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 2.5,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
     overflow: 'hidden',
     width: screenWidth / 3 - 12,
     height: screenWidth / 3 - 12
@@ -229,10 +195,11 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   editProfileButton: {
-    backgroundColor: COLORS.PRIMARY
+    backgroundColor: COLORS.PRIMARY,
+    height: 30
   },
   editProfileTitle: {
-    fontSize: 14
+    fontSize: 12
   },
   nameText: {
     fontSize: 14,

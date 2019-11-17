@@ -38,6 +38,18 @@ const LOGIN_MUTATION = gql`
       token
       user {
         _id
+        firstName
+        lastName
+        username
+        email
+        gender
+        profilePicture
+        phone
+        city
+        address
+        country
+        birthdate
+        userType
       }
     }
   }
