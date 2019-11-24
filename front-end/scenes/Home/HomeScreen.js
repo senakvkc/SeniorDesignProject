@@ -28,7 +28,8 @@ import {
   STORIES,
   CAROUSEL_ITEMS,
   MENU_ITEMS,
-  LAST_ITEMS
+  LAST_ITEMS,
+  ANIMALS
 } from '../../constants';
 
 import BlogScreen from '../Blog';
@@ -108,7 +109,7 @@ const HomeScreen = (props, { navigation }) => {
         <View>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={LAST_ITEMS}
+            data={ANIMALS}
             renderItem={({ item }) => <AnimalCard item={item} key={item.id} />}
             keyExtractor={item => item.id}
           />

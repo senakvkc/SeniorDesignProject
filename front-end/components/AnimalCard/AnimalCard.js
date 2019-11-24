@@ -9,18 +9,23 @@ import {
 } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
+import { SEX } from '../../constants';
 
 const AnimalCard = ({ t, item }) => {
-  const goToAnimalProfile = () => {
-    console.log('show item');
-  };
-
   const adoptPet = () => {
     console.log('adopt pet');
   };
 
+  const goToAppointment = () => {
+    console.log('appointment');
+  };
+
+  const goToProfile = () => {
+    console.log('animal profile');
+  };
+
   return (
-    <View style={styles.cardContainer}>
+    <View style={styles.cardContainer} key={item.id}>
       <View style={styles.cardLeftPanel}>
         <Image source={{ uri: item.thumbnail }} style={styles.cardImage} />
       </View>
@@ -28,11 +33,13 @@ const AnimalCard = ({ t, item }) => {
         <View style={styles.cardRightContainer}>
           <View style={styles.cardRightHeader}>
             <View>
-              <Text style={styles.cardRightTitle}>Karabaş</Text>
+              <Text style={styles.cardRightTitle}>{item.name}</Text>
             </View>
             <View>
               <Icon
-                name="female-symbol"
+                name={
+                  item.sex === SEX.MALE.text ? 'male-symbol' : 'female-symbol'
+                }
                 type="foundation"
                 size={18}
                 color="#b89685"
@@ -41,7 +48,10 @@ const AnimalCard = ({ t, item }) => {
           </View>
 
           <Text style={styles.cardRightSubTitle}>
-            Cinsi <Text style={styles.cardRightText}>(10 aylık)</Text>
+            {item.breed}{' '}
+            <Text style={styles.cardRightText}>
+              {t('monthAge', { age: item.age })}
+            </Text>
           </Text>
 
           <View style={styles.horizontalLine} />
@@ -49,19 +59,22 @@ const AnimalCard = ({ t, item }) => {
           <View style={styles.cardRightBody}>
             <View style={styles.cardRightBodyItem}>
               <Icon name="map-pin" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>
-                {t('nameOfShelter')}
-              </Text>
+              <Text style={styles.cardRightBodyItemText}>{item.shelter}</Text>
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="calendar" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>
+              <Text
+                style={styles.cardRightBodyItemText}
+                onPress={goToAppointment}
+              >
                 {t('makeAnAppointment')}
               </Text>
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="award" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText}>{t('profile')}</Text>
+              <Text style={styles.cardRightBodyItemText} onPress={goToProfile}>
+                {t('profile')}
+              </Text>
             </View>
           </View>
 
@@ -120,7 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   cardRightTitle: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#b89685',
     fontWeight: '600'
   },

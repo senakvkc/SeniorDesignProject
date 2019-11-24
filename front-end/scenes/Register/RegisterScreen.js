@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -30,6 +30,7 @@ import logo from '../../assets/logo.png';
 import { COLORS, SIZES } from '../../constants/theme';
 import { Button } from 'react-native-elements';
 import LoginScreen from '../Login';
+import { fieldGenerator } from '../../utils/Generator';
 
 const { width: WIDTH } = Dimensions.get('window');
 
@@ -40,6 +41,19 @@ const REGISTER_MUTATION = gql`
       token
       user {
         _id
+        firstName
+        lastName
+        username
+        email
+        about
+        gender
+        profilePicture
+        phone
+        city
+        address
+        country
+        birthdate
+        userType
       }
     }
   }
@@ -47,13 +61,19 @@ const REGISTER_MUTATION = gql`
 
 const RegisterScreen = ({ t, navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('t2@test.com');
-  const [phone, setPhone] = useState('5532542154');
-  const [username, setUsername] = useState('t2');
+  const [email, setEmail] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [username, setUsername] = useState(null);
   const [password, setPassword] = useState('123456');
   const [isLoading, setIsLoading] = useState(false);
 
   const [registerUser, { data }] = useMutation(REGISTER_MUTATION);
+
+  useEffect(() => {
+    setEmail(fieldGenerator('email'));
+    setPhone(fieldGenerator('phone'));
+    setUsername(fieldGenerator('username'));
+  }, []);
 
   const isRegisterDisabled = validateEmptyFields({
     email,

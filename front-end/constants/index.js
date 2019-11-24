@@ -1,12 +1,26 @@
 import _ from 'lodash';
 import moment from 'moment';
+import { t } from '../utils/Translate';
 
-// export const LAN_ADDRESS = 'http://192.168.1.5';
-export const LAN_ADDRESS = 'http://172.20.10.2';
+export const LAN_ADDRESS = 'http://10.159.244.194';
+// export const LAN_ADDRESS = 'http://172.20.10.2';
+
+export const USER_TOKEN = 'userToken';
 
 export const PORT = '19000';
 
 export const PHOTOS_DIR = 'shelty';
+
+export const SEX = Object.freeze({
+  MALE: {
+    CODE: 'MALE',
+    text: t('male')
+  },
+  FEMALE: {
+    CODE: 'FEMALE',
+    text: t('female')
+  }
+});
 
 export const BOTTOM_NAV_TABS = [
   {
@@ -161,6 +175,72 @@ export const CAROUSEL_ITEMS = [
     id: _.uniqueId('carousel_'),
     thumbnail: 'https://placedog.net/400/150',
     title: _.uniqueId('carousel_')
+  }
+];
+
+export const ANIMALS = [
+  {
+    id: _.uniqueId('animal_'),
+    thumbnail: 'https://placedog.net/400/150',
+    name: _.uniqueId('name_'),
+    breed: _.uniqueId('breed_'),
+    age: _.random(0, 20),
+    shelter: _.uniqueId('shelter_'),
+    sex: SEX.MALE.text
+  },
+  {
+    id: _.uniqueId('animal_'),
+    thumbnail: 'https://placedog.net/400/150',
+    name: _.uniqueId('name_'),
+    breed: _.uniqueId('breed_'),
+    age: _.random(0, 20),
+    shelter: _.uniqueId('shelter_'),
+    sex: SEX.MALE.text
+  },
+  {
+    id: _.uniqueId('animal_'),
+    thumbnail: 'https://placedog.net/400/150',
+    name: _.uniqueId('name_'),
+    breed: _.uniqueId('breed_'),
+    age: _.random(0, 20),
+    shelter: _.uniqueId('shelter_'),
+    sex: SEX.FEMALE.text
+  },
+  {
+    id: _.uniqueId('animal_'),
+    thumbnail: 'https://placedog.net/400/150',
+    name: _.uniqueId('name_'),
+    breed: _.uniqueId('breed_'),
+    age: _.random(0, 20),
+    shelter: _.uniqueId('shelter_'),
+    sex: SEX.FEMALE.text
+  },
+  {
+    id: _.uniqueId('animal_'),
+    thumbnail: 'https://placedog.net/400/150',
+    name: _.uniqueId('name_'),
+    breed: _.uniqueId('breed_'),
+    age: _.random(0, 20),
+    shelter: _.uniqueId('shelter_'),
+    sex: SEX.MALE.text
+  },
+  {
+    id: _.uniqueId('animal_'),
+    thumbnail: 'https://placedog.net/400/150',
+    name: _.uniqueId('name_'),
+    breed: _.uniqueId('breed_'),
+    age: _.random(0, 20),
+    shelter: _.uniqueId('shelter_'),
+    sex: SEX.MALE.text
+  },
+  {
+    id: _.uniqueId('animal_'),
+    thumbnail: 'https://placedog.net/400/150',
+    name: _.uniqueId('name_'),
+    breed: _.uniqueId('breed_'),
+    age: _.random(0, 20),
+    shelter: _.uniqueId('shelter_'),
+    sex: SEX.FEMALE.text
   }
 ];
 

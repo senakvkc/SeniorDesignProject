@@ -105,6 +105,49 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   )
 });
 
+const NEW_POST_NAVIGATION = ({ navigation }) => ({
+  headerTitle: navigation.state.routeName,
+
+  headerLeft: (
+    <Button
+      icon={
+        <Icon
+          name="x"
+          type="feather"
+          color={COLORS.SECONDARY}
+          size={SIZES.MENU_ICON}
+        />
+      }
+      type="clear"
+      containerStyle={styles.headerLeftButton}
+      onPress={() => navigation.goBack()}
+    />
+  ),
+  headerRight: (
+    <>
+      <Button
+        title="Drafts"
+        type="clear"
+        onPress={() => openDrafts(navigation)}
+      />
+      <Button
+        title="Next"
+        icon={
+          <Icon
+            name="chevron-right"
+            type="feather"
+            color={COLORS.PRIMARY}
+            size={SIZES.MENU_ICON}
+          />
+        }
+        iconRight={true}
+        type="clear"
+        onPress={() => openNextStepPost(navigation)}
+      />
+    </>
+  )
+});
+
 const HomeStack = createStackNavigator(
   {
     Home: {
@@ -128,10 +171,17 @@ const HomeStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'Settings'
       }
+    },
+    NewPost: {
+      screen: NewPostScreen,
+      navigationOptions: {
+        headerTitle: 'New Post'
+      }
     }
   },
   {
     navigationOptions: ({ navigation }) => {
+      console.log(navigation);
       let tabBarVisible = !_.includes(
         screensWithHiddenBottomBar,
         navigation.state.routes[navigation.state.index].routeName
@@ -154,7 +204,7 @@ const SheltersStack = createStackNavigator({
 const NewPostStack = createStackNavigator({
   NewPost: {
     screen: NewPostScreen,
-    navigationOptions: NAVIGATION_OPTIONS
+    navigationOptions: NEW_POST_NAVIGATION
   }
 });
 
@@ -284,6 +334,10 @@ class App extends Component {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  nextButton: {
+    color: COLORS.PRIMARY
+  }
+});
 
 export default App;

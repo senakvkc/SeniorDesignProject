@@ -12,22 +12,20 @@ const resources = {
   en: {
     translation: englishTranslation
   }
-}
+};
 
-i18n
-  .use(initReactI18next)
-  .init({
-    fallbackLng: 'tr',
-    lng: 'tr',
-    resources,
+i18n.use(initReactI18next).init({
+  fallbackLng: 'tr',
+  lng: 'tr',
+  resources,
 
-    // have a common namespace used around the full app
+  // have a common namespace used around the full app
 
-    debug: true,
+  debug: true,
 
-    interpolation: {
-      escapeValue: false, // not needed for react as it does escape per default to prevent xss!
-    },
-  });
+  interpolation: {
+    escapeValue: false // not needed for react as it does escape per default to prevent xss!
+  }
+});
 
 export default i18n;

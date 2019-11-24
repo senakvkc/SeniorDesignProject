@@ -12,22 +12,27 @@ import {
 import { Image, Button, Icon } from 'react-native-elements';
 
 import { COLORS } from '../../constants/theme';
-import { SHARED_PHOTOS } from '../../constants';
+import { SHARED_PHOTOS, USER_TOKEN } from '../../constants';
 import { AppLoading } from 'expo';
+import { withTranslation } from 'react-i18next';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const ProfileScreen = props => {
+const ProfileScreen = ({ t }) => {
   const [userData, setUserData] = useState(null);
 
   const getCurrentUser = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
+    const userToken = await AsyncStorage.getItem(USER_TOKEN);
     console.log(JSON.parse(userToken));
     setUserData(JSON.parse(userToken));
   };
 
   const goToProfileSettings = () => {
     console.log('profile settings');
+  };
+
+  const goToReportUser = () => {
+    console.log('user report screen');
   };
 
   const getFullName = () => {
@@ -47,6 +52,10 @@ const ProfileScreen = props => {
     />
   );
 
+  renderPhoneNumber = number => {
+    return number;
+  };
+
   return !userData ? (
     <AppLoading />
   ) : (
@@ -56,12 +65,12 @@ const ProfileScreen = props => {
           <View style={styles.detailLeftContainer}>
             <Image
               resizeMode="cover"
-              source={{ uri: userData.user.profilePicture }}
+              source={{ uri: 'https://placedog.net/100/100' }}
               containerStyle={styles.profileImage}
               PlaceholderContent={<ActivityIndicator />}
             />
             <Button
-              title={'Profili Düzenle'}
+              title={t('editProfile')}
               onPress={goToProfileSettings}
               containerStyle={styles.editProfileContainer}
               buttonStyle={styles.editProfileButton}
@@ -71,7 +80,11 @@ const ProfileScreen = props => {
 
           <View style={styles.detailRightContainer}>
             <View style={styles.innerDetailLeft}>
-              <Text style={styles.nameText}>{getFullName()}</Text>
+              <Text style={styles.nameText}>
+                {userData.user.firstName && userData.user.lastName
+                  ? getFullName()
+                  : userData.user.username}
+              </Text>
               <Text style={styles.roleText}>{userData.user.userType}</Text>
               <View style={styles.line} />
 
@@ -82,7 +95,10 @@ const ProfileScreen = props => {
                   color={COLORS.PRIMARY}
                   size={12}
                 />
-                <Text style={styles.detailText}>{userData.user.about}</Text>
+                <Text style={styles.detailText}>
+                  {userData.user.about ||
+                    'Doggo ipsum shoober he made many woofs.'}
+                </Text>
               </View>
 
               <View style={styles.detailInfo}>
@@ -102,7 +118,9 @@ const ProfileScreen = props => {
                   color={COLORS.PRIMARY}
                   size={12}
                 />
-                <Text style={styles.detailText}>{userData.user.phone}</Text>
+                <Text style={styles.detailText}>
+                  {renderPhoneNumber(userData.user.phone)}
+                </Text>
               </View>
             </View>
             <View style={styles.innerDetailRight}>
@@ -116,7 +134,8 @@ const ProfileScreen = props => {
                 type="feather"
                 name="alert-circle"
                 color={COLORS.WARNING}
-                size={14}
+                size={18}
+                onPress={goToReportUser}
               />
             </View>
           </View>
@@ -238,4 +257,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProfileScreen;
+export default withTranslation()(ProfileScreen);

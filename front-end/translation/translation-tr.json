@@ -30,5 +30,11 @@
   "invalidPhone": "Geçersiz telefon numarası.",
   "defaultError": "Bir hata oluştu.",
   "defaultErrorDesc": "Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin",
-  "tryAgain": "Tekrar Dene"
+  "tryAgain": "Tekrar Dene",
+  "readMore": "Devamını Oku",
+  "editProfile": "Profili Düzenle",
+  "male": "Erkek",
+  "female": "Dişi",
+  "monthAge": "({{age}} aylık)",
+  "longTextPlaceholder": "Bir şeyler yazın..."
 }

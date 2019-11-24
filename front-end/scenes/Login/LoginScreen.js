@@ -42,6 +42,7 @@ const LOGIN_MUTATION = gql`
         lastName
         username
         email
+        about
         gender
         profilePicture
         phone
