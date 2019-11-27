@@ -36,5 +36,8 @@
   "male": "Erkek",
   "female": "Dişi",
   "monthAge": "({{age}} aylık)",
-  "longTextPlaceholder": "Bir şeyler yazın..."
+  "longTextPlaceholder": "Bir şeyler yazın...",
+  "takePhoto": "Fotoğraf Çek",
+  "photoLibrary": "Fotoğraf Galerisi",
+  "cancel": "Vazgeç"
 }

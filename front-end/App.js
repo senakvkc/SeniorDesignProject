@@ -20,20 +20,20 @@ import SheltersScreen from './scenes/Shelters';
 import BlogScreen from './scenes/Blog';
 import ProfileScreen from './scenes/Profile';
 import SettingsScreen from './scenes/Settings';
-import NewPostScreen from './scenes/NewPost/NewPostScreen';
 import SheltyCamera from './components/SheltyCamera';
 import TakenPhoto from './components/TakenPhoto';
 import LoginScreen from './scenes/Login';
 import RegisterScreen from './scenes/Register';
 import AuthLoadingScreen from './scenes/AuthLoading';
+import CreateScreen from './scenes/Create';
+import CreatePet from './scenes/Create/CreatePet';
 
 import './i18n';
 import { COLORS, SIZES } from './constants/theme';
 import { LAN_ADDRESS } from './constants';
 
 const openSearch = async navigation => {
-  await AsyncStorage.removeItem('userToken');
-  navigation.navigate('Login');
+  console.log('search');
 };
 
 const openDonate = () => {
@@ -105,49 +105,6 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   )
 });
 
-const NEW_POST_NAVIGATION = ({ navigation }) => ({
-  headerTitle: navigation.state.routeName,
-
-  headerLeft: (
-    <Button
-      icon={
-        <Icon
-          name="x"
-          type="feather"
-          color={COLORS.SECONDARY}
-          size={SIZES.MENU_ICON}
-        />
-      }
-      type="clear"
-      containerStyle={styles.headerLeftButton}
-      onPress={() => navigation.goBack()}
-    />
-  ),
-  headerRight: (
-    <>
-      <Button
-        title="Drafts"
-        type="clear"
-        onPress={() => openDrafts(navigation)}
-      />
-      <Button
-        title="Next"
-        icon={
-          <Icon
-            name="chevron-right"
-            type="feather"
-            color={COLORS.PRIMARY}
-            size={SIZES.MENU_ICON}
-          />
-        }
-        iconRight={true}
-        type="clear"
-        onPress={() => openNextStepPost(navigation)}
-      />
-    </>
-  )
-});
-
 const HomeStack = createStackNavigator(
   {
     Home: {
@@ -172,10 +129,10 @@ const HomeStack = createStackNavigator(
         headerTitle: 'Settings'
       }
     },
-    NewPost: {
-      screen: NewPostScreen,
+    Create: {
+      screen: CreateScreen,
       navigationOptions: {
-        headerTitle: 'New Post'
+        headerTitle: 'Create'
       }
     }
   },
@@ -201,10 +158,13 @@ const SheltersStack = createStackNavigator({
   }
 });
 
-const NewPostStack = createStackNavigator({
-  NewPost: {
-    screen: NewPostScreen,
-    navigationOptions: NEW_POST_NAVIGATION
+const CreateStack = createStackNavigator({
+  Create: {
+    screen: CreateScreen,
+    navigationOptions: NAVIGATION_OPTIONS
+  },
+  CreatePet: {
+    screen: CreatePet
   }
 });
 
@@ -250,8 +210,8 @@ const MainTabs = createBottomTabNavigator(
       screen: SheltersStack,
       navigationOptions: {}
     },
-    NewPost: {
-      screen: NewPostStack,
+    Create: {
+      screen: CreateStack,
       navigationOptions: {}
     },
     Blog: {
@@ -272,7 +232,7 @@ const MainTabs = createBottomTabNavigator(
           iconName = 'home';
         } else if (routeName === 'Shelters') {
           iconName = 'heart';
-        } else if (routeName === 'NewPost') {
+        } else if (routeName === 'Create') {
           iconName = 'plus-circle';
         } else if (routeName === 'Blog') {
           iconName = 'align-left';
@@ -285,9 +245,9 @@ const MainTabs = createBottomTabNavigator(
             type="feather"
             name={iconName}
             size={
-              routeName === 'NewPost' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON
+              routeName === 'Create' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON
             }
-            color={routeName === 'NewPost' ? COLORS.ORANGE : tintColor}
+            color={routeName === 'Create' ? COLORS.ORANGE : tintColor}
             key={routeName}
           />
         );
