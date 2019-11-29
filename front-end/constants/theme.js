@@ -20,5 +20,7 @@ export const SIZES = Object.freeze({
   NORMAL_TEXT: 14,
   TITLE_TEXT: 20,
   INPUT_TEXT: 20,
+  SMALL_TEXT: 12,
+  MINI_TEXT: 10,
   HUGE: 30
 });

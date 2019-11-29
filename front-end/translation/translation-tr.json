@@ -3,6 +3,7 @@
   "shelters": "Barınaklar",
   "newPost": "Yeni Yazı",
   "nameOfShelter": "Barınağın Adı",
+  "visitShelter": "Barınağa Git",
   "makeAnAppointment": "Randevu Al",
   "profile": "Profil",
   "adopt": "Sahiplen",
@@ -37,6 +38,9 @@
   "female": "Dişi",
   "monthAge": "({{age}} aylık)",
   "longTextPlaceholder": "Bir şeyler yazın...",
+  "shelterAddress": "Barınağın Adresi",
+  "workingTime": "Çalışma Saatleri",
+  "shelterTelNumber": "Telefon",
   "takePhoto": "Fotoğraf Çek",
   "photoLibrary": "Fotoğraf Galerisi",
   "cancel": "Vazgeç"
