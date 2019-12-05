@@ -18,6 +18,10 @@ const SingleShelter = ({ t, item }) => {
     console.log('adopt pet');
   };
 
+  const findNearestShelter = () => {
+    console.log('find Nearest Shelter');
+  };
+
   const goToAppointment = () => {
     console.log('appointment');
   };
@@ -74,7 +78,7 @@ const SingleShelter = ({ t, item }) => {
               title={t('visitShelter')}
               buttonStyle={styles.adoptButton}
               titleStyle={styles.adoptButtonTitle}
-            ></Button>
+            />
           </View>
         </View>
       </View>

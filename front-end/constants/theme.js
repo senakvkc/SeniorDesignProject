@@ -11,7 +11,8 @@ export const COLORS = Object.freeze({
   ORANGE: '#D6692C',
   INPUT: 'rgba(255, 255, 255, 0.7)',
   BUTTON_PRIMARY: '#774f3a',
-  WHITE_LIGHT: '#fafafa'
+  WHITE_LIGHT: '#fafafa',
+  RED_ORANGE: '#6D0000'
 });
 
 export const SIZES = Object.freeze({

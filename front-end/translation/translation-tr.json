@@ -43,5 +43,6 @@
   "shelterTelNumber": "Telefon",
   "takePhoto": "Fotoğraf Çek",
   "photoLibrary": "Fotoğraf Galerisi",
-  "cancel": "Vazgeç"
+  "cancel": "Vazgeç",
+  "findNearestShelter": "En Yakın Barınağı Bul"
 }
