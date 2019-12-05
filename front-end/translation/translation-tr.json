@@ -39,5 +39,14 @@
   "longTextPlaceholder": "Bir şeyler yazın...",
   "takePhoto": "Fotoğraf Çek",
   "photoLibrary": "Fotoğraf Galerisi",
-  "cancel": "Vazgeç"
+  "cancel": "Vazgeç",
+  "notificationPreferences": "Bildirim Ayarları",
+  "connectFacebook": "Facebook Hesabını Bağla",
+  "nightMode": "Gece Modu",
+  "changePassword": "Şifreni Değiştir",
+  "reportProblem": "Sorun Bildir",
+  "changeLanguage": "Dili Değiştir",
+  "aboutUs": "Hakkımızda",
+  "help": "Yardım",
+  "logout": "Çıkış yap"
 }

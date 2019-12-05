@@ -5,44 +5,45 @@ import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import { logout } from '../../utils/User';
+import { t } from '../../utils/Translate';
 
 const SettingsScreen = ({ navigation }) => {
   const settingsItems = [
     {
-      text: 'Notification Preferences',
+      text: t('notificationPreferences'),
       icon: 'bell',
     },
     {
-      text: 'Connect your Facebook Account',
+      text: t('connectFacebook'),
       icon: 'facebook',
     },
-    {
-      text: 'Night Mode',
-      icon: 'moon',
-    },
-    {
-      text: 'Change your Password',
+    // {
+    //   text: t('nightMode'),
+    //   icon: 'moon',
+    // },
+    /* {
+      text: t('changePassword'),
       icon: 'edit-3',
-    },
+    }, */
     // key icon is not working, it'd suit better 
     {
-      text: 'Report a Problem',
+      text: t('reportProblem'),
       icon: 'alert-triangle',
     },
+    // {
+    //   text: t('changeLanguage'),
+    //   icon: 'globe',
+    // },
     {
-      text: 'Change Language',
-      icon: 'globe',
-    },
-    {
-      text: 'About Us',
+      text: t('aboutUs'),
       icon: 'info',
     },  
     {
-      text: 'Help',
+      text: t('help'),
       icon: 'help-circle',
     },
     {
-      text: 'Logout',
+      text: t('logout'),
       icon: 'log-out',
       onPressFunction: () => logout(navigation)
     }
