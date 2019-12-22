@@ -560,3 +560,61 @@ export const POSTS = [
     createdAt: moment()
   }
 ];
+
+export const DOG_BREEDS = [
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Afador'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Bulldog'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Basset Retriever'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Beagle'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Chihuahua'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Dalmatian'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Fox Terrier'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Golden Retriever'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Jack Chi'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Labrador Retriever'
+  }
+];
+
+export const CAT_BREEDS = [
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Cat1'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Cat2'
+  },
+  {
+    id: _.uniqueId('breed_'),
+    breed: 'Cat3'
+  }
+];

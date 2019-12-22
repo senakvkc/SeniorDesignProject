@@ -51,7 +51,6 @@ const AnimalSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Shelter'
     },
-
     createdBy: {
       type: String
     },
