@@ -178,6 +178,49 @@ export const CAROUSEL_ITEMS = [
   }
 ];
 
+export const SHELTERS = [
+  {
+    id: _.uniqueId('shelters_'),
+    image: 'https://placedog.net/400/150',
+    shelterName: _.uniqueId('shelterName_'),
+    address: _.uniqueId('address_'),
+    workingTime: _.uniqueId('workingTime_'),
+    phone: '5384583454'
+  },
+  {
+    id: _.uniqueId('shelters_'),
+    image: 'https://placedog.net/400/150',
+    shelterName: _.uniqueId('shelterName_'),
+    address: _.uniqueId('address_'),
+    workingTime: _.uniqueId('workingTime_'),
+    phone: '5384583454'
+  },
+  {
+    id: _.uniqueId('shelters_'),
+    image: 'https://placedog.net/400/150',
+    shelterName: _.uniqueId('shelterName_'),
+    address: _.uniqueId('address_'),
+    workingTime: _.uniqueId('workingTime_'),
+    phone: '5384583454'
+  },
+  {
+    id: _.uniqueId('shelters_'),
+    image: 'https://placedog.net/400/150',
+    shelterName: _.uniqueId('shelterName_'),
+    address: _.uniqueId('address_'),
+    workingTime: _.uniqueId('workingTime_'),
+    phone: '5384583454'
+  },
+  {
+    id: _.uniqueId('shelters_'),
+    shelterName: _.uniqueId('shelterName_'),
+    image: 'https://placedog.net/400/150',
+    address: _.uniqueId('address_'),
+    workingTime: _.uniqueId('workingTime_'),
+    phone: '5384583454'
+  }
+];
+
 export const ANIMALS = [
   {
     id: _.uniqueId('animal_'),

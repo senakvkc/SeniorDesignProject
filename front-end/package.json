@@ -38,6 +38,7 @@
     "react-native-elements": "^1.2.6",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-image-picker": "^1.1.0",
+    "react-native-gradient-buttons": "^2.0.1",
     "react-native-is-iphonex": "^1.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-orientation": "^3.1.3",
