@@ -119,7 +119,7 @@ const ProfileScreen = ({ t }) => {
                   size={12}
                 />
                 <Text style={styles.detailText}>
-                  {renderPhoneNumber(userData.user.phone)}
+                  {'(535) 223 33 53' || renderPhoneNumber(userData.user.phone)}
                 </Text>
               </View>
             </View>

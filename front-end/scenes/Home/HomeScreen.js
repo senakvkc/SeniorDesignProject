@@ -81,9 +81,6 @@ const HomeScreen = (props, { navigation }) => {
           {...parallaxProps}
           key={item.id}
         />
-        <Text style={styles.carouselTitle} numberOfLines={2}>
-          {item.title}
-        </Text>
       </View>
     );
   };
