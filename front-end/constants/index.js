@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { t } from '../utils/Translate';
 
-export const LAN_ADDRESS = 'http://10.159.244.194';
+export const LAN_ADDRESS = 'http://192.168.1.179';
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const USER_TOKEN = 'userToken';
@@ -148,32 +148,32 @@ export const MENU_ITEMS = [
 export const CAROUSEL_ITEMS = [
   {
     id: _.uniqueId('carousel_'),
-    thumbnail: 'https://placedog.net/400/150',
+    thumbnail: 'https://placedog.net/500/280?id=1',
     title: _.uniqueId('carousel_')
   },
   {
     id: _.uniqueId('carousel_'),
-    thumbnail: 'https://placedog.net/400/150',
+    thumbnail: 'https://placedog.net/500/280?id=2',
     title: _.uniqueId('carousel_')
   },
   {
     id: _.uniqueId('carousel_'),
-    thumbnail: 'https://placedog.net/400/150',
+    thumbnail: 'https://placedog.net/500/280?id=3',
     title: _.uniqueId('carousel_')
   },
   {
     id: _.uniqueId('carousel_'),
-    thumbnail: 'https://placedog.net/400/150',
+    thumbnail: 'https://placedog.net/500/280?id=4',
     title: _.uniqueId('carousel_')
   },
   {
     id: _.uniqueId('carousel_'),
-    thumbnail: 'https://placedog.net/400/150',
+    thumbnail: 'https://placedog.net/500/280?id=5',
     title: _.uniqueId('carousel_')
   },
   {
     id: _.uniqueId('carousel_'),
-    thumbnail: 'https://placedog.net/400/150',
+    thumbnail: 'https://placedog.net/500/280?id=6',
     title: _.uniqueId('carousel_')
   }
 ];
@@ -181,110 +181,93 @@ export const CAROUSEL_ITEMS = [
 export const SHELTERS = [
   {
     id: _.uniqueId('shelters_'),
-    image: 'https://placedog.net/400/150',
-    shelterName: _.uniqueId('shelterName_'),
-    address: _.uniqueId('address_'),
-    workingTime: _.uniqueId('workingTime_'),
-    phone: '5384583454'
+    image: 'https://placedog.net/400/150?id=1',
+    shelterName: 'Yedikule Hayvan Barınağı',
+    address: 'Yedikule Mahallesi, Fatih/İstanbul',
+    workingTime: '10.30 - 15.00',
+    phone: '(538) 458 34 54'
   },
   {
     id: _.uniqueId('shelters_'),
-    image: 'https://placedog.net/400/150',
-    shelterName: _.uniqueId('shelterName_'),
-    address: _.uniqueId('address_'),
-    workingTime: _.uniqueId('workingTime_'),
-    phone: '5384583454'
+    image: 'https://placedog.net/400/150?id=2',
+    shelterName: 'Kısırkaya Hayvan Barınağı',
+    address: 'Mithatpaşa, Sarıyer/İstanbul',
+    workingTime: '10.30 - 15.00',
+    phone: '(212) 453 73 70'
   },
   {
     id: _.uniqueId('shelters_'),
-    image: 'https://placedog.net/400/150',
-    shelterName: _.uniqueId('shelterName_'),
-    address: _.uniqueId('address_'),
-    workingTime: _.uniqueId('workingTime_'),
-    phone: '5384583454'
+    image: 'https://placedog.net/400/150?id=3',
+    shelterName: 'Üsküdar Geçici Hayvan Barınağı',
+    address: 'Hekimbaşı, Ümraniye/İstanbul',
+    workingTime: '10.30 - 15.00',
+    phone: '(216) 630 22 34'
   },
   {
     id: _.uniqueId('shelters_'),
-    image: 'https://placedog.net/400/150',
-    shelterName: _.uniqueId('shelterName_'),
-    address: _.uniqueId('address_'),
-    workingTime: _.uniqueId('workingTime_'),
-    phone: '5384583454'
+    image: 'https://placedog.net/400/150?id=4',
+    shelterName: 'Bakırköy Geçici Hayvan Barınağı',
+    address: 'Yeşilköy, Bakırköy/İstanbul',
+    workingTime: '10.30 - 17.00',
+    phone: '(212) 414 97 77'
   },
-  {
-    id: _.uniqueId('shelters_'),
-    shelterName: _.uniqueId('shelterName_'),
-    image: 'https://placedog.net/400/150',
-    address: _.uniqueId('address_'),
-    workingTime: _.uniqueId('workingTime_'),
-    phone: '5384583454'
-  }
 ];
 
 export const ANIMALS = [
   {
     id: _.uniqueId('animal_'),
-    thumbnail: 'https://placedog.net/400/150',
-    name: _.uniqueId('name_'),
-    breed: _.uniqueId('breed_'),
+    thumbnail: 'https://placedog.net/400/150?id=1',
+    name: 'Charlie',
+    breed: 'Labrador Retriever',
     age: _.random(0, 20),
-    shelter: _.uniqueId('shelter_'),
+    shelter: 'Yedikule Hayvan Barınağı',
     sex: SEX.MALE.text
   },
   {
     id: _.uniqueId('animal_'),
-    thumbnail: 'https://placedog.net/400/150',
-    name: _.uniqueId('name_'),
-    breed: _.uniqueId('breed_'),
+    thumbnail: 'https://placedog.net/400/150?id=2',
+    name: 'Max',
+    breed: 'Maltese',
     age: _.random(0, 20),
-    shelter: _.uniqueId('shelter_'),
+    shelter: 'Yedikule Hayvan Barınağı',
     sex: SEX.MALE.text
   },
   {
     id: _.uniqueId('animal_'),
-    thumbnail: 'https://placedog.net/400/150',
-    name: _.uniqueId('name_'),
-    breed: _.uniqueId('breed_'),
+    thumbnail: 'https://placedog.net/400/150?id=3',
+    name: 'Poodle',
+    breed: 'Border Collie',
     age: _.random(0, 20),
-    shelter: _.uniqueId('shelter_'),
+    shelter: 'Ataşehir Hayvan Barınağı',
     sex: SEX.FEMALE.text
   },
   {
     id: _.uniqueId('animal_'),
-    thumbnail: 'https://placedog.net/400/150',
-    name: _.uniqueId('name_'),
-    breed: _.uniqueId('breed_'),
+    thumbnail: 'https://placedog.net/400/150?id=4',
+    name: 'Ruby',
+    breed: 'Border Collie',
     age: _.random(0, 20),
-    shelter: _.uniqueId('shelter_'),
+    shelter: 'Yedikule Hayvan Barınağı',
     sex: SEX.FEMALE.text
   },
   {
     id: _.uniqueId('animal_'),
-    thumbnail: 'https://placedog.net/400/150',
-    name: _.uniqueId('name_'),
-    breed: _.uniqueId('breed_'),
+    thumbnail: 'https://placedog.net/400/150?id=5',
+    name: 'Ollie',
+    breed: 'Golden Retriever',
     age: _.random(0, 20),
-    shelter: _.uniqueId('shelter_'),
+    shelter: 'Kısırkaya Hayvan Barınağı',
     sex: SEX.MALE.text
   },
   {
     id: _.uniqueId('animal_'),
-    thumbnail: 'https://placedog.net/400/150',
-    name: _.uniqueId('name_'),
-    breed: _.uniqueId('breed_'),
+    thumbnail: 'https://placedog.net/400/150?id=6',
+    name: 'Coco',
+    breed: 'Golden Retriever',
     age: _.random(0, 20),
-    shelter: _.uniqueId('shelter_'),
-    sex: SEX.MALE.text
-  },
-  {
-    id: _.uniqueId('animal_'),
-    thumbnail: 'https://placedog.net/400/150',
-    name: _.uniqueId('name_'),
-    breed: _.uniqueId('breed_'),
-    age: _.random(0, 20),
-    shelter: _.uniqueId('shelter_'),
+    shelter: 'Kısırkaya Hayvan Barınağı',
     sex: SEX.FEMALE.text
-  }
+  },
 ];
 
 export const LAST_ITEMS = [
@@ -353,57 +336,57 @@ export const LAST_ITEMS = [
 export const SHARED_PHOTOS = [
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=1',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=2',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=3',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=4',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=5',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=6',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=7',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=8',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=9',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=10',
     title: _.uniqueId('sharedPhoto_')
   },
   {
     id: _.uniqueId('sharedPhoto_'),
-    source: 'https://placedog.net/400/400',
+    source: 'https://placedog.net/400/400?id=11',
     title: _.uniqueId('sharedPhoto_')
   }
 ];
