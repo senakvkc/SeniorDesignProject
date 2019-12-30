@@ -25,16 +25,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { DOG_BREEDS, CAT_BREEDS } from '../../../constants';
 import { COLORS } from '../../../constants/theme';
 
-const CREATE_PET_MUTATION = gql`
-  mutation createPet($createPetInput: CreatePetInput!) {
-    createPet(CreatePetInput: $createPetInput) {
-      
-    }
-  }
-`;
-
-
-const CreatePet = props => {
+const CreatePet = ({ t }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: null,
@@ -125,26 +116,24 @@ const CreatePet = props => {
 
   const handlePetCreate = () => {
     console.log(formData);
-
   };
 
   const BREEDS = formData.type === 'DOG' ? DOG_BREEDS : CAT_BREEDS;
-
   return (
     <ScrollView>
       <KeyboardAvoidingView behaviour="padding" style={styles.container}>
         <View>
-          <Text style={styles.headerText}>Add Your Pet</Text>
-          <Text>You can add your pet after filling all the fields.</Text>
+          <Text style={styles.headerText}>{t('addAPetForm.addAPet')}</Text>
+          <Text>{t('addAPetForm.addAPetDescription')}</Text>
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Name</Text>
+          <Text style={styles.formLabel}>{t('addAPetForm.name')}</Text>
           <TextInput
             maxLength={64}
             value={formData.name}
             onChangeText={name => handleNameChange(name)}
-            placeholder="Name of your pet."
+            placeholder={t('addAPetForm.namePlaceholder')}
             style={styles.textInput}
             underlineColorAndroid="transparent"
           />
@@ -152,51 +141,48 @@ const CreatePet = props => {
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Type</Text>
+          <Text style={styles.formLabel}>{t('addAPetForm.type')}</Text>
           <Picker
             selectedValue={formData.type}
             style={styles.pickerInput}
             onValueChange={type => handleTypeChange(type)}
           >
-            <Picker.Item key="DOG" label="Dog" value="DOG" />
-            <Picker.Item key="CAT" label="Cat" value="CAT" />
+            <Picker.Item key="DOG" label="Dog" value={t('addAPetForm.dog')} />
+            <Picker.Item key="CAT" label="Cat" value={t('addAPetForm.cat')} />
           </Picker>
           {error.type && <Text style={styles.error}>{error.type}</Text>}
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Breed</Text>
+          <Text style={styles.formLabel}>{t('addAPetForm.breed')}</Text>
           <Picker
             selectedValue={formData.breed}
             style={styles.pickerInput}
             onValueChange={breed => handleBreedChange(breed)}
           >
             {_.map(BREEDS, BREED => (
-              <Picker.Item
-                key={BREED.id}
-                label={BREED.breed}
-                value={BREED.breed}
-              />
+              <Picker.Item key={BREED.id} label={BREED.breed} value={BREED.breed} />
             ))}
           </Picker>
           {error.breed && <Text style={styles.error}>{error.breed}</Text>}
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Gender</Text>
+          <Text style={styles.formLabel}>{t('addAPetForm.gender')}</Text>
           <Picker
             selectedValue={formData.gender}
             style={styles.pickerInput}
             onValueChange={gender => handleGenderChange(gender)}
           >
-            <Picker.Item key="MALE" label="Male" value="MALE" />
-            <Picker.Item key="FEMALE" label="Female" value="FEMALE" />
+            <Picker.Item key="MALE" label="Male" value={t('addAPetForm.male')} />
+            <Picker.Item key="FEMALE" label="Female" value={t('addAPetForm.female')} />
           </Picker>
           {error.gender && <Text style={styles.error}>{error.gender}</Text>}
         </View>
 
+        {/*
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Birthdate</Text>
+          <Text style={styles.formLabel}>{t('addAPetForm.birthdate')}</Text>
           {Platform.OS === 'ios' ? (
             <DatePickerIOS
               date={formDate.birthdate || moment().toDate()}
@@ -208,7 +194,7 @@ const CreatePet = props => {
           ) : (
             <Button
               onPress={showDatePicker}
-              title="Select"
+              title={t('addAPetForm.select')}
               type="clear"
               icon={<Icon name="calendar" type="feather" />}
               containerStyle={styles.pickerInput}
@@ -216,76 +202,64 @@ const CreatePet = props => {
               titleStyle={styles.pickerText}
             />
           )}
-          {error.birthdate && (
-            <Text style={styles.error}>{error.birthdate}</Text>
-          )}
+          {error.birthdate && <Text style={styles.error}>{error.birthdate}</Text>}
         </View>
+        */}
 
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Description</Text>
+          <Text style={styles.formLabel}>{t('addAPetForm.description')}</Text>
           <TextInput
             maxLength={300}
             multiline
-            numberOfLines={4}
-            placeholder="Write short summary about your pet."
+            numberOfLines={1}
+            placeholder={t('addAPetForm.descriptionPlaceholder')}
             style={styles.textInput}
             underlineColorAndroid="transparent"
             onChangeText={description => handleDescriptionChange(description)}
             value={formData.description}
             scrollEnabled
           />
-          {error.description && (
-            <Text style={styles.error}>{error.description}</Text>
-          )}
+          {error.description && <Text style={styles.error}>{error.description}</Text>}
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Health Problems</Text>
+          <Text style={styles.formLabel}>{t('addAPetForm.healthProblems')}</Text>
           <TextInput
             maxLength={300}
             multiline
-            numberOfLines={4}
-            placeholder="Write health problems of your pet if there is any."
+            numberOfLines={1}
+            placeholder={t('addAPetForm.healthProblemsPlaceholder')}
             style={styles.textInput}
             underlineColorAndroid="transparent"
-            onChangeText={healthProblems =>
-              handleHealthProblems(healthProblems)
-            }
+            onChangeText={healthProblems => handleHealthProblems(healthProblems)}
             value={formData.healthProblems}
             scrollEnabled
           />
-          {error.healthProblems && (
-            <Text style={styles.error}>{error.healthProblems}</Text>
-          )}
+          {error.healthProblems && <Text style={styles.error}>{error.healthProblems}</Text>}
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.formLabel}>Profile Photo</Text>
-          {formData.profilePhoto && (
-            <Image
-              source={{ uri: formData.profilePhoto }}
-              style={styles.profilePhoto}
+          <Text style={styles.formLabel}>{t('addAPetForm.profilePhoto')}</Text>
+          <View style={styles.formItemImage}>
+            {formData.profilePhoto && <Image source={{ uri: formData.profilePhoto }} style={styles.profilePhoto} />}
+            <Button
+              icon={{
+                name: 'plus',
+                type: 'feather',
+                size: 30
+              }}
+              onPress={handleProfilePhoto}
+              buttonStyle={styles.profilePhotoButton}
+              titleStyle={styles.profilePhotoButtonText}
+              containerStyle={styles.profilePhotoButtonContainer}
             />
-          )}
-          <Button
-            icon={{
-              name: 'plus',
-              type: 'feather',
-              size: 50
-            }}
-            onPress={handleProfilePhoto}
-            buttonStyle={styles.profilePhotoButton}
-            titleStyle={styles.profilePhotoButtonText}
-            containerStyle={styles.profilePhotoButtonContainer}
-          />
-          {error.profilePhoto && (
-            <Text style={styles.error}>{error.profilePhoto}</Text>
-          )}
+          </View>
+          {error.profilePhoto && <Text style={styles.error}>{error.profilePhoto}</Text>}
         </View>
 
         <View style={styles.formItem}>
           <Button
-            title="Add My Pet"
+            title={t('addAPetForm.addAPet')}
             loading={loading}
             buttonStyle={styles.submitButton}
             titleStyle={styles.submitButtonText}
@@ -312,24 +286,15 @@ const styles = StyleSheet.create({
   },
   formItem: {
     marginVertical: 15,
+    flexDirection: 'column'
+  },
+  formItemImage: {
+    marginVertical: 15,
     flexDirection: 'row'
   },
   formLabel: {
-    flex: 2,
-    alignSelf: 'center',
     color: COLORS.PRIMARY,
     fontWeight: '600'
-  },
-  textInput: {
-    flex: 5,
-    alignSelf: 'center'
-  },
-  pickerInput: {
-    flex: 5,
-    alignSelf: 'flex-start'
-  },
-  pickerButton: {
-    alignSelf: 'flex-start'
   },
   pickerText: {
     marginLeft: 5,
@@ -353,16 +318,21 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   profilePhotoButton: {
-    height: 100,
-    width: 100,
+    height: 75,
+    width: 75,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: COLORS.PRIMARY,
-    borderStyle: 'dotted'
+    borderStyle: 'dashed',
+    backgroundColor: 'transparent'
   },
   profilePhoto: {
-    width: 100,
-    height: 100
+    width: 75,
+    height: 75,
+    marginRight: 15,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'transparent'
   }
 });
 

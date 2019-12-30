@@ -39,5 +39,26 @@
   "longTextPlaceholder": "Bir şeyler yazın...",
   "takePhoto": "Fotoğraf Çek",
   "photoLibrary": "Fotoğraf Galerisi",
-  "cancel": "Vazgeç"
+  "cancel": "Vazgeç",
+  "findNearestShelter": "En Yakın Barınağı Bul",
+  "addAPetForm": {
+    "addAPet": "Evcil Hayvan Ekle",
+    "addAPetDescription": "Evcil hayvanınızı eklemek için tüm alanları doldurun.",
+    "name": "İsim",
+    "namePlaceholder": "Evcil hayvanınızın ismi.",
+    "type": "Tür",
+    "cat": "Kedi",
+    "dog": "Köpek",
+    "breed": "Cins",
+    "gender": "Cinsiyet",
+    "male": "Erkek",
+    "female": "Dişi",
+    "birthdate": "Doğum Tarihi",
+    "select": "Seçiniz",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "Evcil hayvanınızı kısaca anlatın.",
+    "healthProblems": "Sağlık Sorunları",
+    "healthProblemsPlaceholder": "Evcil hayvanınızın sağlık sorunu varsa kısaca açıklayın.",
+    "profilePhoto": "Profil Fotoğrafı"
+  }
 }
