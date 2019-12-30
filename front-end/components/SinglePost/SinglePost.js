@@ -20,45 +20,18 @@ const SinglePost = ({ t, item }) => {
         />
       </View>
       <View style={styles.postDetailContainer}>
-        <Text style={styles.postTitle}>
-          {_.unescape(_.truncate(item.title, { length: 24 }))}
-        </Text>
+        <Text style={styles.postTitle}>{_.unescape(_.truncate(item.title, { length: 24 }))}</Text>
         <View style={styles.postSubDetail}>
-          <Icon
-            iconStyle={styles.postDetailIcon}
-            type="feather"
-            name="clock"
-            color={COLORS.PRIMARY}
-            size={12}
-          />
-          <Text style={styles.postSubDetailText}>
-            {moment().fromNow(item.createdAt)}
-          </Text>
-          <Icon
-            iconStyle={styles.postDetailIcon}
-            type="feather"
-            name="user"
-            color={COLORS.PRIMARY}
-            size={12}
-          />
-          <Text style={styles.postSubDetailText}>
-            {_.unescape(item.fullName)}
-          </Text>
+          <Icon iconStyle={styles.postDetailIcon} type="feather" name="clock" color={COLORS.PRIMARY} size={12} />
+          <Text style={styles.postSubDetailText}>{moment().fromNow(item.createdAt)}</Text>
+          <Icon iconStyle={styles.postDetailIcon} type="feather" name="user" color={COLORS.PRIMARY} size={12} />
+          <Text style={styles.postSubDetailText}>{_.unescape(item.fullName)}</Text>
         </View>
         <View style={styles.line} />
         <View style={styles.descriptionContainer}>
-          <Text>
-            {_.unescape(_.truncate(item.description, { length: 100 }))}
-          </Text>
+          <Text style={styles.descriptionText}>{_.unescape(_.truncate(item.description, { length: 100 }))}</Text>
           <Button
-            icon={
-              <Icon
-                type="feather"
-                name="chevron-right"
-                size={12}
-                iconStyle={styles.moreButtonIcon}
-              />
-            }
+            icon={<Icon type="feather" name="chevron-right" size={12} iconStyle={styles.moreButtonIcon} />}
             iconRight={true}
             title={t('readMore')}
             containerStyle={styles.moreButtonContainer}
@@ -75,17 +48,14 @@ const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
     flexDirection: 'row',
-    height: 150,
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 15
+    backgroundColor: COLORS.WHITE_LIGHT,
+    borderRadius: 10,
+    overflow: 'hidden',
+    padding: 10,
+    marginVertical: 5
   },
   postImageContainer: {
     flex: 2,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
-    overflow: 'hidden',
     marginRight: 15
   },
   postDetailContainer: {
@@ -129,6 +99,9 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     flex: 1,
     justifyContent: 'space-between'
+  },
+  descriptionText: {
+    color: COLORS.TEXT
   },
   moreButton: {
     backgroundColor: COLORS.PRIMARY,

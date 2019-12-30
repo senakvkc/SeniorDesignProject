@@ -48,8 +48,7 @@ const SheltersScreen = ({ posts, t }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.WHITE_SOFTER,
-    padding: 10
+    backgroundColor: COLORS.WHITE_SOFTER
   },
   findShelterTitle: {
     fontSize: SIZES.NORMAL_TEXT

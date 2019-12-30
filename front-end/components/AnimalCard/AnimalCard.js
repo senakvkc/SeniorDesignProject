@@ -83,22 +83,19 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 10,
+    padding: 10,
     backgroundColor: COLORS.WHITE_LIGHT,
-    paddingTop: 15,
     marginVertical: 5,
     borderRadius: 10,
     overflow: 'hidden'
   },
   cardLeftPanel: {
     flex: 2,
-    marginBottom: 20,
     marginRight: 10
   },
   cardRightPanel: {
     flex: 3,
-    marginLeft: 10,
-    marginBottom: 20
+    marginLeft: 10
   },
   cardImage: {
     flex: 1,
@@ -108,7 +105,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.PRIMARY
   },
   cardRightContainer: {
-    padding: 5,
     justifyContent: 'space-between'
   },
   cardRightHeader: {

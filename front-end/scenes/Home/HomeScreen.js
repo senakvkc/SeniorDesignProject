@@ -31,6 +31,7 @@ import SheltersScreen from '../Shelters';
 import AnimalCard from '../../components/AnimalCard/AnimalCard';
 import StoryPanel from '../../components/StoryPanel';
 import { COLORS } from '../../constants/theme';
+import SheltyCarousel from '../../components/SheltyCarousel';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -64,21 +65,6 @@ const HomeScreen = (props, { navigation }) => {
     />
   );
 
-  const renderCarouselItem = ({ item, index }, parallaxProps) => {
-    return (
-      <View style={styles.carouselItem}>
-        <ParallaxImage
-          source={{ uri: item.thumbnail }}
-          containerStyle={styles.carouselImageContainer}
-          style={styles.carouselImage}
-          parallaxFactor={0.4}
-          {...parallaxProps}
-          key={item.id}
-        />
-      </View>
-    );
-  };
-
   return isLoading ? (
     <AppLoading />
   ) : (
@@ -86,15 +72,7 @@ const HomeScreen = (props, { navigation }) => {
       <ScrollView>
         <StoryPanel stories={STORIES} />
         <View>
-          <Carousel
-            ref={carouselRef}
-            sliderWidth={screenWidth}
-            sliderHeight={150}
-            itemWidth={screenWidth - 60}
-            data={CAROUSEL_ITEMS}
-            renderItem={renderCarouselItem}
-            hasParallaxImages={true}
-          />
+          <SheltyCarousel data={CAROUSEL_ITEMS} />
         </View>
         {/* Animal Cards */}
         <View style={styles.animalCardContainer}>

@@ -45,11 +45,7 @@ const ProfileScreen = ({ t }) => {
   }, []);
 
   const SharedPhoto = ({ item }) => (
-    <Image
-      source={{ uri: item.source }}
-      resizeMode="cover"
-      containerStyle={styles.sharedPhoto}
-    />
+    <Image source={{ uri: item.source }} resizeMode="cover" containerStyle={styles.sharedPhoto} />
   );
 
   renderPhoneNumber = number => {
@@ -81,62 +77,31 @@ const ProfileScreen = ({ t }) => {
           <View style={styles.detailRightContainer}>
             <View style={styles.innerDetailLeft}>
               <Text style={styles.nameText}>
-                {userData.user.firstName && userData.user.lastName
-                  ? getFullName()
-                  : userData.user.username}
+                {userData.user.firstName && userData.user.lastName ? getFullName() : userData.user.username}
               </Text>
               <Text style={styles.roleText}>{userData.user.userType}</Text>
               <View style={styles.line} />
 
               <View style={styles.detailInfo}>
-                <Icon
-                  type="feather"
-                  name="book-open"
-                  color={COLORS.PRIMARY}
-                  size={12}
-                />
+                <Icon type="feather" name="book-open" color={COLORS.PRIMARY} size={12} />
                 <Text style={styles.detailText}>
-                  {userData.user.about ||
-                    'Doggo ipsum shoober he made many woofs.'}
+                  {userData.user.about || 'Doggo ipsum shoober he made many woofs.'}
                 </Text>
               </View>
 
               <View style={styles.detailInfo}>
-                <Icon
-                  type="feather"
-                  name="mail"
-                  color={COLORS.PRIMARY}
-                  size={12}
-                />
+                <Icon type="feather" name="mail" color={COLORS.PRIMARY} size={12} />
                 <Text style={styles.detailText}>{userData.user.email}</Text>
               </View>
 
               <View style={styles.detailInfo}>
-                <Icon
-                  type="feather"
-                  name="smartphone"
-                  color={COLORS.PRIMARY}
-                  size={12}
-                />
-                <Text style={styles.detailText}>
-                  {'(535) 223 33 53' || renderPhoneNumber(userData.user.phone)}
-                </Text>
+                <Icon type="feather" name="smartphone" color={COLORS.PRIMARY} size={12} />
+                <Text style={styles.detailText}>{'(535) 223 33 53' || renderPhoneNumber(userData.user.phone)}</Text>
               </View>
             </View>
             <View style={styles.innerDetailRight}>
-              <Icon
-                type="feather"
-                name="check-circle"
-                color={COLORS.SUCCESS}
-                size={14}
-              />
-              <Icon
-                type="feather"
-                name="alert-circle"
-                color={COLORS.WARNING}
-                size={18}
-                onPress={goToReportUser}
-              />
+              <Icon type="feather" name="check-circle" color={COLORS.SUCCESS} size={14} />
+              <Icon type="feather" name="alert-circle" color={COLORS.WARNING} size={18} onPress={goToReportUser} />
             </View>
           </View>
         </View>
@@ -158,7 +123,8 @@ const ProfileScreen = ({ t }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: COLORS.WHITE_SOFTER
   },
   detailContainer: {
     flex: 2,
@@ -191,11 +157,10 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: 'row',
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
     marginVertical: 15,
     marginRight: 15,
-    padding: 15
+    padding: 15,
+    backgroundColor: COLORS.WHITE_LIGHT
   },
   approvedIcon: {
     alignSelf: 'flex-start',

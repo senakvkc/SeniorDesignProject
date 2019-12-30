@@ -1,24 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-  Dimensions,
-  FlatList,
-  Platform,
-  ActivityIndicator
-} from 'react-native';
-import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
-import { Image, Icon, Button } from 'react-native-elements';
+import React from 'react';
+import { ScrollView, StyleSheet, Dimensions, FlatList, ActivityIndicator } from 'react-native';
 import { AppLoading } from 'expo';
-import moment from 'moment';
-
 import { POSTS } from '../../constants';
 import { COLORS } from '../../constants/theme';
 import { CAROUSEL_ITEMS } from '../../constants';
 import SinglePost from '../../components/SinglePost/SinglePost';
-import SheltyCarousel from '../../components/SheltyCarousel/SheltyCarousel';
+import SheltyCarousel from '../../components/SheltyCarousel';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -26,7 +13,7 @@ const BlogScreen = ({ posts }) => {
   return !POSTS ? (
     <AppLoading />
   ) : (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <SheltyCarousel data={CAROUSEL_ITEMS} />
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -37,5 +24,13 @@ const BlogScreen = ({ posts }) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.WHITE_SOFTER,
+    padding: 10
+  }
+});
 
 export default BlogScreen;
