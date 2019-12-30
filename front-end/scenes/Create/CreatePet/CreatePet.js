@@ -25,15 +25,6 @@ import { useMutation } from '@apollo/react-hooks';
 import { DOG_BREEDS, CAT_BREEDS } from '../../../constants';
 import { COLORS } from '../../../constants/theme';
 
-const CREATE_PET_MUTATION = gql`
-  mutation createPet($createPetInput: CreatePetInput!) {
-    createPet(CreatePetInput: $createPetInput) {
-      
-    }
-  }
-`;
-
-
 const CreatePet = props => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -125,7 +116,6 @@ const CreatePet = props => {
 
   const handlePetCreate = () => {
     console.log(formData);
-
   };
 
   const BREEDS = formData.type === 'DOG' ? DOG_BREEDS : CAT_BREEDS;
@@ -172,11 +162,7 @@ const CreatePet = props => {
             onValueChange={breed => handleBreedChange(breed)}
           >
             {_.map(BREEDS, BREED => (
-              <Picker.Item
-                key={BREED.id}
-                label={BREED.breed}
-                value={BREED.breed}
-              />
+              <Picker.Item key={BREED.id} label={BREED.breed} value={BREED.breed} />
             ))}
           </Picker>
           {error.breed && <Text style={styles.error}>{error.breed}</Text>}
@@ -216,9 +202,7 @@ const CreatePet = props => {
               titleStyle={styles.pickerText}
             />
           )}
-          {error.birthdate && (
-            <Text style={styles.error}>{error.birthdate}</Text>
-          )}
+          {error.birthdate && <Text style={styles.error}>{error.birthdate}</Text>}
         </View>
 
         <View style={styles.formItem}>
@@ -234,9 +218,7 @@ const CreatePet = props => {
             value={formData.description}
             scrollEnabled
           />
-          {error.description && (
-            <Text style={styles.error}>{error.description}</Text>
-          )}
+          {error.description && <Text style={styles.error}>{error.description}</Text>}
         </View>
 
         <View style={styles.formItem}>
@@ -248,25 +230,16 @@ const CreatePet = props => {
             placeholder="Write health problems of your pet if there is any."
             style={styles.textInput}
             underlineColorAndroid="transparent"
-            onChangeText={healthProblems =>
-              handleHealthProblems(healthProblems)
-            }
+            onChangeText={healthProblems => handleHealthProblems(healthProblems)}
             value={formData.healthProblems}
             scrollEnabled
           />
-          {error.healthProblems && (
-            <Text style={styles.error}>{error.healthProblems}</Text>
-          )}
+          {error.healthProblems && <Text style={styles.error}>{error.healthProblems}</Text>}
         </View>
 
         <View style={styles.formItem}>
           <Text style={styles.formLabel}>Profile Photo</Text>
-          {formData.profilePhoto && (
-            <Image
-              source={{ uri: formData.profilePhoto }}
-              style={styles.profilePhoto}
-            />
-          )}
+          {formData.profilePhoto && <Image source={{ uri: formData.profilePhoto }} style={styles.profilePhoto} />}
           <Button
             icon={{
               name: 'plus',
@@ -278,9 +251,7 @@ const CreatePet = props => {
             titleStyle={styles.profilePhotoButtonText}
             containerStyle={styles.profilePhotoButtonContainer}
           />
-          {error.profilePhoto && (
-            <Text style={styles.error}>{error.profilePhoto}</Text>
-          )}
+          {error.profilePhoto && <Text style={styles.error}>{error.profilePhoto}</Text>}
         </View>
 
         <View style={styles.formItem}>
