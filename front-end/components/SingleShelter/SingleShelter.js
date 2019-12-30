@@ -1,19 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
-import {
-  TouchableHighlight,
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator
-} from 'react-native';
+import { TouchableHighlight, View, Image, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
 import { COLORS, SIZES } from '../../constants/theme';
 
-const SingleShelter = ({ t, item }) => {
+const SingleShelter = ({ t, item, isLast }) => {
   const adoptPet = () => {
     console.log('adopt pet');
   };
@@ -31,7 +23,7 @@ const SingleShelter = ({ t, item }) => {
   };
 
   return (
-    <View style={styles.cardContainer} key={item.id}>
+    <View style={[styles.cardContainer, isLast && styles.addMargin]} key={item.id}>
       <View style={styles.cardLeftPanel}>
         <Image source={{ uri: item.image }} style={styles.cardImage} />
       </View>
@@ -48,19 +40,13 @@ const SingleShelter = ({ t, item }) => {
           <View style={styles.cardRightBody}>
             <View style={styles.cardRightBodyItem}>
               <Icon name="map-pin" type="feather" size={12} />
-              <Text
-                style={styles.cardRightBodyItemText}
-                onPress={goToAppointment}
-              >
+              <Text style={styles.cardRightBodyItemText} onPress={goToAppointment}>
                 {item.address}
               </Text>
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="calendar" type="feather" size={12} />
-              <Text
-                style={styles.cardRightBodyItemText}
-                onPress={goToAppointment}
-              >
+              <Text style={styles.cardRightBodyItemText} onPress={goToAppointment}>
                 {item.workingTime}
               </Text>
             </View>
@@ -87,24 +73,21 @@ const SingleShelter = ({ t, item }) => {
 };
 
 const styles = StyleSheet.create({
-  headerLeftButton: {
-    paddingLeft: 15
-  },
-  headerRightButton: {
-    paddingRight: 15
-  },
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    backgroundColor: COLORS.WHITE_LIGHT,
+    paddingTop: 15,
+    marginTop: 5,
+    marginBottom: 5,
+    borderRadius: 10,
+    overflow: 'hidden'
   },
   cardLeftPanel: {
     flex: 2,
     marginBottom: 20,
-    marginRight: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY
+    marginRight: 10
   },
   cardRightPanel: {
     flex: 3,
@@ -113,9 +96,10 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     flex: 1,
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    borderColor: COLORS.PRIMARY
   },
   cardRightContainer: {
     padding: 5,
@@ -167,6 +151,9 @@ const styles = StyleSheet.create({
   adoptButtonTitle: {
     marginLeft: 5,
     fontSize: SIZES.SMALL_TEXT
+  },
+  addMargin: {
+    marginBottom: 40
   }
 });
 

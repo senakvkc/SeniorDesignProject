@@ -7,7 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Icon, Button } from 'react-native-elements';
-import { StyleSheet, AsyncStorage } from 'react-native';
+import { StyleSheet, AsyncStorage, View } from 'react-native';
 import _ from 'lodash';
 
 import { ApolloClient } from 'apollo-client';
@@ -49,14 +49,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerTitle: navigation.state.routeName,
   headerLeft: (
     <Button
-      icon={
-        <Icon
-          name="camera"
-          type="feather"
-          color={COLORS.PRIMARY}
-          size={SIZES.MENU_ICON}
-        />
-      }
+      icon={<Icon name="camera" type="feather" color={COLORS.PRIMARY} size={SIZES.MENU_ICON} />}
       type="clear"
       containerStyle={styles.headerLeftButton}
       onPress={() => navigation.navigate('SheltyCamera')}
@@ -65,38 +58,17 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
   headerRight: (
     <>
       <Button
-        icon={
-          <Icon
-            name="search"
-            type="feather"
-            color={COLORS.TEXT}
-            size={SIZES.MENU_ICON}
-          />
-        }
+        icon={<Icon name="search" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />}
         type="clear"
         onPress={() => openSearch(navigation)}
       />
       <Button
-        icon={
-          <Icon
-            name="credit-card"
-            type="feather"
-            color={COLORS.TEXT}
-            size={SIZES.MENU_ICON}
-          />
-        }
+        icon={<Icon name="credit-card" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />}
         type="clear"
         onPress={openDonate}
       />
       <Button
-        icon={
-          <Icon
-            name="settings"
-            type="feather"
-            color={COLORS.TEXT}
-            size={SIZES.MENU_ICON}
-          />
-        }
+        icon={<Icon name="settings" type="feather" color={COLORS.TEXT} size={SIZES.MENU_ICON} />}
         type="clear"
         containerStyle={styles.headerRightButton}
         onPress={() => openSettings(navigation)}
@@ -244,9 +216,7 @@ const MainTabs = createBottomTabNavigator(
           <Icon
             type="feather"
             name={iconName}
-            size={
-              routeName === 'Create' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON
-            }
+            size={routeName === 'Create' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON}
             color={routeName === 'Create' ? COLORS.ORANGE : tintColor}
             key={routeName}
           />

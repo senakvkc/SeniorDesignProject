@@ -23,20 +23,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import {
-  BOTTOM_NAV_TABS,
-  STORIES,
-  CAROUSEL_ITEMS,
-  MENU_ITEMS,
-  LAST_ITEMS,
-  ANIMALS
-} from '../../constants';
+import { BOTTOM_NAV_TABS, STORIES, CAROUSEL_ITEMS, MENU_ITEMS, LAST_ITEMS, ANIMALS } from '../../constants';
 
 import BlogScreen from '../Blog';
 import ProfileScreen from '../Profile';
 import SheltersScreen from '../Shelters';
 import AnimalCard from '../../components/AnimalCard/AnimalCard';
 import StoryPanel from '../../components/StoryPanel';
+import { COLORS } from '../../constants/theme';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -88,7 +82,7 @@ const HomeScreen = (props, { navigation }) => {
   return isLoading ? (
     <AppLoading />
   ) : (
-    <>
+    <View style={styles.container}>
       <ScrollView>
         <StoryPanel stories={STORIES} />
         <View>
@@ -103,7 +97,7 @@ const HomeScreen = (props, { navigation }) => {
           />
         </View>
         {/* Animal Cards */}
-        <View>
+        <View style={styles.animalCardContainer}>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={ANIMALS}
@@ -112,24 +106,32 @@ const HomeScreen = (props, { navigation }) => {
           />
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.WHITE_SOFTER
+  },
   carouselItem: {
     width: screenWidth - 60,
-    height: 150
+    height: 150,
+    marginBottom: 15,
+    borderRadius: 8,
+    overflow: 'hidden'
   },
   carouselImageContainer: {
     flex: 1,
     marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
-    backgroundColor: 'white',
-    borderRadius: 8
+    backgroundColor: 'white'
   },
   carouselImage: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: 'contain'
+    resizeMode: 'cover',
+    borderRadius: 8,
+    borderWidth: 1,
+    overflow: 'hidden'
   },
   carouselTitle: {
     fontSize: 14,
@@ -138,6 +140,9 @@ const styles = StyleSheet.create({
     left: 20,
     marginBottom: 10,
     color: '#f0f0f0'
+  },
+  animalCardContainer: {
+    paddingHorizontal: 10
   }
 });
 
