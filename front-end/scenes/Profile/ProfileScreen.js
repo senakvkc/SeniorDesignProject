@@ -7,19 +7,45 @@ import {
   ActivityIndicator,
   ScrollView,
   Dimensions,
-  FlatList
+  FlatList,
+  ImageBackground,
+  StatusBar
 } from 'react-native';
-import { Image, Button, Icon } from 'react-native-elements';
+import { Image, Icon } from 'react-native-elements';
+import _ from 'lodash';
 
-import { COLORS } from '../../constants/theme';
+import { COLORS, SIZES } from '../../constants/theme';
 import { SHARED_PHOTOS, USER_TOKEN } from '../../constants';
 import { AppLoading } from 'expo';
 import { withTranslation } from 'react-i18next';
+import ProfileImages from '../../components/ProfileImages';
+import ProfileInfoCard from '../../components/ProfileInfoCard';
+import OwnerInfo from '../../components/OwnerInfo';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import SheltyButton from '../../components/common/SheltyButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const ProfileScreen = ({ t }) => {
   const [userData, setUserData] = useState(null);
+
+  const featureData = [
+    {
+      color: COLORS.PURPLE,
+      icon: 'align-center',
+      feature: 'Friendly'
+    },
+    {
+      color: COLORS.PURPLE,
+      icon: 'align-center',
+      feature: 'Playful'
+    },
+    {
+      color: COLORS.PURPLE,
+      icon: 'align-center',
+      feature: 'Angry'
+    }
+  ];
 
   const getCurrentUser = async () => {
     const userToken = await AsyncStorage.getItem(USER_TOKEN);
@@ -40,83 +66,59 @@ const ProfileScreen = ({ t }) => {
     return user.firstName + ' ' + user.lastName;
   };
 
-  useEffect(() => {
-    getCurrentUser();
-  }, []);
+  const goToAdopt = () => {
+    console.log('adopt');
+  };
 
-  const SharedPhoto = ({ item }) => (
-    <Image source={{ uri: item.source }} resizeMode="cover" containerStyle={styles.sharedPhoto} />
-  );
+  useEffect(() => {}, []);
 
-  renderPhoneNumber = number => {
+  const renderPhoneNumber = number => {
     return number;
   };
 
-  return !userData ? (
-    <AppLoading />
-  ) : (
-    <ScrollView>
+  const renderFeature = ({ color, icon, feature }) => (
+    <View key={feature} style={{ ...styles.feature, backgroundColor: color }}>
+      <Icon type="feather" name={icon} size={SIZES.HUGE} color={COLORS.SILVER_PINK} />
+      <Text style={styles.featureText}>{feature}</Text>
+    </View>
+  );
+
+  const renderProfileActions = () => (
+    <View style={styles.actionContainer}>
+      <View style={styles.likeContainer}>
+        <Icon type="feather" name="heart" size={SIZES.NORMAL_TEXT} color={COLORS.WHITE_F9} />
+      </View>
+      <View style={styles.adoptButtonContainer}>
+        <SheltyButton
+          buttonStyles={styles.adoptButton}
+          onPressFunction={goToAdopt}
+          gradientStyles={styles.adoptButtonContainer}
+          textStyles={styles.adoptButtonText}
+          text={t('adopt')}
+        />
+      </View>
+    </View>
+  );
+
+  return (
+    <>
+      <StatusBar hidden />
       <View style={styles.container}>
-        <View style={styles.detailContainer}>
-          <View style={styles.detailLeftContainer}>
-            <Image
-              resizeMode="cover"
-              source={{ uri: 'https://placedog.net/100/100' }}
-              containerStyle={styles.profileImage}
-              PlaceholderContent={<ActivityIndicator />}
-            />
-            <Button
-              title={t('editProfile')}
-              onPress={goToProfileSettings}
-              containerStyle={styles.editProfileContainer}
-              buttonStyle={styles.editProfileButton}
-              titleStyle={styles.editProfileTitle}
-            />
+        <ProfileImages />
+
+        <View style={styles.profileContainer}>
+          <ProfileInfoCard />
+
+          <View style={styles.mainContainer}>
+            <View style={styles.features}>{_.map(featureData, feature => renderFeature(feature))}</View>
+
+            <OwnerInfo />
+
+            {renderProfileActions()}
           </View>
-
-          <View style={styles.detailRightContainer}>
-            <View style={styles.innerDetailLeft}>
-              <Text style={styles.nameText}>
-                {userData.user.firstName && userData.user.lastName ? getFullName() : userData.user.username}
-              </Text>
-              <Text style={styles.roleText}>{userData.user.userType}</Text>
-              <View style={styles.line} />
-
-              <View style={styles.detailInfo}>
-                <Icon type="feather" name="book-open" color={COLORS.PRIMARY} size={12} />
-                <Text style={styles.detailText}>
-                  {userData.user.about || 'Doggo ipsum shoober he made many woofs.'}
-                </Text>
-              </View>
-
-              <View style={styles.detailInfo}>
-                <Icon type="feather" name="mail" color={COLORS.PRIMARY} size={12} />
-                <Text style={styles.detailText}>{userData.user.email}</Text>
-              </View>
-
-              <View style={styles.detailInfo}>
-                <Icon type="feather" name="smartphone" color={COLORS.PRIMARY} size={12} />
-                <Text style={styles.detailText}>{'(535) 223 33 53' || renderPhoneNumber(userData.user.phone)}</Text>
-              </View>
-            </View>
-            <View style={styles.innerDetailRight}>
-              <Icon type="feather" name="check-circle" color={COLORS.SUCCESS} size={14} />
-              <Icon type="feather" name="alert-circle" color={COLORS.WARNING} size={18} onPress={goToReportUser} />
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.photosContainer}>
-          <FlatList
-            numColumns={3}
-            showsVerticalScrollIndicator={false}
-            data={SHARED_PHOTOS}
-            renderItem={({ item }) => <SharedPhoto item={item} key={item.id} />}
-            keyExtractor={item => item.id}
-          />
         </View>
       </View>
-    </ScrollView>
+    </>
   );
 };
 
@@ -124,101 +126,72 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: COLORS.WHITE_SOFTER
+    alignItems: 'center'
   },
-  detailContainer: {
-    flex: 2,
-    flexDirection: 'row'
-  },
-  photosContainer: {
+  profileContainer: {
     flex: 3,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    marginLeft: 10,
-    marginRight: 10
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    alignItems: 'center'
   },
-  sharedPhoto: {
-    alignSelf: 'center',
-    margin: 2.5,
-    borderRadius: 5,
-    overflow: 'hidden',
-    width: screenWidth / 3 - 12,
-    height: screenWidth / 3 - 12
-  },
-  detailLeftContainer: {
+  mainContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    margin: 15
+    justifyContent: 'space-evenly'
   },
-  detailRightContainer: {
-    flex: 2,
+  features: {
+    width: screenWidth - 60,
     flexDirection: 'row',
-    borderRadius: 5,
-    marginVertical: 15,
-    marginRight: 15,
-    padding: 15,
-    backgroundColor: COLORS.WHITE_LIGHT
-  },
-  approvedIcon: {
+    justifyContent: 'space-between',
     alignSelf: 'flex-start',
-    justifyContent: 'flex-end'
+    marginTop: -25
   },
-  profileImage: {
-    flex: 1,
-    width: '100%',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
-    overflow: 'hidden',
-    marginBottom: 10
+  feature: {
+    justifyContent: 'center',
+    backgroundColor: COLORS.PURPLE,
+    borderRadius: 10,
+    width: 80,
+    height: 80
   },
-  editProfileContainer: {
-    width: '100%'
-  },
-  editProfileButton: {
-    backgroundColor: COLORS.PRIMARY,
-    height: 30
-  },
-  editProfileTitle: {
-    fontSize: 12
-  },
-  nameText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: COLORS.PRIMARY
-  },
-  roleText: {
-    fontSize: 12,
-    lineHeight: 16,
-    fontStyle: 'italic',
-    color: COLORS.TEXT,
+  featureText: {
+    textAlign: 'center',
+    color: COLORS.WHITE,
+    fontSize: SIZES.SMALL_TEXT,
     fontWeight: '400'
   },
-  line: {
-    width: 50,
-    height: 1,
-    marginVertical: 10,
-    backgroundColor: COLORS.PRIMARY
-  },
-  detailInfo: {
+  actionContainer: {
     flexDirection: 'row',
-    marginVertical: 10
+    width: screenWidth - 60,
+    marginTop: 15,
+    alignItems: 'stretch'
   },
-  detailText: {
-    fontSize: 12,
-    lineHeight: 14,
-    marginLeft: 5
+  likeContainer: {
+    height: 35,
+    width: 35,
+    backgroundColor: COLORS.PURPLE,
+    borderRadius: 10,
+    justifyContent: 'center'
   },
-  innerDetailLeft: {
-    flex: 3
-  },
-  innerDetailRight: {
+  adoptButtonContainer: {
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
+    borderRadius: 10,
+    height: 30
+  },
+  adoptButton: {
+    width: '100%',
+    marginLeft: 15,
+    backgroundColor: COLORS.PURPLE,
+    borderRadius: 10,
+    justifyContent: 'center',
+    height: 35
+  },
+  adoptButtonText: {
+    fontSize: SIZES.NORMAL_TEXT,
+    color: COLORS.WHITE_F9,
+    textAlign: 'center',
+    alignSelf: 'center',
+    lineHeight: 35,
+    fontWeight: '400'
   }
 });
 

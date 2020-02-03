@@ -16,18 +16,14 @@ import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import {
-  validateEmptyFields,
-  validateEmailAndPhone,
-  validatePhone,
-  validateEmail
-} from '../../utils/Validator';
+import { validateEmptyFields, validateEmailAndPhone, validatePhone, validateEmail } from '../../utils/Validator';
 
 import bgImage from '../../assets/login.jpg';
 import logo from '../../assets/logo.png';
 
 import { COLORS, SIZES } from '../../constants/theme';
 import { Button } from 'react-native-elements';
+import Background from '../../assets/bg.svg';
 
 const { width: WIDTH } = Dimensions.get('window');
 
@@ -68,8 +64,7 @@ const LoginScreen = ({ t, navigation }) => {
 
   const handleLogin = async () => {
     // validate email / phone
-    const isEmailOrPhoneValid =
-      validatePhone(emailOrPhone) || validateEmail(emailOrPhone);
+    const isEmailOrPhoneValid = validatePhone(emailOrPhone) || validateEmail(emailOrPhone);
 
     if (!isEmailOrPhoneValid) {
       Alert.alert(t('invalidEmailOrPhone'), t('invalidLoginInfoDesc'), [
@@ -95,123 +90,127 @@ const LoginScreen = ({ t, navigation }) => {
       .catch(err => {
         const jsonError = JSON.parse(JSON.stringify(err));
         console.log(jsonError.message);
-        Alert.alert(
-          t('defaultError'),
-          _.replace(jsonError.message, 'GraphQL error: ', ''),
-          [
-            {
-              text: t('tryAgain'),
-              onPress: () => console.log('tekrar deneniyor.')
-            }
-          ]
-        );
+        Alert.alert(t('defaultError'), _.replace(jsonError.message, 'GraphQL error: ', ''), [
+          {
+            text: t('tryAgain'),
+            onPress: () => console.log('tekrar deneniyor.')
+          }
+        ]);
         setIsLoading(false);
         return;
       });
   };
 
+  const goToRegister = () => {
+    navigation.navigate('RegisterStepOne');
+  };
+
   return (
-    <ImageBackground
-      source={bgImage}
-      style={styles.backgroundContainer}
-      imageStyle={styles.backgroundImage}
-    >
+    <View style={styles.container}>
+      <View style={styles.background}>
+        <Background />
+      </View>
+
       <View style={styles.logoContainer}>
-        <Image source={logo} style={styles.logo} />
-        <Text style={styles.logoText}>{t('welcome')}</Text>
+        <Text style={styles.logoText}>Shelty</Text>
       </View>
 
-      <View styles={styles.inputContainer}>
-        <Icon
-          name="md-person"
-          size={SIZES.INPUT_TEXT}
-          color={COLORS.INPUT}
-          style={styles.inputIcon}
-        />
-        <TextInput
-          style={styles.input}
-          value={emailOrPhone}
-          placeholder={t('emailOrPhoneInput')}
-          placeholderTextColor={COLORS.INPUT}
-          underlineColorAndroid="transparent"
-          onChangeText={text => setEmailOrPhone(text)}
-        />
-      </View>
+      <View style={styles.formContainer}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputText}>E-posta veya Telefon</Text>
+          <View style={styles.input}>
+            <Icon name="md-person" size={SIZES.NORMAL_TEXT} color={COLORS.LAVENDER} style={styles.inputIcon} />
+            <TextInput
+              style={styles.textInput}
+              value={emailOrPhone}
+              underlineColorAndroid="transparent"
+              onChangeText={text => setEmailOrPhone(text)}
+            />
+          </View>
+        </View>
 
-      <View styles={styles.inputContainer}>
-        <Icon
-          name="md-lock"
-          size={SIZES.INPUT_TEXT}
-          color={COLORS.INPUT}
-          style={styles.inputIcon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={t('passwordInput')}
-          value={password}
-          secureTextEntry={!showPassword}
-          placeholderTextColor={COLORS.INPUT}
-          underlineColorAndroid="transparent"
-          onChangeText={text => setPassword(text)}
-        />
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputText}>Şifre</Text>
+          <View style={styles.input}>
+            <Icon name="md-lock" size={SIZES.NORMAL_TEXT} color={COLORS.LAVENDER} style={styles.inputIcon} />
+            <TextInput
+              style={styles.textInput}
+              value={password}
+              secureTextEntry={!showPassword}
+              underlineColorAndroid="transparent"
+              onChangeText={text => setPassword(text)}
+            />
+            <View style={styles.showPasswordButton}>
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} activeOpacity={0.8}>
+                <Icon name={!showPassword ? 'md-eye' : 'md-eye-off'} size={SIZES.NORMAL_TEXT} color={COLORS.LAVENDER} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
 
-        <TouchableOpacity
-          style={styles.buttonEye}
-          onPress={() => setShowPassword(!showPassword)}
-        >
-          <Icon
-            name={!showPassword ? 'md-eye' : 'md-eye-off'}
-            size={SIZES.INPUT_TEXT}
-            color={COLORS.INPUT}
-          />
-        </TouchableOpacity>
-      </View>
+        <View style={styles.actionContainer}>
+          <View style={styles.forgotPasswordContainer}>
+            <Button
+              title={t('forgotPasswordText')}
+              onPress={() => console.log('forgot password')}
+              type="clear"
+              titleStyle={styles.actionText}
+            />
+          </View>
 
-      <View style={styles.forgotPasswordContainer}>
-        <Button
-          title={t('forgotPasswordText')}
-          onPress={() => console.log('forgot password')}
-          type="clear"
-          titleStyle={styles.forgotPasswordButton}
-        />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={handleLogin} style={styles.button} activeOpacity={0.8}>
+              <Text style={styles.buttonText}>Giriş Yap</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.registerContainer}>
+            <Text style={styles.registerText}>Üyeliğiniz yok mu?</Text>
+            <TouchableOpacity onPress={goToRegister} style={styles.basicButton} activeOpacity={0.8}>
+              <Text style={styles.actionText}>Üye Ol</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      <View style={styles.inputContainer}>
-        <Button
-          title={t('login')}
-          onPress={handleLogin}
-          buttonStyle={styles.loginButton}
-          disabled={isLoginDisabled}
-          disabledStyle={{ backgroundColor: COLORS.SECONDARY }}
-          disabledTitleStyle={{ color: COLORS.WHITE }}
-          loading={isLoading}
-        />
-      </View>
-      <View style={styles.registerContainer}>
-        <Button
-          title={t('registerText')}
-          onPress={() => navigation.navigate('Register')}
-          titleStyle={styles.registerButton}
-          type="clear"
-        />
-      </View>
-    </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundContainer: {
+  container: {
     flex: 1,
-    width: null,
-    height: null,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center'
   },
-  backgroundImage: {
-    backgroundColor: 'rgba(0,0,0,0.2)'
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%'
   },
-  logo: {
-    width: 100,
-    height: 100
+  logoText: {
+    fontSize: 32,
+    color: COLORS.LAVENDER,
+    textAlign: 'center'
+  },
+  button: {
+    width: 200,
+    height: 40,
+    backgroundColor: COLORS.WHITE_LIGHT,
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    shadowColor: 'rgba(0,0,0,0.1)',
+    shadowOpacity: 0.8,
+    elevation: 6,
+    shadowRadius: 15,
+    shadowOffset: { width: 0, height: 4 }
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: COLORS.PIGMENT
   },
   logoContainer: {
     alignItems: 'center',
@@ -223,49 +222,59 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     opacity: 0.7
   },
+  inputContainer: {
+    alignItems: 'flex-start',
+    marginBottom: 25
+  },
+  inputText: {
+    color: COLORS.WHITE_LIGHT,
+    fontSize: SIZES.SMALL_TEXT,
+    marginBottom: 10
+  },
   input: {
-    width: WIDTH - 55,
-    height: 50,
-    borderRadius: 50,
-    fontSize: SIZES.NORMAL_TEXT,
-    paddingLeft: 40,
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
-    color: COLORS.INPUT,
-    marginVertical: 10
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE_LIGHT,
+    borderRadius: 5,
+    width: 200,
+    height: 40,
+    shadowColor: 'rgba(0,0,0,0.1)',
+    shadowOpacity: 0.8,
+    elevation: 6,
+    shadowRadius: 15,
+    shadowOffset: { width: 0, height: 4 }
   },
   inputIcon: {
-    position: 'absolute',
-    top: SIZES.INPUT_TEXT + 4,
-    left: 15
+    marginHorizontal: 10
   },
-  inputContainer: {
-    paddingTop: 10,
-    paddingBottom: 10
+  textInput: {
+    color: COLORS.TEXT,
+    fontSize: SIZES.SMALL_TEXT,
+    flex: 1
   },
-  buttonEye: {
-    position: 'absolute',
-    top: SIZES.INPUT_TEXT + 4,
-    right: 15
-  },
-  loginButton: {
-    width: WIDTH - 55,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: COLORS.BUTTON_PRIMARY
+  showPasswordButton: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    alignSelf: 'center',
+    alignContent: 'flex-end',
+    marginHorizontal: 10
   },
   forgotPasswordContainer: {
-    width: WIDTH - 55,
-    alignItems: 'flex-end'
+    alignSelf: 'flex-end'
   },
-  forgotPasswordButton: {
-    color: COLORS.BUTTON_PRIMARY
+  actionText: {
+    color: COLORS.LAVENDER,
+    fontSize: SIZES.SMALL_TEXT
   },
   registerContainer: {
-    width: WIDTH - 55,
-    alignItems: 'center'
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: 10
   },
-  registerButton: {
-    color: COLORS.BUTTON_PRIMARY
+  registerText: {
+    color: COLORS.WHITE_LIGHT,
+    fontSize: SIZES.SMALL_TEXT,
+    marginRight: 5
   }
 });
 

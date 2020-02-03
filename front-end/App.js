@@ -23,14 +23,17 @@ import SettingsScreen from './scenes/Settings';
 import SheltyCamera from './components/SheltyCamera';
 import TakenPhoto from './components/TakenPhoto';
 import LoginScreen from './scenes/Login';
-import RegisterScreen from './scenes/Register';
 import AuthLoadingScreen from './scenes/AuthLoading';
 import CreateScreen from './scenes/Create';
 import CreatePet from './scenes/Create/CreatePet';
+import LandingScreen from './scenes/Landing';
 
 import './i18n';
 import { COLORS, SIZES } from './constants/theme';
 import { LAN_ADDRESS } from './constants';
+import RegisterStepOneScreen from './scenes/Register/StepOne';
+import RegisterStepTwoScreen from './scenes/Register/StepTwo';
+import AppNavigator from './navigation/AppNavigator';
 
 const openSearch = async navigation => {
   console.log('search');
@@ -156,11 +159,17 @@ const ProfileStack = createStackNavigator({
 
 const AuthStack = createStackNavigator(
   {
+    Landing: {
+      screen: LandingScreen
+    },
     Login: {
       screen: LoginScreen
     },
-    Register: {
-      screen: RegisterScreen
+    RegisterStepOne: {
+      screen: RegisterStepOneScreen
+    },
+    RegisterStepTwo: {
+      screen: RegisterStepTwoScreen
     }
   },
 
@@ -231,18 +240,18 @@ const MainTabs = createBottomTabNavigator(
   }
 );
 
-const AppNavigator = createAppContainer(
-  createSwitchNavigator(
-    {
-      AuthLoading: AuthLoadingScreen,
-      AuthStack: AuthStack,
-      MainTabs: MainTabs
-    },
-    {
-      initialRouteName: 'AuthLoading'
-    }
-  )
-);
+// const AppNavigator = createAppContainer(
+//   createSwitchNavigator(
+//     {
+//       AuthLoading: AuthLoadingScreen,
+//       AuthStack: AuthStack,
+//       MainTabs: MainTabs
+//     },
+//     {
+//       initialRouteName: 'AuthLoading'
+//     }
+//   )
+// );
 
 const cache = new InMemoryCache();
 const link = new HttpLink({

@@ -7,7 +7,6 @@ import { SHELTERS } from '../../constants';
 import { COLORS, SIZES } from '../../constants/theme';
 import SingleShelter from '../../components/SingleShelter';
 import { withTranslation } from 'react-i18next';
-import GradientButton from 'react-native-gradient-buttons';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -31,7 +30,7 @@ const SheltersScreen = ({ posts, t }) => {
         />
       </ScrollView>
       <View style={styles.findShelterButton}>
-        <GradientButton
+        {/* <GradientButton
           text={t('findNearestShelter')}
           textStyle={styles.findShelterTitle}
           gradientBegin="#AA3434"
@@ -39,7 +38,7 @@ const SheltersScreen = ({ posts, t }) => {
           height={50}
           width={250}
           radius={15}
-        />
+        /> */}
       </View>
     </View>
   );

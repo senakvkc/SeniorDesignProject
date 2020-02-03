@@ -32,19 +32,22 @@ import AnimalCard from '../../components/AnimalCard/AnimalCard';
 import StoryPanel from '../../components/StoryPanel';
 import { COLORS } from '../../constants/theme';
 import SheltyCarousel from '../../components/SheltyCarousel';
+import SearchBox from '../../components/SearchBox';
+import PetCard from '../../components/PetCard';
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const HomeScreen = (props, { navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
-
-  const carouselRef = useRef(null);
+  const [searchValue, setSearchValue] = useState('');
 
   async function loadFonts() {
     await Font.loadAsync({
-      Roboto: require('../../assets/fonts/Roboto-Regular.ttf'),
-      Roboto_medium: require('../../assets/fonts/Roboto-Medium.ttf'),
+      Quicksand_light: require('../../assets/fonts/Quicksand-Light.ttf'),
+      Quicksand: require('../../assets/fonts/Quicksand-Regular.ttf'),
+      Quicksand_medium: require('../../assets/fonts/Quicksand-Medium.ttf'),
+      Quicksand_bold: require('../../assets/fonts/Quicksand-SemiBold.ttf'),
       ...Ionicons.font
     });
   }
@@ -54,6 +57,11 @@ const HomeScreen = (props, { navigation }) => {
       setIsLoading(false);
     });
   }, []);
+
+  handleSearch = value => {
+    console.log(value);
+    setSearchValue(value);
+  };
 
   const renderIcon = icon => ({ isActive }) => (
     <Icon
@@ -69,19 +77,13 @@ const HomeScreen = (props, { navigation }) => {
     <AppLoading />
   ) : (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.scrollContainer}>
         <StoryPanel stories={STORIES} />
-        <View>
-          <SheltyCarousel data={CAROUSEL_ITEMS} />
-        </View>
-        {/* Animal Cards */}
-        <View style={styles.animalCardContainer}>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={ANIMALS}
-            renderItem={({ item }) => <AnimalCard item={item} key={item.id} />}
-            keyExtractor={item => item.id}
-          />
+        <View style={styles.feedContainer}>
+          <SearchBox filterIcon value={searchValue} onSearch={handleSearch} />
+          {_.map(ANIMALS, pet => (
+            <PetCard key={pet.id} pet={pet} />
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -90,37 +92,24 @@ const HomeScreen = (props, { navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.WHITE_SOFTER
-  },
-  carouselItem: {
-    width: screenWidth - 60,
-    height: 150,
-    marginBottom: 15,
-    borderRadius: 8,
-    overflow: 'hidden'
-  },
-  carouselImageContainer: {
     flex: 1,
-    marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
-    backgroundColor: 'white'
+    backgroundColor: COLORS.WHITE
   },
-  carouselImage: {
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: 'cover',
-    borderRadius: 8,
-    borderWidth: 1,
-    overflow: 'hidden'
+  scrollContainer: {
+    flex: 1,
+    flexDirection: 'column'
   },
-  carouselTitle: {
-    fontSize: 14,
-    position: 'relative',
-    top: -30,
-    left: 20,
-    marginBottom: 10,
-    color: '#f0f0f0'
-  },
-  animalCardContainer: {
-    paddingHorizontal: 10
+  feedContainer: {
+    flex: 1,
+    flexGrow: 1,
+    minHeight: 100,
+    alignSelf: 'stretch',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: COLORS.WHITE_FB,
+    padding: 20,
+    alignItems: 'center',
+    elevation: 2
   }
 });
 
