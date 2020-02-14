@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import CreateScreen from '../scenes/Create';
 import CreatePet from '../scenes/Create/CreatePet';
 import { NAVIGATION_OPTIONS } from './NavigationOptions';
+import { COLORS } from '../constants/theme';
 
 const CreateNavigator = createStackNavigator({
   Create: {
@@ -10,7 +11,14 @@ const CreateNavigator = createStackNavigator({
     navigationOptions: NAVIGATION_OPTIONS
   },
   CreatePet: {
-    screen: CreatePet
+    screen: CreatePet,
+    navigationOptions: {
+      headerTitle: 'Create Pet',
+      headerTitleStyle: {
+        color: COLORS.PURPLE
+      },
+      headerTintColor: COLORS.PURPLE
+    }
   }
 });
 

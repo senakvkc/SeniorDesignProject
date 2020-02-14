@@ -28,6 +28,8 @@ const CreateScreen = ({ t, navigation }) => {
             subText="Test subtext"
             subTextStyle={styles.actionSubText}
             text={t('createPet')}
+            iconRight
+            icon={<Icon type="feather" name="chevron-right" size={SIZES.HUGE} color={COLORS.WHITE} />}
           />
         </View>
         <View style={styles.actionItemContainer}>
