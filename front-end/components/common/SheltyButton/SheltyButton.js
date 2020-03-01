@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   buttonTextContainer: {
-    flex: 1,
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center'

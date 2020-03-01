@@ -4,6 +4,7 @@ import { Button, Icon, Image } from 'react-native-elements';
 import { SIZES, COLORS } from '../../constants/theme';
 import { withTranslation } from 'react-i18next';
 import SheltyButton from '../../components/common/SheltyButton';
+import BasicSheltyButton from '../../components/common/BasicSheltyButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -19,30 +20,8 @@ const CreateScreen = ({ t, navigation }) => {
         <Image source={{ uri: 'https://placedog.net/500/500' }} style={styles.image} />
       </View>
       <View style={styles.actionContainer}>
-        <View style={styles.actionItemContainer}>
-          <SheltyButton
-            buttonStyles={styles.actionButton}
-            onPressFunction={handleNewPetClick}
-            gradientStyles={styles.actionButtonContainer}
-            textStyles={styles.actionButtonText}
-            subText="Test subtext"
-            subTextStyle={styles.actionSubText}
-            text={t('createPet')}
-            iconRight
-            icon={<Icon type="feather" name="chevron-right" size={SIZES.HUGE} color={COLORS.WHITE} />}
-          />
-        </View>
-        <View style={styles.actionItemContainer}>
-          <SheltyButton
-            buttonStyles={styles.actionButton}
-            onPressFunction={handleNewPetClick}
-            gradientStyles={styles.actionButtonContainer}
-            textStyles={styles.actionButtonText}
-            subText="Test subtext"
-            subTextStyle={styles.actionSubText}
-            text={t('createPet')}
-          />
-        </View>
+        <BasicSheltyButton onPress={handleNewPetClick} text={t('adopt')} buttonStyle={styles.createButton} containerStyle={styles.adoptButtonContainer} />
+        <BasicSheltyButton onPress={handleNewPetClick} text={t('adopt')} containerStyle={styles.adoptButtonContainer} />
       </View>
     </View>
   );
@@ -71,40 +50,19 @@ const styles = StyleSheet.create({
   actionContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'stretch'
+    justifyContent: 'space-between',
+    marginVertical: 5
   },
-  actionItemContainer: {
+  adoptButtonContainer: {
     flex: 1,
-    marginVertical: 20
-  },
-  actionButtonContainer: {
-    width: screenWidth - 100,
     borderRadius: 20,
-    height: 100,
-    justifyContent: 'center',
     alignContent: 'center',
-    alignItems: 'center'
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    marginVertical: 5,
   },
-  actionButton: {
-    flexDirection: 'column',
-    width: '100%',
-    backgroundColor: COLORS.PURPLE,
-    borderRadius: 20
-  },
-  actionButtonText: {
-    fontSize: SIZES.HUGE,
-    color: COLORS.WHITE_F9,
-    textAlign: 'center',
-    alignSelf: 'center',
-    fontWeight: '600'
-  },
-  actionSubText: {
-    fontSize: SIZES.NORMAL_TEXT,
-    color: COLORS.WHITE_FB,
-    fontWeight: '400',
-    textAlign: 'center',
-    alignSelf: 'center'
+  createButton: {
+    width: '100%'
   }
 });
 

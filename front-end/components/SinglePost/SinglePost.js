@@ -138,8 +138,11 @@ const styles = StyleSheet.create({
     height: 30,
     paddingHorizontal: 15
   },
-  readMoreButton: {},
+  readMoreButton: {
+    alignContent: 'center'
+  },
   readMoreButtonText: {
+    width: '100%',
     fontSize: SIZES.NORMAL_TEXT,
     color: COLORS.WHITE_F9,
     textAlign: 'center',

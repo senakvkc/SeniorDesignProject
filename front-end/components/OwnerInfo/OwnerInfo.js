@@ -7,7 +7,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const OwnerInfo = () => {
   return (
-    <>
+    <View>
       <View style={styles.ownerContainer}>
         <View style={styles.leftOwner}>
           <View style={styles.ownerIconContainer}>
@@ -28,7 +28,7 @@ const OwnerInfo = () => {
           Curabitur aliquet lorem metus.
         </Text>
       </View>
-    </>
+    </View>
   );
 };
 

@@ -23,6 +23,7 @@ import ProfileInfoCard from '../../components/ProfileInfoCard';
 import OwnerInfo from '../../components/OwnerInfo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SheltyButton from '../../components/common/SheltyButton';
+import BasicSheltyButton from '../../components/common/BasicSheltyButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -89,13 +90,7 @@ const ProfileScreen = ({ t }) => {
         <Icon type="feather" name="heart" size={SIZES.NORMAL_TEXT} color={COLORS.WHITE_F9} />
       </View>
       <View style={styles.adoptButtonContainer}>
-        <SheltyButton
-          buttonStyles={styles.adoptButton}
-          onPressFunction={goToAdopt}
-          gradientStyles={styles.adoptButtonContainer}
-          textStyles={styles.adoptButtonText}
-          text={t('adopt')}
-        />
+        <BasicSheltyButton onPress={goToAdopt} text={t('adopt')} containerStyle={styles.adoptButtonContainer} />
       </View>
     </View>
   );
@@ -160,8 +155,8 @@ const styles = StyleSheet.create({
     fontWeight: '400'
   },
   actionContainer: {
-    flexDirection: 'row',
     width: screenWidth - 60,
+    flexDirection: 'row',
     marginTop: 15,
     alignItems: 'stretch'
   },
@@ -174,25 +169,25 @@ const styles = StyleSheet.create({
   },
   adoptButtonContainer: {
     flex: 1,
+    height: 35,
+    marginLeft: 5,
     borderRadius: 10,
-    height: 30
   },
   adoptButton: {
-    width: '100%',
     marginLeft: 15,
     backgroundColor: COLORS.PURPLE,
     borderRadius: 10,
-    justifyContent: 'center',
-    height: 35
+    alignContent: 'center'
   },
   adoptButtonText: {
+    width: '100%',
     fontSize: SIZES.NORMAL_TEXT,
     color: COLORS.WHITE_F9,
     textAlign: 'center',
     alignSelf: 'center',
     lineHeight: 35,
     fontWeight: '400'
-  }
+  },
 });
 
 export default withTranslation()(ProfileScreen);

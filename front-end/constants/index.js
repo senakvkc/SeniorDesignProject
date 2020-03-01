@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { t } from '../utils/Translate';
 
-export const LAN_ADDRESS = 'http://172.20.10.2';
+export const LAN_ADDRESS = 'http://172.20.10.3';
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const USER_TOKEN = 'userToken';

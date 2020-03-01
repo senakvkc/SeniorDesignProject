@@ -3,10 +3,11 @@ import { StyleSheet, TextInput, View, Text, Dimensions, Image } from 'react-nati
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { COLORS, SIZES } from '../../constants/theme';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import { SEX } from '../../constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import SheltyButton from '../common/SheltyButton';
+import BasicSheltyButton from '../common/BasicSheltyButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -45,13 +46,7 @@ const PetCard = ({ t, pet }) => {
   );
 
   const renderProfileButton = (
-    <SheltyButton
-      buttonStyles={styles.profileButton}
-      onPressFunction={goToPetProfile}
-      gradientStyles={styles.profileButtonContainer}
-      textStyles={styles.profileButtonText}
-      text={t('profile')}
-    />
+    <BasicSheltyButton onPress={goToPetProfile} text="Profil" containerStyle={styles.containerStyle} profileButtonStyle={styles.profileButton} />
   );
 
   return (
@@ -165,20 +160,26 @@ const styles = StyleSheet.create({
   },
   profileButtonContainer: {
     borderRadius: 10,
-    height: 35
-  },
-  profileButton: {
+    height: 35,
     position: 'relative',
     top: 15,
-    width: 150
+  },
+  profileButton: {
+    width: 150,
+    alignContent: 'center'
   },
   profileButtonText: {
     fontSize: SIZES.NORMAL_TEXT,
     color: COLORS.WHITE_F9,
     textAlign: 'center',
     alignSelf: 'center',
-    lineHeight: 35
-  }
+  },
+  containerStyle: {
+    borderRadius: 10,
+    height: 35,
+    position: 'relative',
+    top: 15
+  },
 });
 
 PetCard.propTypes = {
