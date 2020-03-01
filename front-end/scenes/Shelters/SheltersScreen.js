@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  FlatList,
-  ActivityIndicator,
-  View,
-  StyleSheet,
-  Dimensions
-} from 'react-native';
+import { ScrollView, FlatList, ActivityIndicator, View, StyleSheet, Dimensions } from 'react-native';
 import { Image, Icon, Button } from 'react-native-elements';
 import { AppLoading } from 'expo';
 
@@ -14,7 +7,6 @@ import { SHELTERS } from '../../constants';
 import { COLORS, SIZES } from '../../constants/theme';
 import SingleShelter from '../../components/SingleShelter';
 import { withTranslation } from 'react-i18next';
-import GradientButton from 'react-native-gradient-buttons';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -31,20 +23,22 @@ const SheltersScreen = ({ posts, t }) => {
         <FlatList
           showsVerticalScrollIndicator={false}
           data={SHELTERS}
-          renderItem={({ item }) => <SingleShelter item={item} key={item.id} />}
+          renderItem={({ item, index }) => (
+            <SingleShelter item={item} key={item.id} isLast={index === SHELTERS.length - 1} />
+          )}
           keyExtractor={item => item.id}
         />
       </ScrollView>
       <View style={styles.findShelterButton}>
-        <GradientButton
+        {/* <GradientButton
           text={t('findNearestShelter')}
           textStyle={styles.findShelterTitle}
-          gradientBegin="#A30000"
+          gradientBegin="#AA3434"
           gradientEnd="#DB5757"
           height={50}
           width={250}
           radius={15}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -52,7 +46,8 @@ const SheltersScreen = ({ posts, t }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: COLORS.WHITE_SOFTER
   },
   findShelterTitle: {
     fontSize: SIZES.NORMAL_TEXT

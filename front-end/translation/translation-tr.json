@@ -44,5 +44,7 @@
   "takePhoto": "Fotoğraf Çek",
   "photoLibrary": "Fotoğraf Galerisi",
   "cancel": "Vazgeç",
-  "findNearestShelter": "En Yakın Barınağı Bul"
+  "findNearestShelter": "En Yakın Barınağı Bul",
+  "save": "Kaydet",
+  "searchPetOrShelter": "Search pet or shelter..."
 }

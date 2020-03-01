@@ -23,33 +23,31 @@ import { Ionicons } from '@expo/vector-icons';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import {
-  BOTTOM_NAV_TABS,
-  STORIES,
-  CAROUSEL_ITEMS,
-  MENU_ITEMS,
-  LAST_ITEMS,
-  ANIMALS
-} from '../../constants';
+import { BOTTOM_NAV_TABS, STORIES, CAROUSEL_ITEMS, MENU_ITEMS, LAST_ITEMS, ANIMALS } from '../../constants';
 
 import BlogScreen from '../Blog';
 import ProfileScreen from '../Profile';
 import SheltersScreen from '../Shelters';
 import AnimalCard from '../../components/AnimalCard/AnimalCard';
 import StoryPanel from '../../components/StoryPanel';
+import { COLORS } from '../../constants/theme';
+import SheltyCarousel from '../../components/SheltyCarousel';
+import SearchBox from '../../components/SearchBox';
+import PetCard from '../../components/PetCard';
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const HomeScreen = (props, { navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
-
-  const carouselRef = useRef(null);
+  const [searchValue, setSearchValue] = useState('');
 
   async function loadFonts() {
     await Font.loadAsync({
-      Roboto: require('../../assets/fonts/Roboto-Regular.ttf'),
-      Roboto_medium: require('../../assets/fonts/Roboto-Medium.ttf'),
+      Quicksand_light: require('../../assets/fonts/Quicksand-Light.ttf'),
+      Quicksand: require('../../assets/fonts/Quicksand-Regular.ttf'),
+      Quicksand_medium: require('../../assets/fonts/Quicksand-Medium.ttf'),
+      Quicksand_bold: require('../../assets/fonts/Quicksand-SemiBold.ttf'),
       ...Ionicons.font
     });
   }
@@ -59,6 +57,11 @@ const HomeScreen = (props, { navigation }) => {
       setIsLoading(false);
     });
   }, []);
+
+  handleSearch = value => {
+    console.log(value);
+    setSearchValue(value);
+  };
 
   const renderIcon = icon => ({ isActive }) => (
     <Icon
@@ -70,74 +73,43 @@ const HomeScreen = (props, { navigation }) => {
     />
   );
 
-  const renderCarouselItem = ({ item, index }, parallaxProps) => {
-    return (
-      <View style={styles.carouselItem}>
-        <ParallaxImage
-          source={{ uri: item.thumbnail }}
-          containerStyle={styles.carouselImageContainer}
-          style={styles.carouselImage}
-          parallaxFactor={0.4}
-          {...parallaxProps}
-          key={item.id}
-        />
-      </View>
-    );
-  };
-
   return isLoading ? (
     <AppLoading />
   ) : (
-    <>
-      <ScrollView>
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollContainer}>
         <StoryPanel stories={STORIES} />
-        <View>
-          <Carousel
-            ref={carouselRef}
-            sliderWidth={screenWidth}
-            sliderHeight={150}
-            itemWidth={screenWidth - 60}
-            data={CAROUSEL_ITEMS}
-            renderItem={renderCarouselItem}
-            hasParallaxImages={true}
-          />
-        </View>
-        {/* Animal Cards */}
-        <View>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={ANIMALS}
-            renderItem={({ item }) => <AnimalCard item={item} key={item.id} />}
-            keyExtractor={item => item.id}
-          />
+        <View style={styles.feedContainer}>
+          <SearchBox filterIcon value={searchValue} onSearch={handleSearch} />
+          {_.map(ANIMALS, pet => (
+            <PetCard key={pet.id} pet={pet} />
+          ))}
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  carouselItem: {
-    width: screenWidth - 60,
-    height: 150
-  },
-  carouselImageContainer: {
+  container: {
     flex: 1,
-    marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
-    backgroundColor: 'white',
-    borderRadius: 8
+    backgroundColor: COLORS.WHITE
   },
-  carouselImage: {
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: 'contain'
+  scrollContainer: {
+    flex: 1,
+    flexDirection: 'column'
   },
-  carouselTitle: {
-    fontSize: 14,
-    position: 'relative',
-    top: -30,
-    left: 20,
-    marginBottom: 10,
-    color: '#f0f0f0'
+  feedContainer: {
+    flex: 1,
+    flexGrow: 1,
+    minHeight: 100,
+    alignSelf: 'stretch',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: COLORS.WHITE_FB,
+    padding: 20,
+    alignItems: 'center',
+    elevation: 2
   }
 });
 

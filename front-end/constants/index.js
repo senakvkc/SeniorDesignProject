@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { t } from '../utils/Translate';
 
-export const LAN_ADDRESS = 'http://192.168.1.179';
+export const LAN_ADDRESS = 'http://172.20.10.3';
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const USER_TOKEN = 'userToken';
@@ -14,11 +14,11 @@ export const PHOTOS_DIR = 'shelty';
 export const SEX = Object.freeze({
   MALE: {
     CODE: 'MALE',
-    text: t('male')
+    text: () => t('male')
   },
   FEMALE: {
     CODE: 'FEMALE',
-    text: t('female')
+    text: () => t('female')
   }
 });
 
@@ -210,7 +210,7 @@ export const SHELTERS = [
     address: 'Yeşilköy, Bakırköy/İstanbul',
     workingTime: '10.30 - 17.00',
     phone: '(212) 414 97 77'
-  },
+  }
 ];
 
 export const ANIMALS = [
@@ -219,55 +219,55 @@ export const ANIMALS = [
     thumbnail: 'https://placedog.net/400/150?id=1',
     name: 'Charlie',
     breed: 'Labrador Retriever',
-    age: _.random(0, 20),
+    age: _.random(1, 20),
     shelter: 'Yedikule Hayvan Barınağı',
-    sex: SEX.MALE.text
+    sex: SEX.MALE.text()
   },
   {
     id: _.uniqueId('animal_'),
     thumbnail: 'https://placedog.net/400/150?id=2',
     name: 'Max',
     breed: 'Maltese',
-    age: _.random(0, 20),
+    age: _.random(1, 20),
     shelter: 'Yedikule Hayvan Barınağı',
-    sex: SEX.MALE.text
+    sex: SEX.MALE.text()
   },
   {
     id: _.uniqueId('animal_'),
     thumbnail: 'https://placedog.net/400/150?id=3',
     name: 'Poodle',
     breed: 'Border Collie',
-    age: _.random(0, 20),
+    age: _.random(1, 20),
     shelter: 'Ataşehir Hayvan Barınağı',
-    sex: SEX.FEMALE.text
+    sex: SEX.FEMALE.text()
   },
   {
     id: _.uniqueId('animal_'),
     thumbnail: 'https://placedog.net/400/150?id=4',
     name: 'Ruby',
     breed: 'Border Collie',
-    age: _.random(0, 20),
+    age: _.random(1, 20),
     shelter: 'Yedikule Hayvan Barınağı',
-    sex: SEX.FEMALE.text
+    sex: SEX.FEMALE.text()
   },
   {
     id: _.uniqueId('animal_'),
     thumbnail: 'https://placedog.net/400/150?id=5',
     name: 'Ollie',
     breed: 'Golden Retriever',
-    age: _.random(0, 20),
+    age: _.random(1, 20),
     shelter: 'Kısırkaya Hayvan Barınağı',
-    sex: SEX.MALE.text
+    sex: SEX.MALE.text()
   },
   {
     id: _.uniqueId('animal_'),
     thumbnail: 'https://placedog.net/400/150?id=6',
     name: 'Coco',
     breed: 'Golden Retriever',
-    age: _.random(0, 20),
+    age: _.random(1, 20),
     shelter: 'Kısırkaya Hayvan Barınağı',
-    sex: SEX.FEMALE.text
-  },
+    sex: SEX.FEMALE.text()
+  }
 ];
 
 export const LAST_ITEMS = [

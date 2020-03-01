@@ -1,71 +1,63 @@
 import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
-
-import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
-import { Image, Icon, Button } from 'react-native-elements';
+import { View, ActivityIndicator, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import { withTranslation } from 'react-i18next';
+import { COLORS, SIZES } from '../../constants/theme';
+import { Icon } from 'react-native-elements';
+import SheltyButton from '../common/SheltyButton';
 
-import { COLORS } from '../../constants/theme';
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const SinglePost = ({ t, item }) => {
+const SinglePost = ({ t, post }) => {
+  const readMoreOfPost = () => {
+    console.log('read more');
+  };
+
   return (
     <View style={styles.postContainer}>
-      <View style={styles.postImageContainer}>
-        <Image
-          resizeMode="cover"
-          source={{ uri: item.featuredImage }}
-          containerStyle={styles.featuredImage}
-          PlaceholderContent={<ActivityIndicator />}
-        />
-      </View>
       <View style={styles.postDetailContainer}>
-        <Text style={styles.postTitle}>
-          {_.unescape(_.truncate(item.title, { length: 24 }))}
-        </Text>
-        <View style={styles.postSubDetail}>
-          <Icon
-            iconStyle={styles.postDetailIcon}
-            type="feather"
-            name="clock"
-            color={COLORS.PRIMARY}
-            size={12}
-          />
-          <Text style={styles.postSubDetailText}>
-            {moment().fromNow(item.createdAt)}
-          </Text>
-          <Icon
-            iconStyle={styles.postDetailIcon}
-            type="feather"
-            name="user"
-            color={COLORS.PRIMARY}
-            size={12}
-          />
-          <Text style={styles.postSubDetailText}>
-            {_.unescape(item.fullName)}
-          </Text>
-        </View>
-        <View style={styles.line} />
-        <View style={styles.descriptionContainer}>
-          <Text>
-            {_.unescape(_.truncate(item.description, { length: 100 }))}
-          </Text>
-          <Button
-            icon={
+        <View style={styles.postMask}></View>
+        <View style={styles.postDetail}>
+          <Text style={styles.postTitle}>Test post başlığı</Text>
+          <View style={styles.metaContainer}>
+            <View style={styles.metaItem}>
+              <Icon type="feather" name="clock" size={SIZES.SMALL_TEXT} color={COLORS.BLACK_63} />
+              <Text style={styles.metaItemText}>2 saat önce</Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Icon type="feather" name="user" size={SIZES.SMALL_TEXT} color={COLORS.BLACK_63} />
+              <Text style={styles.metaItemText}>rawsly</Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Icon type="feather" name="folder" size={SIZES.SMALL_TEXT} color={COLORS.BLACK_63} />
+              <Text style={styles.metaItemText}>Kedi</Text>
+            </View>
+          </View>
+          <Text style={styles.postExcerpt}>Post kısa açıklaması. Post kısa açıklaması. Post kısa açıklaması...</Text>
+          <View style={styles.postActionContainer}>
+            <View style={styles.postActionIcons}>
+              <Icon type="feather" name="thumbs-up" size={SIZES.NORMAL_TEXT} color={COLORS.PURPLE} />
               <Icon
                 type="feather"
-                name="chevron-right"
-                size={12}
-                iconStyle={styles.moreButtonIcon}
+                name="bookmark"
+                containerStyle={styles.postActionIcon}
+                size={SIZES.NORMAL_TEXT}
+                color={COLORS.PURPLE}
               />
-            }
-            iconRight={true}
-            title={t('readMore')}
-            containerStyle={styles.moreButtonContainer}
-            buttonStyle={styles.moreButton}
-            titleStyle={styles.moreButtonTitle}
-          />
+            </View>
+            <SheltyButton
+              buttonStyles={styles.readMoreButton}
+              onPressFunction={readMoreOfPost}
+              gradientStyles={styles.readMoreButtonContainer}
+              textStyles={styles.readMoreButtonText}
+              text={t('readMore')}
+            />
+          </View>
         </View>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} width={120} height={120} source={{ uri: post.featuredImage }} />
       </View>
     </View>
   );
@@ -75,74 +67,102 @@ const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
     flexDirection: 'row',
+    width: screenWidth - 40,
     height: 150,
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 15
-  },
-  postImageContainer: {
-    flex: 2,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
-    overflow: 'hidden',
-    marginRight: 15
+    alignItems: 'center',
+    marginVertical: 5
   },
   postDetailContainer: {
-    flex: 5
-  },
-  featuredImage: {
     flex: 1,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
-    overflow: 'hidden'
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    height: 150
   },
-  line: {
-    width: 50,
-    height: 1,
-    marginVertical: 10,
-    backgroundColor: COLORS.PRIMARY
+  postMask: {
+    width: '100%',
+    height: 150,
+    borderRadius: 20,
+    backgroundColor: COLORS.MASK,
+    position: 'absolute',
+    top: 3,
+    right: 3
+  },
+  postDetail: {
+    flexDirection: 'column',
+    height: 150,
+    backgroundColor: COLORS.WHITE_F9,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    borderWidth: 1,
+    borderColor: COLORS.WHITE_FB
   },
   postTitle: {
-    fontSize: 14,
     fontWeight: '600',
-    color: COLORS.PRIMARY,
-    marginBottom: 5
+    fontSize: SIZES.NORMAL_TEXT
   },
-  postSubDetail: {
-    flexDirection: 'row'
-  },
-  postSubDetailText: {
-    fontSize: 12,
-    lineHeight: 12,
-    fontStyle: 'italic',
-    color: COLORS.TEXT,
-    fontWeight: '400',
-    marginRight: 15,
-    alignSelf: 'center'
-  },
-  postDetailIcon: {
-    marginRight: 5,
-    alignSelf: 'center'
-  },
-  descriptionContainer: {
-    flex: 1,
+  metaContainer: {
+    marginVertical: 5,
+    flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  moreButton: {
-    backgroundColor: COLORS.PRIMARY,
-    width: 120,
+  metaItem: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  metaItemText: {
+    marginLeft: 5,
+    color: COLORS.BLACK_63,
+    fontSize: SIZES.SMALL_TEXT
+  },
+  postExcerpt: {
+    flex: 1,
+    fontSize: SIZES.SMALL_TEXT,
+    fontWeight: '400',
+    color: COLORS.BLACK_5C
+  },
+  postActionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10
+  },
+  postActionIcons: {
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  postActionIcon: {
+    marginLeft: 15
+  },
+  readMoreButtonContainer: {
+    borderRadius: 10,
     height: 30,
-    alignSelf: 'flex-end'
+    paddingHorizontal: 15
   },
-  moreButtonTitle: {
-    fontSize: 12,
-    alignSelf: 'center'
+  readMoreButton: {
+    alignContent: 'center'
   },
-  moreButtonIcon: {
-    color: COLORS.WHITE,
-    alignSelf: 'center'
+  readMoreButtonText: {
+    width: '100%',
+    fontSize: SIZES.NORMAL_TEXT,
+    color: COLORS.WHITE_F9,
+    textAlign: 'center',
+    alignSelf: 'center',
+    lineHeight: 30,
+    fontWeight: '400'
+  },
+  imageContainer: {
+    width: 120,
+    height: 150,
+    overflow: 'hidden',
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    alignSelf: 'center',
+    marginTop: 30
+  },
+  image: {
+    overflow: 'hidden',
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20
   }
 });
 export default withTranslation()(SinglePost);

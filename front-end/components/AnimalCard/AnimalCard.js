@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-  TouchableHighlight,
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  TouchableOpacity
-} from 'react-native';
+import { TouchableHighlight, View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
 import { SEX } from '../../constants';
+import { COLORS, SIZES } from '../../constants/theme';
 
 const AnimalCard = ({ t, item }) => {
   const adoptPet = () => {
@@ -20,8 +14,8 @@ const AnimalCard = ({ t, item }) => {
     console.log('appointment');
   };
 
-  const goToProfile = () => {
-    console.log('animal profile');
+  const savePet = () => {
+    console.log('save profile implement later');
   };
 
   return (
@@ -37,9 +31,7 @@ const AnimalCard = ({ t, item }) => {
             </View>
             <View>
               <Icon
-                name={
-                  item.sex === SEX.MALE.text ? 'male-symbol' : 'female-symbol'
-                }
+                name={item.sex === SEX.MALE.text ? 'male-symbol' : 'female-symbol'}
                 type="foundation"
                 size={18}
                 color="#b89685"
@@ -48,10 +40,7 @@ const AnimalCard = ({ t, item }) => {
           </View>
 
           <Text style={styles.cardRightSubTitle}>
-            {item.breed}{' '}
-            <Text style={styles.cardRightText}>
-              {t('monthAge', { age: item.age })}
-            </Text>
+            {item.breed} <Text style={styles.cardRightText}>{t('monthAge', { age: item.age })}</Text>
           </Text>
 
           <View style={styles.horizontalLine} />
@@ -63,17 +52,14 @@ const AnimalCard = ({ t, item }) => {
             </View>
             <View style={styles.cardRightBodyItem}>
               <Icon name="calendar" type="feather" size={12} />
-              <Text
-                style={styles.cardRightBodyItemText}
-                onPress={goToAppointment}
-              >
+              <Text style={styles.cardRightBodyItemText} onPress={goToAppointment}>
                 {t('makeAnAppointment')}
               </Text>
             </View>
             <View style={styles.cardRightBodyItem}>
-              <Icon name="award" type="feather" size={12} />
-              <Text style={styles.cardRightBodyItemText} onPress={goToProfile}>
-                {t('profile')}
+              <Icon name="bookmark" type="feather" size={12} />
+              <Text style={styles.cardRightBodyItemText} onPress={savePet}>
+                {t('save')}
               </Text>
             </View>
           </View>
@@ -81,11 +67,11 @@ const AnimalCard = ({ t, item }) => {
           <View>
             <Button
               onPress={adoptPet}
-              icon={<Icon name="heart" type="feather" size={12} color="#fff" />}
-              title={t('adopt')}
+              icon={<Icon name="award" type="feather" size={12} color="#fff" />}
+              title={t('profile')}
               buttonStyle={styles.adoptButton}
               titleStyle={styles.adoptButtonTitle}
-            ></Button>
+            />
           </View>
         </View>
       </View>
@@ -94,38 +80,31 @@ const AnimalCard = ({ t, item }) => {
 };
 
 const styles = StyleSheet.create({
-  headerLeftButton: {
-    paddingLeft: 15
-  },
-  headerRightButton: {
-    paddingRight: 15
-  },
   cardContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 10
+    padding: 10,
+    backgroundColor: COLORS.WHITE_LIGHT,
+    marginVertical: 5,
+    borderRadius: 10,
+    overflow: 'hidden'
   },
   cardLeftPanel: {
     flex: 2,
-    marginBottom: 20,
-    marginRight: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#b89685'
+    marginRight: 10
   },
   cardRightPanel: {
     flex: 3,
-    marginLeft: 10,
-    marginBottom: 20
+    marginLeft: 10
   },
   cardImage: {
     flex: 1,
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    borderColor: COLORS.PRIMARY
   },
   cardRightContainer: {
-    padding: 5,
     justifyContent: 'space-between'
   },
   cardRightHeader: {
@@ -133,25 +112,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   cardRightTitle: {
-    fontSize: 14,
-    color: '#b89685',
+    fontSize: SIZES.NORMAL_TEXT,
+    color: COLORS.PRIMARY,
     fontWeight: '600'
   },
   cardRightText: {
-    fontSize: 10,
-    color: '#504746',
+    fontSize: SIZES.MINI_TEXT,
+    color: COLORS.TEXT,
     fontWeight: '400'
   },
   cardRightSubTitle: {
-    fontSize: 10,
+    fontSize: SIZES.MINI_TEXT,
     fontWeight: '400',
     fontStyle: 'italic',
-    color: '#504746'
+    color: COLORS.TEXT
   },
   horizontalLine: {
     width: 50,
     height: 1,
-    backgroundColor: '#b89685',
+    backgroundColor: COLORS.PRIMARY,
     marginTop: 10,
     marginBottom: 5
   },
@@ -164,16 +143,16 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   cardRightBodyItemText: {
-    fontSize: 12,
+    fontSize: SIZES.SMALL_TEXT,
     lineHeight: 14,
     marginLeft: 5
   },
   adoptButton: {
-    backgroundColor: '#b89685'
+    backgroundColor: COLORS.PRIMARY
   },
   adoptButtonTitle: {
     marginLeft: 5,
-    fontSize: 12
+    fontSize: SIZES.SMALL_TEXT
   }
 });
 

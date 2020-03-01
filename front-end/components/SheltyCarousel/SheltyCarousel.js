@@ -18,15 +18,12 @@ const SheltyCarousel = ({ data }) => {
           {...parallaxProps}
           key={item.id}
         />
-        <Text style={styles.carouselTitle} numberOfLines={2}>
-          {item.title}
-        </Text>
       </View>
     );
   };
 
   return (
-    <View style={styles.carouselContainer}>
+    <View>
       <Carousel
         ref={carouselRef}
         sliderWidth={screenWidth}
@@ -41,22 +38,24 @@ const SheltyCarousel = ({ data }) => {
 };
 
 const styles = StyleSheet.create({
-  carouselContainer: {
-    marginTop: 30
-  },
   carouselItem: {
     width: screenWidth - 60,
-    height: 150
+    height: 150,
+    marginBottom: 15,
+    borderRadius: 8,
+    overflow: 'hidden'
   },
   carouselImageContainer: {
     flex: 1,
     marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
-    backgroundColor: 'white',
-    borderRadius: 8
+    backgroundColor: 'white'
   },
   carouselImage: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: 'contain'
+    resizeMode: 'cover',
+    borderRadius: 8,
+    borderWidth: 1,
+    overflow: 'hidden'
   },
   carouselTitle: {
     fontSize: 14,
