@@ -1,5 +1,11 @@
 import React from 'react';
-import { TouchableHighlight, View, Image, Text, StyleSheet } from 'react-native';
+import {
+  TouchableHighlight,
+  View,
+  Image,
+  Text,
+  StyleSheet
+} from 'react-native';
 
 const Story = ({ story }) => {
   const showStory = () => {
@@ -31,7 +37,7 @@ const styles = StyleSheet.create({
   storyImage: {
     width: 48,
     height: 48,
-    borderRadius: 48,
+    borderRadius: 24,
     borderWidth: 1,
     marginLeft: 1,
     marginTop: 1,

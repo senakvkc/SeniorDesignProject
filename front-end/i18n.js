@@ -1,6 +1,5 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { Localization } from 'expo-localization';
 
 import englishTranslation from './translation/translation-en.json';
 import turkishTranslation from './translation/translation-tr.json';
