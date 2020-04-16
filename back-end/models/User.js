@@ -14,10 +14,6 @@ const UserSchema = new Schema(
     lastName: {
       type: String
     },
-    username: {
-      type: String,
-      unique: true
-    },
     email: {
       type: String,
       required: true,
@@ -31,6 +27,13 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       unique: true
+    },
+    username: {
+      type: String,
+      unique: true
+    },
+    about: {
+      type: String
     },
     profilePicture: {
       type: String,
@@ -72,11 +75,22 @@ const UserSchema = new Schema(
     confirmId: {
       type: String
     },
-    resetPasswordToken: {
+    phoneCode: {
       type: String
     },
-    resetPasswordExpiration: {
+    resetPasswordCode: {
       type: String
+    },
+    resetPasswordCodeExpiration: {
+      type: Date
+    },
+    emailConfirmed: {
+      type: Boolean,
+      default: false
+    },
+    phoneConfirmed: {
+      type: Boolean,
+      default: false
     },
     animals: [
       {
@@ -134,10 +148,7 @@ const UserSchema = new Schema(
         ref: 'Animal'
       }
     ],
-    isApproved: {
-      type: Boolean,
-      default: false
-    },
+
     createdBy: {
       type: String
     },

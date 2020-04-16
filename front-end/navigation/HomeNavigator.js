@@ -7,6 +7,10 @@ import TakenPhoto from '../components/TakenPhoto';
 import SettingsScreen from '../scenes/Settings';
 import CreateScreen from '../scenes/Create';
 import _ from 'lodash';
+import { COLORS } from '../constants/theme';
+import CameraTrigger from '../components/CameraTrigger';
+import SettingsTrigger from '../components/SettingsTrigger';
+
 
 const screensWithHiddenBottomBar = ['SheltyCamera', 'TakenPhoto'];
 
@@ -14,7 +18,21 @@ const HomeNavigator = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,
-      navigationOptions: NAVIGATION_OPTIONS
+      navigationOptions: ({ navigation }) => ({
+        headerTitleStyle: {
+          flex: 1,
+          textAlign: 'center',
+          alignSelf: 'center',
+          color: COLORS.PURPLE
+        },
+        headerStyle: {
+          shadowColor: 'transparent',
+          backgroundColor: COLORS.WHITE,
+          elevation: 1
+        },
+        headerLeft: <CameraTrigger navigation={navigation} />,
+        headerRight: <SettingsTrigger navigation={navigation} />
+      }),
     },
     SheltyCamera: {
       screen: SheltyCamera,
@@ -34,12 +52,13 @@ const HomeNavigator = createStackNavigator(
     },
     Create: {
       screen: CreateScreen,
-      navigationOptions: NAVIGATION_OPTIONS
-    }
+      navigationOptions: {
+        header: null
+      }
+    },
   },
   {
     navigationOptions: ({ navigation }) => {
-      console.log(navigation);
       let tabBarVisible = !_.includes(
         screensWithHiddenBottomBar,
         navigation.state.routes[navigation.state.index].routeName

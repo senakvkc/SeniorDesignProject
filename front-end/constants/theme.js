@@ -25,6 +25,7 @@ export const COLORS = Object.freeze({
   WHITE_FB: '#FBFBFB',
   WHITE_F9: '#F9F9F9',
   WHITE_D9: '#D9D9D9',
+  WHITE_LIGHT: '#FAFAFA',
   BLACK: '#000000',
   BLACK_A: '#AAAAAA',
   BLACK_25: '#252525',
@@ -33,7 +34,11 @@ export const COLORS = Object.freeze({
   MASK: 'rgba(0, 0, 0, 0.05)',
   TRANSPARENT: 'rgba(0, 0, 0, 0)',
   SILVER_PINK: '#D9A3D0',
-  GREEN: '#34A554'
+  GREEN: '#34A554',
+  PIGMENT: '#451DA5',
+  MAGNOLIA: '#F7E2FF',
+  POMP: '#7D5D99',
+  DARK_GREY: '#C9C9C9',
 });
 
 export const SIZES = Object.freeze({
@@ -45,5 +50,5 @@ export const SIZES = Object.freeze({
   INPUT_TEXT: 20,
   SMALL_TEXT: 12,
   MINI_TEXT: 10,
-  HUGE: 30
+  HUGE: 30,
 });

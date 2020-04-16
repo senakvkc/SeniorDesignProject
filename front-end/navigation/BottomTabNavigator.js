@@ -1,13 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { Icon } from 'react-native-elements';
+
 import SheltersScreen from '../scenes/Shelters';
-import CreateNavigator from './CreateNavigator';
 import BlogScreen from '../scenes/Blog';
 import ProfileScreen from '../scenes/Profile';
-import { Icon } from 'react-native-elements';
 import { SIZES, COLORS } from '../constants/theme';
+
 import HomeNavigator from './HomeNavigator';
 import BlogNavigator from './BlogNavigator';
+import CreateNavigator from './CreateNavigator';
 
 const BottomTabNavigator = createBottomTabNavigator(
   {

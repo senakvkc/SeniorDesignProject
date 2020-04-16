@@ -9,47 +9,42 @@ const phoneRegex = /(05|5)([0-9]){9}/;
 const usernameRegex = /^[A-Za-z0-9]+(?:[A-Za-z0-9_]+)*$/;
 
 module.exports = {
-  isEmailOrPhoneValid: (email, phone) => {
-    console.log('validating email or phone');
-    if (
-      !_.isEqual(_.first(emailRegex.exec(email)), email) &&
-      !_.isEqual(_.first(phoneRegex.exec(phone)), phone)
-    ) {
-      console.log('invalid regex');
-      throw new UserInputError(i18n.__('invalidEmailOrPhone'), {
-        invalidArgs: ['email', 'phone']
-      });
+  validateWithRegex: (regex, value, error) => {
+    if (!_.isEqual(_.first(regex.exec(value)), value)) {
+      throw new UserInputError(error);
     }
 
-    console.log('regex validated.');
     return true;
   },
 
   isFieldsEmpty: fieldsObject => {
     const fields = Object.keys(fieldsObject);
-    const isEmpty = _.some(fields, field =>
-      _.isEmpty(_.trim(fieldsObject[field]))
-    );
+    const isEmpty = _.some(fields, field => _.isEmpty(_.trim(fieldsObject[field])));
 
     if (isEmpty) {
-      console.error({
-        text: i18n.__('noEmptyFields'),
-        code: 1
-      });
       throw new UserInputError(i18n.__('noEmptyFields'));
     }
 
-    console.log('empty fields validated!');
-    return isEmpty;
+    return false;
   },
 
-  isUsernameValid: username => {
-    if (!_.isEqual(_.first(usernameRegex.exec(username)), username)) {
-      console.log('invalid regex');
-      throw new UserInputError(i18n.__('invalidUsername'));
+  validatePassword: (password, error) => {
+    if (password.length < 6) {
+      throw new UserInputError(error);
     }
 
-    console.log('regex validated.');
     return true;
+  },
+
+  validateForRegistration: fields => {
+    const { email, phone, password, name, surname } = fields;
+
+    // is empty check
+    const isEmpty = isFieldsEmpty(fields);
+    const isPhoneValidated = validateWithRegex(phoneRegex, phone, i18n.__('invalidPhone'));
+    const isEmailValidated = validateWithRegex(emailRegex, email, i18n.__('invalidEmail'));
+    const isPasswordValidated = validatePassword(password, i18n.__('tooShortPassword'));
+
+    return !isEmpty && isPhoneValidated && isEmailValidated && isPasswordValidated;
   }
 };

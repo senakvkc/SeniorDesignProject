@@ -46,20 +46,53 @@ const PetCard = ({ t, pet }) => {
   );
 
   const renderProfileButton = (
-    <BasicSheltyButton onPress={goToPetProfile} text="Profil" containerStyle={styles.containerStyle} profileButtonStyle={styles.profileButton} />
+    <BasicSheltyButton
+      onPress={goToPetProfile}
+      text="Profil"
+      containerStyle={styles.containerStyle}
+      profileButtonStyle={styles.profileButton}
+    />
   );
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} width={150} height={150} source={{ uri: pet.thumbnail }} />
+        <Image style={styles.image} width={100} height={100} source={{ uri: pet.thumbnail }} />
       </View>
       <View style={styles.detailContainer}>
-        <View style={styles.detailMask}></View>
-        <View style={styles.detailBackground}>
-          {renderMainInfo}
-          {renderLocation}
-          {renderProfileButton}
+        <View>
+          <View style={styles.nameContainer}>
+            <Text style={styles.nameText}>Charlie</Text>
+            <Icon
+              type="ionicon"
+              name={pet.sex === SEX.MALE.text() ? 'ios-male' : 'ios-female'}
+              size={SIZES.NORMAL_TEXT}
+              color={COLORS.BLACK_A}
+            />
+          </View>
+          <Text style={styles.breedText}>Labrador</Text>
+        </View>
+        <View>
+          <View style={styles.ageContainer}>
+          <Icon
+              type="feather"
+              name="gift"
+              size={SIZES.NORMAL_TEXT}
+              color={COLORS.SILVER_PINK}
+              style={styles.mapIcon}
+            />
+          <Text style={styles.ageText}>18 aylık</Text>
+          </View>
+          <View style={styles.locationContainer}>
+            <Icon
+              type="feather"
+              name="map-pin"
+              size={SIZES.NORMAL_TEXT}
+              color={COLORS.SILVER_PINK}
+              style={styles.mapIcon}
+            />
+            <Text style={styles.locationText}>{pet.shelter}</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -71,120 +104,75 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     width: screenWidth - 40,
-    height: 150,
-    maxWidth: 330,
+    height: 120,
     marginVertical: 15,
-    alignItems: 'center'
-  },
-  imageContainer: {
-    width: 150,
-    height: 150,
-    overflow: 'hidden',
-    borderRadius: 20
-  },
-  image: {
-    overflow: 'hidden',
-    borderRadius: 20
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 1,
+    borderRadius: 15,
+    padding: 10,
   },
   detailContainer: {
     flex: 1,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    height: 150
-  },
-  detailMask: {
-    width: '100%',
-    height: 120,
-    borderRadius: 20,
-    backgroundColor: COLORS.MASK,
-    position: 'absolute',
-    top: 18,
-    left: 3
-  },
-  detailBackground: {
+    height: 100,
     flexDirection: 'column',
-    width: '100%',
-    height: 120,
-    paddingHorizontal: 10,
-    backgroundColor: COLORS.WHITE_F9,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
     justifyContent: 'space-between',
-    paddingTop: 10,
-    borderWidth: 1,
-    borderColor: COLORS.WHITE_FB
+    paddingLeft: 20,
+    paddingRight: 10,
+    alignItems: 'stretch',
+    alignContent: 'stretch'
   },
-  detail: {
+  imageContainer: {
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
+  },
+  image: {
+    overflow: 'hidden',
+    borderRadius: 15,
+  },
+  nameContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  mainInfo: {
-    flex: 1,
-    flexDirection: 'column'
+  nameText: {
+    fontSize: 18,
+    fontWeight: '600',
   },
-  mainInfoTop: {
+  breedText: {
+    fontSize: 14,
+    color: '#444'
+  },
+  ageContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 5
   },
-  title: {
-    fontSize: SIZES.NORMAL_TEXT,
-    color: COLORS.BLACK
-  },
-  age: {
-    fontSize: SIZES.MINI_TEXT,
-    color: COLORS.BLACK_A,
-    fontWeight: '400',
+  ageText: {
+    fontSize: 12,
+    color: '#424242',
     marginLeft: 5
   },
-  breed: {
-    fontSize: SIZES.MINI_TEXT,
-    color: COLORS.BLACK_63
-  },
-  sexIcon: {
-    alignSelf: 'center',
-    color: COLORS.BLACK_A,
-    fontWeight: '400'
-  },
-  location: {
+  locationContainer: {
     flexDirection: 'row',
-    marginTop: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  address: {
+  locationText: {
     marginLeft: 5,
-    fontSize: SIZES.MINI_TEXT,
+    fontSize: 12,
     fontWeight: '400',
-    color: COLORS.BLACK_63
-  },
-  profileButtonContainer: {
-    borderRadius: 10,
-    height: 35,
-    position: 'relative',
-    top: 15,
-  },
-  profileButton: {
-    width: 150,
-    alignContent: 'center'
-  },
-  profileButtonText: {
-    fontSize: SIZES.NORMAL_TEXT,
-    color: COLORS.WHITE_F9,
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
-  containerStyle: {
-    borderRadius: 10,
-    height: 35,
-    position: 'relative',
-    top: 15
+    color: '#424242',
   },
 });
 
 PetCard.propTypes = {
   t: PropTypes.func.isRequired,
-  pet: PropTypes.object.isRequired
+  pet: PropTypes.object.isRequired,
 };
 
 PetCard.defaultProps = {};

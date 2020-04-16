@@ -16,37 +16,19 @@ import _ from 'lodash';
 
 import { COLORS, SIZES } from '../../constants/theme';
 import { SHARED_PHOTOS, USER_TOKEN } from '../../constants';
-import { AppLoading } from 'expo';
 import { withTranslation } from 'react-i18next';
-import ProfileImages from '../../components/ProfileImages';
-import ProfileInfoCard from '../../components/ProfileInfoCard';
-import OwnerInfo from '../../components/OwnerInfo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import SheltyButton from '../../components/common/SheltyButton';
-import BasicSheltyButton from '../../components/common/BasicSheltyButton';
+
+import FriendlySvg from '../../assets/svgs/friendly-cat.svg';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const actualHeight = screenHeight - 60;
+const pad = 24;
+const cardHeight = 100;
+const cardPosition =  ((cardHeight / 2) + 24) * -1; 
 
 const ProfileScreen = ({ t }) => {
   const [userData, setUserData] = useState(null);
-
-  const featureData = [
-    {
-      color: COLORS.PURPLE,
-      icon: 'align-center',
-      feature: 'Friendly'
-    },
-    {
-      color: COLORS.PURPLE,
-      icon: 'align-center',
-      feature: 'Playful'
-    },
-    {
-      color: COLORS.PURPLE,
-      icon: 'align-center',
-      feature: 'Angry'
-    }
-  ];
 
   const getCurrentUser = async () => {
     const userToken = await AsyncStorage.getItem(USER_TOKEN);
@@ -54,13 +36,9 @@ const ProfileScreen = ({ t }) => {
     setUserData(JSON.parse(userToken));
   };
 
-  const goToProfileSettings = () => {
-    console.log('profile settings');
-  };
-
-  const goToReportUser = () => {
-    console.log('user report screen');
-  };
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   const getFullName = () => {
     const { user } = userData;
@@ -71,45 +49,62 @@ const ProfileScreen = ({ t }) => {
     console.log('adopt');
   };
 
-  useEffect(() => {}, []);
-
-  const renderPhoneNumber = number => {
-    return number;
-  };
-
-  const renderFeature = ({ color, icon, feature }) => (
-    <View key={feature} style={{ ...styles.feature, backgroundColor: color }}>
-      <Icon type="feather" name={icon} size={SIZES.HUGE} color={COLORS.SILVER_PINK} />
-      <Text style={styles.featureText}>{feature}</Text>
-    </View>
-  );
-
-  const renderProfileActions = () => (
-    <View style={styles.actionContainer}>
-      <View style={styles.likeContainer}>
-        <Icon type="feather" name="heart" size={SIZES.NORMAL_TEXT} color={COLORS.WHITE_F9} />
-      </View>
-      <View style={styles.adoptButtonContainer}>
-        <BasicSheltyButton onPress={goToAdopt} text={t('adopt')} containerStyle={styles.adoptButtonContainer} />
-      </View>
-    </View>
-  );
-
   return (
     <>
       <StatusBar hidden />
       <View style={styles.container}>
-        <ProfileImages />
+        <View style={styles.photoSection}>
+          <View style={styles.topActions}>
 
-        <View style={styles.profileContainer}>
-          <ProfileInfoCard />
+          </View>
+          <View style={styles.photo}>
+            <Text>Photo Section</Text>
+          </View>
+        </View>
 
-          <View style={styles.mainContainer}>
-            <View style={styles.features}>{_.map(featureData, feature => renderFeature(feature))}</View>
+        <View style={styles.mainSection}>
+          <View style={styles.petCard}>
+            <View style={styles.leftPetCard}>
+              <View style={styles.petName}>
+                <Text style={styles.petNameText}>
+                  Daisy
+                </Text>
+                <Icon type="ionicon" name="ios-female" color="#AAA" size={18} />
+              </View>
+              <Text style={styles.breed}>Absinian Cat</Text>
+              <Text style={styles.age}>2 years old</Text>
+            </View>
+            <View style={styles.rightPetCard}>
+              <View style={styles.petCardActions}>
+                <Icon iconStyle={styles.petCardActionIcon} type="feather" name="share-2" color="#FEA195" size={16} />
+                <Icon type="feather" name="heart" color="#FEA195" size={16} />
+              </View>
+            </View>
+          </View>
 
-            <OwnerInfo />
+          <View style={styles.features}>
+            <View style={styles.featureItem}>
+              <FriendlySvg width={30} height={30} />
+              <Text style={styles.featureText}>Friendly</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <FriendlySvg width={30} height={30} />
+              <Text style={styles.featureText}>Friendly</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <FriendlySvg width={30} height={30} />
+              <Text style={styles.featureText}>Friendly</Text>
+            </View>
+          </View>
 
-            {renderProfileActions()}
+          <View style={styles.owner}>
+          <Text>Owner</Text>
+
+          </View>
+
+          <View style={styles.contact}>
+          <Text>Contact</Text>
+
           </View>
         </View>
       </View>
@@ -119,75 +114,96 @@ const ProfileScreen = ({ t }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: actualHeight,
     flexDirection: 'column',
-    alignItems: 'center'
   },
-  profileContainer: {
-    flex: 3,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    alignItems: 'center'
+  photoSection: {
+    flex: 4,
+    backgroundColor: '#FEA195',
   },
-  mainContainer: {
-    flex: 1,
+  mainSection: {
+    flex: 6,
+    padding: pad,
     flexDirection: 'column',
-    justifyContent: 'space-evenly'
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    backgroundColor: '#fff',
+    position: 'relative',
+    top: -15,
   },
-  features: {
-    width: screenWidth - 60,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'flex-start',
-    marginTop: -25
-  },
-  feature: {
-    justifyContent: 'center',
-    backgroundColor: COLORS.PURPLE,
+  petCard: {
+    height: 100,
+    backgroundColor: '#fff',
+    position: 'relative',
+    top: cardPosition,
     borderRadius: 10,
-    width: 80,
-    height: 80
-  },
-  featureText: {
-    textAlign: 'center',
-    color: COLORS.WHITE,
-    fontSize: SIZES.SMALL_TEXT,
-    fontWeight: '400'
-  },
-  actionContainer: {
-    width: screenWidth - 60,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 2,
     flexDirection: 'row',
-    marginTop: 15,
-    alignItems: 'stretch'
+    justifyContent: 'space-between'
   },
-  likeContainer: {
-    height: 35,
-    width: 35,
-    backgroundColor: COLORS.PURPLE,
-    borderRadius: 10,
+  petName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5
+  },
+  petNameText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginRight: 10,
+  },
+  breed: {
+    fontSize: 14,
+    marginBottom: 5,
+    color: '#454545'
+  },
+  age: {
+    fontSize: 14,
+    color: '#454545'
+  },
+  rightPetCard: {
     justifyContent: 'center'
   },
-  adoptButtonContainer: {
-    flex: 1,
-    height: 35,
-    marginLeft: 5,
-    borderRadius: 10,
+  petCardActions: {
+    flexDirection: 'row',
   },
-  adoptButton: {
-    marginLeft: 15,
-    backgroundColor: COLORS.PURPLE,
-    borderRadius: 10,
-    alignContent: 'center'
+  petCardActionIcon: {
+    marginRight: 10
   },
-  adoptButtonText: {
-    width: '100%',
-    fontSize: SIZES.NORMAL_TEXT,
-    color: COLORS.WHITE_F9,
-    textAlign: 'center',
-    alignSelf: 'center',
-    lineHeight: 35,
-    fontWeight: '400'
+
+
+  features: {
+    height: 80,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'relative',
+    top: (cardHeight / 2) * -1
   },
+  featureItem: {
+    width: 80,
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#FFF5F4',
+    borderRadius: 10
+  },
+  featureText: {
+    color: '#FEA195'
+  },
+
+  owner: {
+    flex: 10,
+    backgroundColor: '#A4BEEA',
+  },
+  contact: {
+    flex: 5,
+    backgroundColor: '#8ED5A6',
+  }
 });
 
 export default withTranslation()(ProfileScreen);

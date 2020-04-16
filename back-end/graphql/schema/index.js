@@ -1,115 +1,203 @@
-const { buildSchema } = require('graphql');
+const CAT_BREEDS = require('../../models/enums/CatBreed');
+const DOG_BREEDS = require('../../models/enums/DogBreed');
+const { gql } = require('apollo-server');
 
-module.exports = buildSchema(`
-    type User {
-      _id: ID!
-      firstName: String
-      lastName: String
-      username: String
-      email: String!
-      password: String
-      about: String
-      profilePicture: String
-      gender: Gender
-      phone: String
-      address: String
-      city: String
-      country: String
-      userType: UserType!
-      birthdate: String
-      isActive: Boolean
-      isBlocked: Boolean
-      createdAt: String
-      updatedAt: String
-      createdBy: String
-      updatedBy: String
-      resetPasswordToken: String
-      resetPasswordExpiration: String
-      animals: [Animal]
-      shelters: [Shelter]
-    }
 
-    type Shelter {
-      _id: ID!
-      name: String!
-      code: Int!
-      address: String!
-      city: String!
-      country: String!
-      createdBy: String
-      updatedBy: String
-      createdAt: String
-      updatedAt: String
-      owner: User
-    }
-
-    type Animal {
-      _id: ID!
-      name: String
-      code: Int!
-      birthdate: String
-      gender: Gender
-      animalType: AnimalType
-      owner: User
-      createdBy: String
-      updatedBy: String
-      createdAt: String
-      updatedAt: String
-    }
-
-    enum UserType {
-      USER
-      SHELTER_OWNER
-      VET
-    }
-
-    enum AnimalType {
-      CAT
-      DOG
-    }
+const typeDefs = gql`
+  type User {
+    _id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    phone: String
+    about: String
+    profilePicture: String
+    gender: Gender
+    address: String
+    city: String
+    country: String
+    userType: UserType!
+    birthdate: String
+    isActive: Boolean
+    isBlocked: Boolean
+    confirmId: String
+    phoneCode: String
+    resetPasswordCode: String
+    resetPasswordCodeExpiration: String
+    emailConfirmed: Boolean
+    phoneConfirmed: Boolean
+    animals: [Animal]
+    shelters: [Shelter]
     
-    enum Gender {
-      MALE
-      FEMALE
-      NONE
-    }
-     
-    type AuthData {
-      userId: ID!
-      token: String!
-      user: User!
-    }
+    createdAt: String
+    updatedAt: String
+    createdBy: String
+    updatedBy: String
+  }
+
+  type Shelter {
+    _id: ID!
+    name: String!
+    code: Int!
+    address: String!
+    city: String!
+    country: String!
+    owner: User
+
+    createdBy: String
+    updatedBy: String
+    createdAt: String
+    updatedAt: String
+  }
+
+  type Animal {
+    _id: ID!
+    name: String!
+    code: Int!
+    breed: Breed
+    ageInterval: AgeInterval!
+    gender: Gender!
+    animalType: AnimalType!
+    description: String!
+    healthProblems: String
+    characteristics: [Characteristic]!
+    profilePhoto: File!
+    images: [File]
+
+    createdBy: String
+    updatedBy: String
+    createdAt: String
+    updatedAt: String
+  }
+
+  type File {
+    filaneme: String!
+    mimetype: String!
+    encoding: String!
+  }
+
+  type Post {
+    title: String!
+    description: String!
+    slug: String!
+    content: String!
+    featuredImage: String
+    user: User!
+    comments: [Comment]
     
-    type ForgotPasswordData {
-      emailOrUsername: String
-      token: String
-    }
+    createdBy: String
+    updatedBy: String
+    createdAt: String
+    updatedAt: String
+  }
+
+  type Comment {
+    content: String!
+    user: User!
     
+    createdBy: String
+    updatedBy: String
+    createdAt: String
+    updatedAt: String
+  }
 
-    input UserRegisterInput {
-      email: String!
-      password: String!
-      phone: String!
-      username: String!
-    }
+  enum UserType {
+    USER
+    SHELTER_OWNER
+    VET
+  }
 
-    type RootQuery {
-      forgotPassword(emailOrUsername: String!): ForgotPasswordData
-      currentUser: User
-      getUsers: [User!]
-      getUserById(userId: ID!): User
-      getUserByUsername(username: String!): User
-      getUserByPhone(phone: String!): User
-    }
+  enum AnimalType {
+    CAT
+    DOG
+  }
+  
+  enum Gender {
+    MALE
+    FEMALE
+    NONE
+  }
+  
+  enum AgeInterval {
+    ZERO_SIX
+    SIX_TWELVE
+    TWELVE_TWOFOUR
+    TWOFOUR_MORE
+  }
 
-    type RootMutation {
-      login(emailOrPhone: String!, password: String!): AuthData
+  enum Breed {
+    BREED_1
+    BREED_2
+    BREED_3
+    BREED_4
+    BREED_5
+  }
 
-      register(userRegisterInput: UserRegisterInput!): AuthData
-    }
+  enum Characteristic {
+    CHAR_1
+    CHAR_2
+    CHAR_3
+    CHAR_4
+    CHAR_5
+  }
+    
+  type AuthData {
+    userId: ID!
+    token: String!
+    user: User!
+  }
+  
+  type ForgotPasswordData {
+    phone: String
+    token: String
+  }
+  
 
-    schema {
-      query: RootQuery
-      mutation: RootMutation
-    }
-  `);
+  input UserRegisterInput {
+    email: String!
+    password: String!
+    phone: String!
+    name: String!
+    surname: String!
+  }
+
+  input CreatePetInput {
+    type: AnimalType!
+    name: String!
+    age: AgeInterval!
+    breed: Breed!
+    characteristics: [Characteristic!]!
+    description: String!
+    gender: Gender!
+    image: Upload!
+  }
+
+  type Query {
+    currentUser: User
+    getUsers: [User!]
+    getUserById(userId: ID!): User
+    getUserByPhone(phone: String!): User
+    
+    getLast10Posts: [Post]
+    getPostById(postId: ID!): Post
+    getPostsWithPage(offset: Int, limit: Int): [Post]
+    getPostsByUser(userId: ID!): [Post]
+    getPostsByUserWithPage(offset: Int, limit: Int, userId: ID!): [Post]
+
+  }
+
+  type Mutation {
+    login(phone: String!, password: String!): AuthData
+    register(userRegisterInput: UserRegisterInput!): AuthData
+    forgotPasswordWithPhone(phone: String!): Boolean
+    resetPassword(phone: String!, code: String!, newPassword: String!): Boolean
+    checkResetPasswordCode(phone: String!, code: String!): Boolean
+    activateAccountWithPhone(phone: String!, code: String!): Boolean
+    activateAccount(phone: String!, code: String!): Boolean
+
+    createPet(createPetInput: CreatePetInput): Animal!
+  }
+`;
+
+module.exports = typeDefs;

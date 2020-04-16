@@ -1,41 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppLoading } from 'expo';
 import {
-  FlatList,
-  Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-  Platform,
   View,
-  ScrollView,
-  AsyncStorage
+  ScrollView
 } from 'react-native';
-import { Icon, Button } from 'react-native-elements';
-import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
-
+import { Icon } from 'react-native-elements';
 import _ from 'lodash';
-
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
-import { createAppContainer } from 'react-navigation';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-
-import { BOTTOM_NAV_TABS, STORIES, CAROUSEL_ITEMS, MENU_ITEMS, LAST_ITEMS, ANIMALS } from '../../constants';
-
-import BlogScreen from '../Blog';
-import ProfileScreen from '../Profile';
-import SheltersScreen from '../Shelters';
-import AnimalCard from '../../components/AnimalCard/AnimalCard';
+import { STORIES, ANIMALS } from '../../constants';
 import StoryPanel from '../../components/StoryPanel';
 import { COLORS } from '../../constants/theme';
-import SheltyCarousel from '../../components/SheltyCarousel';
 import SearchBox from '../../components/SearchBox';
 import PetCard from '../../components/PetCard';
-
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const HomeScreen = (props, { navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +37,7 @@ const HomeScreen = (props, { navigation }) => {
     });
   }, []);
 
-  handleSearch = value => {
+  const handleSearch = value => {
     console.log(value);
     setSearchValue(value);
   };
@@ -89,6 +68,10 @@ const HomeScreen = (props, { navigation }) => {
     </View>
   );
 };
+
+HomeScreen.navigationOptions = {
+  title: 'Shelty'
+}
 
 const styles = StyleSheet.create({
   container: {

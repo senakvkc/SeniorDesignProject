@@ -2,9 +2,10 @@ import React from 'react';
 import { Button, Icon } from 'react-native-elements';
 import { COLORS, SIZES } from '../../constants/theme';
 
+
 const SettingsTrigger = ({ navigation }) => {
   const openSettings = () => {
-    console.log('settings');
+    navigation.navigate('Settings');
   };
 
   return (
