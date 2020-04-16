@@ -3,10 +3,11 @@ import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-nati
 import { Button, Icon, Image } from 'react-native-elements';
 import { SIZES, COLORS } from '../../constants/theme';
 import { withTranslation } from 'react-i18next';
-import SheltyButton from '../../components/common/SheltyButton';
-import BasicSheltyButton from '../../components/common/BasicSheltyButton';
 import { ANIMAL_TYPES } from '../../constants';
-import newPetBg from '../../assets/new_pet_bg.jpg';
+import CatBg from '../../assets/cat.svg';
+import DogBg from '../../assets/dog.svg';
+import { SvgUri } from 'react-native-svg';
+
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -19,18 +20,14 @@ const CreateScreen = ({ t, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.actionContainer}>
-        <BasicSheltyButton
-          onPress={() => handleNewPetClick(ANIMAL_TYPES.CAT)}
-          text={t('addNewCat')}
-          buttonStyle={styles.createButton}
-          containerStyle={styles.adoptButtonContainer}
-          titleStyle={styles.buttonTitle}
+      <View style={[styles.section, styles.dog]}>
+        <DogBg
         />
-        <BasicSheltyButton onPress={() => handleNewPetClick(ANIMAL_TYPES.DOG)} text={t('addNewDog')} containerStyle={styles.adoptButtonContainer} titleStyle={styles.buttonTitle} />
       </View>
-      <View style={styles.backgroundContainer}>
-        <Image source={newPetBg} style={styles.newPetBg} />
+      <View style={[styles.section, styles.cat]}>
+        <CatBg
+        />
+        
       </View>
     </View>
   );
@@ -45,35 +42,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: COLORS.WHITE_LIGHT,
-    padding: 25,
     alignItems: 'center'
   },
-  actionContainer: {
+  section: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    marginVertical: 15
-  },
-  adoptButtonContainer: {
-    flex: 1,
-    borderRadius: 20,
-    alignContent: 'center',
-    alignItems: 'stretch',
+    alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 5,
-  },
-  createButton: {
     width: '100%'
   },
-  backgroundContainer: {
-    flex: 1
+  dog: {
+    backgroundColor: '#FFF5F4',
   },
-  newPetBg: {
-    width: screenWidth,
-    height: screenWidth * 0.66
-  },
-  buttonTitle: {
-    fontSize: 18
+  cat: {
+    backgroundColor: '#F0FFF5'
   }
 });
 

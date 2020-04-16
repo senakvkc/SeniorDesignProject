@@ -50,7 +50,8 @@ const userMutations = {
     }
 
     const { isActive, isBlocked, phoneConfirmed } = user;
-    if (!isActive || !isBlocked) {
+    console.log(user);
+    if (!isActive || isBlocked) {
       throw new AuthenticationError(ERROR_TYPES.USER_BLOCKED_OR_NOT_ACTIVE.text, ERROR_TYPES.USER_BLOCKED_OR_NOT_ACTIVE.code);
     }
 
@@ -60,10 +61,9 @@ const userMutations = {
     }
 
     // if everything is fine, we can create token now.
-    const token = createToken(user.id, user.email, process.env.SECRET_KEY);
+    const token = createToken(user.id, user.email, user.phone, process.env.SECRET_KEY);
 
     // return logged in user data.
-    // TODO: Set password: null
     return {
       userId: user.id,
       token,
@@ -95,6 +95,7 @@ const userMutations = {
     const newUser = new User({
       email,
       phone,
+      username: email,
       password: hashedPass,
       confirmId,
       firstName: name,
@@ -143,9 +144,9 @@ const userMutations = {
       const smsMessage = client.sms.message(
         (error, responseBody) => {
           if (error === null) {
-            if (responseBody && responseBody.status.code > 10000) {
+            /* if (responseBody && responseBody.status.code > 10000) {
               throw new ApolloError(ERROR_TYPES.MESSAGE_PROVIDER_ERROR.text, ERROR_TYPES.MESSAGE_PROVIDER_ERROR.code);
-            }
+            } */
             return true;
           } else {
             throw new ApolloError(ERROR_TYPES.MESSAGE_PROVIDER_ERROR.text, ERROR_TYPES.MESSAGE_PROVIDER_ERROR.code);
