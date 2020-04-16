@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   storyImage: {
     width: 48,
     height: 48,
-    borderRadius: 48,
+    borderRadius: 24,
     borderWidth: 1,
     marginLeft: 1,
     marginTop: 1,

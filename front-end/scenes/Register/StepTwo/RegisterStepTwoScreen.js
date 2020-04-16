@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,16 +6,19 @@ import {
   ImageBackground,
   Image,
   TextInput,
-  Dimensions,
   TouchableOpacity,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  KeyboardAvoidingView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
+import PropTypes from 'prop-types';
+import { Button } from 'react-native-elements';
+
 import {
   validateEmptyFields,
   validateEmailAndPhone,
@@ -26,25 +29,22 @@ import {
 import Background from '../../../assets/bg.svg';
 
 import { COLORS, SIZES } from '../../../constants/theme';
-import { Button } from 'react-native-elements';
-import LoginScreen from '../../Login';
-import { fieldGenerator } from '../../../utils/Generator';
-
-const { width: WIDTH } = Dimensions.get('window');
+import LogoText from '../../../components/common/LogoText';
 
 const REGISTER_MUTATION = gql`
   mutation register($userRegisterInput: UserRegisterInput!) {
-    register(userRegisterInput: $userRegisterInput) {
+    registeredUser: register(userRegisterInput: $userRegisterInput) {
       userId
       token
       user {
         _id
         firstName
         lastName
-        username
         email
         about
         gender
+        isActive
+        phoneConfirmed
         profilePicture
         phone
         city
@@ -59,65 +59,41 @@ const REGISTER_MUTATION = gql`
 
 const RegisterStepTwoScreen = ({ t, navigation }) => {
   const [registerData, setRegisterData] = useState({
-    name: null,
-    surname: null,
-    birthdate: null
+    name: '',
+    surname: '',
   });
-  const [errors, setErrors] = useState({
-    name: null,
-    surname: null,
-    birthdate: null
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const [registerUser, { data }] = useMutation(REGISTER_MUTATION);
+  const surnameRef = useRef(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // fetching data from step one
+    const { state } = navigation;
+    const { params } = state;
+    const { registerData: prevScreenData } = params;
+    setRegisterData({...registerData, ...prevScreenData});
+  }, []);
 
   const handleRegister = async () => {
-    // check if email, phone & username is valid.
-    const isEmailValid = validateEmail(email);
-    if (!isEmailValid) {
-      Alert.alert(null, t('invalidEmail'), [
-        {
-          text: t('tryAgain'),
-          onPress: () => console.log('tekrar deneniyor.')
-        }
-      ]);
-
-      return;
-    }
-
-    const isPhoneValid = validatePhone(phone);
-    if (!isPhoneValid) {
-      Alert.alert(null, t('invalidPhone'), [
-        {
-          text: t('tryAgain'),
-          onPress: () => console.log('tekrar deneniyor.')
-        }
-      ]);
-
-      return;
-    }
-
+    const { name, surname, email, phone, password } = registerData;
     // now, send request to backend.
     setIsLoading(true);
-    const userRegisterInput = { email, phone, username, password };
+    const userRegisterInput = { email, phone, password, name, surname };
 
     await registerUser({
       variables: { userRegisterInput }
     })
       .then(async res => {
         setIsLoading(false);
-        await AsyncStorage.setItem('userToken', JSON.stringify(res.data.register));
-        console.log('Successful registration! Navigating to Home...');
-        navigation.navigate('Home');
+        navigation.navigate('RegisterStepThreeScreen', { user: res.data.registeredUser });
       })
       .catch(err => {
         const jsonError = JSON.parse(JSON.stringify(err));
         Alert.alert(t('defaultError'), _.replace(jsonError.message, 'GraphQL error: ', ''), [
           {
             text: t('tryAgain'),
-            onPress: () => console.log('tekrar deneniyor.')
+            onPress: () => console.log(jsonError)
           }
         ]);
         setIsLoading(false);
@@ -129,74 +105,76 @@ const RegisterStepTwoScreen = ({ t, navigation }) => {
     navigation.navigate('Login');
   };
 
+  const InputIcon = ({ name }) => <Icon name={name} size={14} color="#FEA195" style={styles.inputIcon} />;
+
+  InputIcon.propTypes = {
+    name: PropTypes.string.isRequired,
+  };
+
+  const nextInput = () => surnameRef && surnameRef.current.focus();
+
+  const isDisabled = validateEmptyFields({ ...registerData });
+
   return (
     <View style={styles.container}>
       <View style={styles.background}>
         <Background />
       </View>
 
-      <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>Shelty</Text>
-      </View>
+      <LogoText text={t('shelty')} />
+
+      <KeyboardAvoidingView behavior="padding">
 
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
-          <Text style={styles.inputText}>Ad</Text>
           <View style={styles.input}>
-            <Icon name="md-create" size={SIZES.NORMAL_TEXT} color={COLORS.LAVENDER} style={styles.inputIcon} />
+            <InputIcon name="md-create" />
             <TextInput
               style={styles.textInput}
+              underlineColorAndroid="transparent"
+              onChangeText={(text) => setRegisterData({ ...registerData, name: text })}
+              returnKeyType="next"
+              blurOrSubmit={false}
+              onSubmitEditing={() => nextInput()}
+              clearButtonMode="while-editing"
               value={registerData.name}
-              underlineColorAndroid="transparent"
-              onChangeText={text => handleFormChange(text, 'name')}
+              placeholder={t('nameInput')}
             />
           </View>
-          {errors && errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.inputText}>Soyad</Text>
           <View style={styles.input}>
-            <Icon name="md-phone-portrait" size={SIZES.NORMAL_TEXT} color={COLORS.LAVENDER} style={styles.inputIcon} />
+            <InputIcon name="md-create" />
             <TextInput
               style={styles.textInput}
+              underlineColorAndroid="transparent"
+              onChangeText={(text) => setRegisterData({ ...registerData, surname: text })}
+              returnKeyType="next"
+              clearButtonMode="while-editing"
               value={registerData.surname}
-              underlineColorAndroid="transparent"
-              onChangeText={text => handleFormChange(text, 'surname')}
+              placeholder={t('surnameInput')}
+              ref={surnameRef}
             />
           </View>
-          {errors && errors.surname && <Text style={styles.errorText}>{errors.surname}</Text>}
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputText}>Doğum Tarihi</Text>
-          <View style={styles.input}>
-            <Icon name="md-calendar" size={SIZES.NORMAL_TEXT} color={COLORS.LAVENDER} style={styles.inputIcon} />
-            <TextInput
-              style={styles.textInput}
-              value={registerData.birthdate}
-              underlineColorAndroid="transparent"
-              onChangeText={text => handleFormChange(text, 'birthdate')}
-            />
-          </View>
-          {errors && errors.birthdate && <Text style={styles.errorText}>{errors.birthdate}</Text>}
         </View>
 
         <View style={styles.actionContainer}>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={handleRegister} style={styles.button} activeOpacity={0.8}>
-              <Text style={styles.buttonText}>Üye Ol</Text>
+            <TouchableOpacity disabled={isDisabled} onPress={handleRegister} style={styles.button} activeOpacity={0.8}>
+  <Text style={[styles.buttonText, isDisabled && styles.disabled]}>{t('register')}</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.loginContainer}>
-            <Text style={styles.loginText}>Üyeliğiniz var mı?</Text>
+  <Text style={styles.loginText}>{t('hasAccount')}</Text>
             <TouchableOpacity onPress={goToLogin} style={styles.basicButton} activeOpacity={0.8}>
-              <Text style={styles.actionText}>Giriş Yap</Text>
+  <Text style={styles.actionText}>{t('login')}</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -216,7 +194,7 @@ const styles = StyleSheet.create({
   },
   logoText: {
     fontSize: 32,
-    color: COLORS.LAVENDER,
+    color: COLORS.SILVER_PINK,
     textAlign: 'center'
   },
   buttonContainer: {
@@ -242,7 +220,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: COLORS.PIGMENT
+    color: '#FEA195',
+    fontFamily: 'RalewayBold'
+  },
+  disabled: {
+    color: '#C9C9C9',
   },
   logoContainer: {
     alignItems: 'center',
@@ -257,11 +239,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     alignItems: 'flex-start',
     marginBottom: 25
-  },
-  inputText: {
-    color: COLORS.WHITE_LIGHT,
-    fontSize: SIZES.SMALL_TEXT,
-    marginBottom: 10
   },
   input: {
     flexDirection: 'row',
@@ -280,17 +257,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   textInput: {
-    color: COLORS.TEXT,
-    fontSize: SIZES.SMALL_TEXT,
-    flex: 1
+    color: '#5C5C5C',
+    fontSize: 14,
+    flex: 1,
+    fontFamily: 'Raleway'
   },
   nextIcon: {
     alignSelf: 'center',
     marginLeft: 10
   },
   actionText: {
-    color: COLORS.LAVENDER,
-    fontSize: SIZES.SMALL_TEXT
+    color: COLORS.WHITE,
+    fontSize: 14,
+    fontFamily: 'Raleway'
   },
   loginContainer: {
     flexDirection: 'row',
@@ -299,9 +278,14 @@ const styles = StyleSheet.create({
   },
   loginText: {
     color: COLORS.WHITE_LIGHT,
-    fontSize: SIZES.SMALL_TEXT,
+    fontSize: 14,
     marginRight: 5
   }
 });
+
+RegisterStepTwoScreen.propTypes = {
+  t: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({}).isRequired,
+};
 
 export default withTranslation()(RegisterStepTwoScreen);

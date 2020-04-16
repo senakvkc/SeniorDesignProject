@@ -7,10 +7,9 @@ import CameraTrigger from '../components/CameraTrigger';
 import SettingsTrigger from '../components/SettingsTrigger';
 
 export const NAVIGATION_OPTIONS = ({ navigation }) => ({
-  headerTitle: navigation.state.routeName,
   headerTitleStyle: {
-    textAlign: 'center',
     flex: 1,
+    textAlign: 'center',
     alignSelf: 'center',
     color: COLORS.PURPLE
   },

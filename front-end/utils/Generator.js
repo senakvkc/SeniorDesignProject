@@ -16,6 +16,14 @@ export const fieldGenerator = field => {
   return null;
 };
 
+export const unmaskPhone = (phone) => {
+  let unmasked = phone;
+  unmasked = unmasked.replace("(90)", "90");
+  unmasked = unmasked.replace(/\s+/g, '');
+  const actualPhone = unmasked.substring(2);
+  return [unmasked, actualPhone];
+}
+
 const PHONE_PREFIX = [
   '551',
   '552',

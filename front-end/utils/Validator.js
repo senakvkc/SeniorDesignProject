@@ -6,81 +6,43 @@ const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+")
 const phoneRegex = /(05|5)([0-9]){9}/;
 const usernameRegex = /^[A-Za-z0-9]+(?:[A-Za-z0-9_]+)*$/;
 
-/*
-export const validateEmail = email => {
-  console.log('validating email!');
-  if (!_.isEqual(_.first(emailRegex.exec(email)), email)) {
-    console.log('invalid email');
-    return false;
-  }
+// checking if all fields are non-empty.
+export const validateEmptyFields = fields => _.some(Object.keys(fields), field => _.isEmpty(_.trim(fields[field])));
 
-  console.log('email validated.');
-  return true;
-};
+export const validateWithRegex = (regex, value) => _.isEqual(_.first(regex.exec(value)), value)
 
-export const validatePhone = phone => {
-  console.log('validating phone!');
-  if (!_.isEqual(_.first(phoneRegex.exec(phone)), phone)) {
-    console.log('invalid phone');
-    return false;
-  }
-
-  console.log('phone validated.');
-  return true;
-};
-*/
-
-export const validateUsername = username => {
-  console.log('validating username.');
-  if (!_.isEqual(_.first(usernameRegex.exec(username)), username)) {
-    console.log('invalid username');
-    return false;
-  }
-
-  console.log('username validated.');
-  return true;
-};
-
-export const validateEmptyFields = fields => {
-  console.log('validating empty fields.', fields);
-  console.log(_.some(Object.keys(fields), field => _.isEmpty(_.trim(fields[field]))));
-  return _.some(Object.keys(fields), field => _.isEmpty(_.trim(fields[field])));
-};
-
-const validateEmail = value => {
-  console.log('Validating email...');
-  if (_.isEmpty(_.trim(value))) {
-    console.log('Empty email.');
+// validating email.
+export const validateEmail = value => {
+  const isEmpty = validateEmptyFields({ value });
+  if (isEmpty) {
     return 'E-posta adresi zorunlu.';
   }
 
-  if (!_.isEqual(_.first(emailRegex.exec(value)), value)) {
-    console.log('Invalid email.');
+  const isValid = validateWithRegex(emailRegex, value);
+  if (!isValid) {
     return 'Geçersiz e-posta adresi.';
   }
 
-  console.log('Email validated.');
   return null;
 };
 
-const validatePhone = value => {
-  console.log('Validating phone...');
-  if (_.isEmpty(_.trim(value))) {
-    console.log('Empty phone.');
-    return 'Telefon adresi zorunlu.';
+export const validatePhone = value => {
+  const isEmpty = validateEmptyFields({ value });
+  if (isEmpty) {
+    return 'Telefon zorunlu.';
   }
 
-  if (!_.isEqual(_.first(phoneRegex.exec(value)), value)) {
-    console.log('Invalid phone.');
+  const isValid = validateWithRegex(phoneRegex, value);
+  if (!isValid) {
     return 'Geçersiz telefon numarası.';
   }
 
-  console.log('Phone validated.');
   return null;
 };
 
-const validatePassword = value => {
-  if (_.isEmpty(_.trim(value))) {
+export const validatePassword = value => {
+  const isEmpty = validateEmptyFields({ value });
+  if (isEmpty) {
     return 'Şifre zorunlu.';
   }
 
@@ -88,34 +50,32 @@ const validatePassword = value => {
     return 'Şifre en az 6 karakter olmalı.';
   }
 
-  console.log('Password validated.');
   return null;
 };
 
 export const validateField = (value, type) => {
-  console.log(value, type);
   if (_.isEqual(type, 'email')) {
-    return { validated: false, email: validateEmail(value) };
+    return validateEmail(value);
   } else if (_.isEqual(type, 'phone')) {
-    return { validated: false, phone: validatePhone(value) };
+    return validatePhone(value);
   } else if (_.isEqual(type, 'password')) {
-    return { validated: false, password: validatePassword(value) };
+    return validatePassword(value);
+  } else {
+    return validateEmptyFields({ value });
   }
 
-  return { validated: true };
+  return true;
 };
 
 export const validateFields = fields => {
-  console.log('Validating fields...');
-  let errors = {};
-  _.forEach(Object.keys(fields), field => {
-    const result = validateField(fields[field], field);
-    console.log('result', result);
-    if (!result.validated) {
-      errors[field] = result[field];
-      console.log('errors:', errors);
+  for (let i = 0; i < fields.length; i++) {
+    const validationResult = validateField(fields[i].value, fields[i].type);
+    console.log("field", fields[i]);
+    if (validationResult !== null) {
+      console.log("vr", validationResult);
+      return validationResult;
     }
-  });
+  }
 
-  return errors;
+  return null;
 };

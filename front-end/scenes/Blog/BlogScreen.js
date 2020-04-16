@@ -14,7 +14,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const BlogScreen = ({ posts }) => {
   const [searchValue, setSearchValue] = useState('');
 
-  handleSearch = value => {
+  const handleSearch = value => {
     console.log(value);
     setSearchValue(value);
   };

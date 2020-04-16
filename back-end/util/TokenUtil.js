@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-  createToken: (userId, email, secretKey) => {
+  createToken: (userId, email, phone, secretKey) => {
     return jwt.sign(
       {
         userId,
-        email
+        email,
+        phone
       },
       secretKey
     );
@@ -25,5 +26,14 @@ module.exports = {
         });
       }
     });
+  },
+
+  createCode: () => {
+    let code = Math.floor(Math.random() * 9999) + 1000;
+    while (code > 9999) {
+      code = Math.floor(Math.random() * 9999) + 1000;
+    }
+
+    return code;
   }
 };

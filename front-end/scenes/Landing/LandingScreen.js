@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { withTranslation } from 'react-i18next';
-import Background from '../../assets/bg.svg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { COLORS } from '../../constants/theme';
+import PropTypes from 'prop-types';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+import { COLORS } from '../../constants/theme';
+import Background from '../../assets/bg.svg';
+import LogoText from '../../components/common/LogoText';
+
 
 const LandingScreen = ({ t, navigation }) => {
   const goToLogin = () => {
@@ -16,27 +18,42 @@ const LandingScreen = ({ t, navigation }) => {
     navigation.navigate('RegisterStepOne');
   };
 
+  const Button = ({ onPress, text }) => (
+    <TouchableOpacity onPress={onPress} style={styles.button} activeOpacity={0.8}>
+      <Text style={styles.buttonText}>{text}</Text>
+    </TouchableOpacity>
+  );
+
+  Button.propTypes = {
+    onPress: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired
+  };
+
+  const MainText = ({ text }) => (
+  <Text style={styles.mainText}>{text}</Text>
+  );
+
+  MainText.propTypes = {
+    text: PropTypes.string.isRequired
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.background}>
         <Background />
       </View>
 
-      <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>Shelty</Text>
-      </View>
+      <LogoText text={t('shelty')} />
+
       <View style={styles.mainContainer}>
-        <Text style={styles.mainText}>Paylaş.</Text>
-        <Text style={styles.mainText}>Sahiplen.</Text>
-        <Text style={styles.mainText}>Sevgi göster.</Text>
+        <MainText text={t('shareLanding')} />
+        <MainText text={t('adoptLanding')} />
+        <MainText text={t('showLoveLanding')} />
       </View>
+      
       <View style={styles.actionContainer}>
-        <TouchableOpacity onPress={goToLogin} style={styles.button} activeOpacity={0.8}>
-          <Text style={styles.buttonText}>Giriş Yap</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={goToRegister} style={styles.button} activeOpacity={0.8}>
-          <Text style={styles.buttonText}>Üye Ol</Text>
-        </TouchableOpacity>
+        <Button onPress={goToLogin} text={t('login')} />
+        <Button onPress={goToRegister} text={t('register')} />
       </View>
     </View>
   );
@@ -46,43 +63,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   background: {
     position: 'absolute',
     top: 0,
     left: 0,
     width: '100%',
-    height: '100%'
-  },
-  logoText: {
-    fontSize: 32,
-    color: COLORS.MAGNOLIA,
-    textAlign: 'center'
+    height: '100%',
   },
   mainText: {
-    fontSize: 24,
-    color: COLORS.WHITE_LIGHT,
-    textAlign: 'center'
+    fontSize: 30,
+    color: COLORS.WHITE,
+    textAlign: 'center',
+    fontFamily: 'Raleway',
+    textShadowColor: 'rgba(0,0,0,0.1)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
   },
   button: {
     width: 100,
     height: 40,
-    backgroundColor: COLORS.WHITE_LIGHT,
-    padding: 10,
+    backgroundColor: COLORS.WHITE,
     margin: 5,
     borderRadius: 5,
     alignItems: 'center',
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 0.8,
-    elevation: 6,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 }
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 1,
+    alignItems: 'center',
   },
   buttonText: {
+    fontSize: 14,
     textAlign: 'center',
-    color: COLORS.PIGMENT
-  }
+    lineHeight: 40,
+    marginTop: 2,
+    color: '#FE9595',
+    fontFamily: 'RalewayBold',
+  },
 });
+
+LandingScreen.propTypes = {
+  t: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({}).isRequired
+}
 
 export default withTranslation()(LandingScreen);

@@ -1,15 +1,16 @@
 import _ from 'lodash';
 import moment from 'moment';
 import { t } from '../utils/Translate';
-
-export const LAN_ADDRESS = 'http://172.20.10.3';
+export const LAN_ADDRESS = 'http://192.168.1.25'
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const USER_TOKEN = 'userToken';
 
-export const PORT = '19000';
+export const PORT = '19001';
 
 export const PHOTOS_DIR = 'shelty';
+
+export const PHONE_MASK = "+90 ([000]) [000] [00] [00]";
 
 export const SEX = Object.freeze({
   MALE: {
@@ -601,3 +602,18 @@ export const CAT_BREEDS = [
     breed: 'Cat3'
   }
 ];
+
+export const AGE_INTERVALS = ['0-6 ay', '6-12 ay', '12-24 ay', '24+ ay'];
+
+export const ANIMAL_TYPES = Object.freeze({
+  CAT: {
+    text: t('cat'),
+    key: 'CAT',
+    value: 'CAT'
+  },
+  DOG: {
+    text: t('dog'),
+    key: 'DOG',
+    value: 'DOG'
+  }
+});

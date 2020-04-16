@@ -15,20 +15,7 @@ const CommentSchema = new Schema(
       ref: 'User',
       required: true
     },
-    post: {
-      type: Schema.Types.ObjectId,
-      ref: 'Post'
-    },
-    photo: {
-      type: Schema.Types.ObjectId,
-      ref: 'SharedPhotos'
-    },
-    comments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-      }
-    ],
+    
     createdBy: {
       type: String
     },

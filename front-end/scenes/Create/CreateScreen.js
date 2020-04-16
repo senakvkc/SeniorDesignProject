@@ -5,26 +5,39 @@ import { SIZES, COLORS } from '../../constants/theme';
 import { withTranslation } from 'react-i18next';
 import SheltyButton from '../../components/common/SheltyButton';
 import BasicSheltyButton from '../../components/common/BasicSheltyButton';
+import { ANIMAL_TYPES } from '../../constants';
+import newPetBg from '../../assets/new_pet_bg.jpg';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CreateScreen = ({ t, navigation }) => {
-  handleNewPetClick = () => {
-    console.log('clicked new pet!');
-    navigation.navigate('CreatePet');
+  handleNewPetClick = type => {
+    navigation.navigate('CreatePet', {
+      type: type.key
+    });
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: 'https://placedog.net/500/500' }} style={styles.image} />
-      </View>
       <View style={styles.actionContainer}>
-        <BasicSheltyButton onPress={handleNewPetClick} text={t('adopt')} buttonStyle={styles.createButton} containerStyle={styles.adoptButtonContainer} />
-        <BasicSheltyButton onPress={handleNewPetClick} text={t('adopt')} containerStyle={styles.adoptButtonContainer} />
+        <BasicSheltyButton
+          onPress={() => handleNewPetClick(ANIMAL_TYPES.CAT)}
+          text={t('addNewCat')}
+          buttonStyle={styles.createButton}
+          containerStyle={styles.adoptButtonContainer}
+          titleStyle={styles.buttonTitle}
+        />
+        <BasicSheltyButton onPress={() => handleNewPetClick(ANIMAL_TYPES.DOG)} text={t('addNewDog')} containerStyle={styles.adoptButtonContainer} titleStyle={styles.buttonTitle} />
+      </View>
+      <View style={styles.backgroundContainer}>
+        <Image source={newPetBg} style={styles.newPetBg} />
       </View>
     </View>
   );
+};
+
+CreateScreen.navigationOptions = {
+  title: 'Evcil Hayvan Ekle'
 };
 
 const styles = StyleSheet.create({
@@ -32,26 +45,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: COLORS.WHITE_LIGHT,
-    padding: 50,
+    padding: 25,
     alignItems: 'center'
-  },
-  imageContainer: {
-    flex: 1,
-    alignSelf: 'stretch',
-    borderRadius: 20,
-    overflow: 'hidden'
-  },
-  image: {
-    borderRadius: 20,
-    overflow: 'hidden',
-    width: '100%',
-    height: '100%'
   },
   actionContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    marginVertical: 5
+    marginVertical: 15
   },
   adoptButtonContainer: {
     flex: 1,
@@ -63,6 +64,16 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: '100%'
+  },
+  backgroundContainer: {
+    flex: 1
+  },
+  newPetBg: {
+    width: screenWidth,
+    height: screenWidth * 0.66
+  },
+  buttonTitle: {
+    fontSize: 18
   }
 });
 

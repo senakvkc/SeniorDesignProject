@@ -6,8 +6,10 @@ import BottomTabNavigator from './BottomTabNavigator';
 
 export default createAppContainer(
   createSwitchNavigator({
-    // AuthLoading: AuthLoadingScreen,
-    // Auth: AuthNavigator,
+    AuthLoading: AuthLoadingScreen,
+    Auth: AuthNavigator,
     MainTabs: BottomTabNavigator
+  }, {
+    initialRouteName: 'AuthLoading'
   })
 );

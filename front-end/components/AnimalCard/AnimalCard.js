@@ -40,7 +40,7 @@ const AnimalCard = ({ t, item }) => {
           </View>
 
           <Text style={styles.cardRightSubTitle}>
-            {item.breed} <Text style={styles.cardRightText}>{t('monthAge', { age: item.age })}</Text>
+            {item.age} <Text style={styles.cardRightText}>{t('monthAge', { age: item.age })}</Text>
           </Text>
 
           <View style={styles.horizontalLine} />
