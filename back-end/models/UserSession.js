@@ -22,7 +22,7 @@ const UserSessionSchema = new Schema(
     },
     expiration: {
       type: Date,
-    }
+    },
     isRevoked: {
       type: Boolean,
       default: false,

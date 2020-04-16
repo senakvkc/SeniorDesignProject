@@ -1,9 +1,9 @@
-const userResolver = require('./user-resolver');
-const shelterResolver = require('./shelter-resolver');
+const queries = require('./queries/index');
+const mutations = require('./mutations/index');
 
-const rootResolver = {
-  ...userResolver,
-  ...shelterResolver
+const resolvers = {
+  ...queries,
+  ...mutations
 };
 
-module.exports = rootResolver;
+module.exports = resolvers;

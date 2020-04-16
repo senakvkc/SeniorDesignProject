@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  TouchableHighlight,
-  View,
-  Image,
-  Text,
-  StyleSheet
-} from 'react-native';
+import { TouchableHighlight, View, Image, Text, StyleSheet } from 'react-native';
 
 const Story = ({ story }) => {
   const showStory = () => {
@@ -14,7 +8,7 @@ const Story = ({ story }) => {
 
   return (
     <TouchableHighlight onPress={showStory} underlayColor="#ffffff">
-      <View>
+      <View style={styles.storyContainer}>
         <Image source={{ uri: story.image }} style={styles.storyImage} />
         <Text style={styles.storyText}>{story.text}</Text>
       </View>
@@ -23,17 +17,25 @@ const Story = ({ story }) => {
 };
 
 const styles = StyleSheet.create({
-  storyImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 10,
+  storyContainer: {
+    width: 52,
+    height: 52,
+    borderRadius: 52,
     borderColor: '#f56565',
     borderWidth: 1,
-    overflow: 'hidden',
     marginTop: 10,
     marginLeft: 5,
     marginRight: 5,
     marginBottom: 0
+  },
+  storyImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 1,
+    marginLeft: 1,
+    marginTop: 1,
+    overflow: 'hidden'
   },
   storyText: {
     fontSize: 10,

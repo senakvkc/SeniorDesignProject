@@ -1,0 +1,39 @@
+{
+	"invalidAccountInfo": "Geçersiz kullanıcı hesap bilgileri.",
+	"noEmptyFields": "Tüm alanları doldurmalısınız.",
+	"userAlreadyExists": "Böyle bir kullanıcı zaten var.",
+	"invalidEmail": "Geçersiz e-posta adresi.",
+	"invalidPhone": "Geçersiz telefon numarası.",
+	"invalidEmailOrPhone": "Geçersiz e-posta/telefon.",
+	"invalidUsername": "Kullanıcı adı sadece alfanumerik karakterler ve \"_\" içerebilir.",
+	"invalidResetRequest": "Geçersiz şifre sıfırlama isteği.",
+	"resetRequestExpired": "Şifre sıfırlama isteğinin süresi dolmuş.",
+	"invalidConfirmId": "Geçersiz hesap onaylama isteği.",
+	"alreadyApproved": "Hesabınızı zaten onayladınız.",
+	"usernameAlreadyExists": "Bu kullanıcı adı kullanılıyor.",
+	"defaultError": "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+	"mail": {
+		"reset": {
+			"subject": "Shelty hesabınız için şifre sıfırlama isteği",
+			"text": "Shelty hesabınız için şifre sıfırlama isteğinde bulundunuz."
+		},
+		"approval": {
+			"subject": "Shelty hesabınız oluşturuldu. Hesabınızı onaylayın.",
+			"text": "Shelty hesabı oluşturduğunuz için teşekkür ederiz."
+		}
+	},
+	"mail.approval.subject": "mail.approval.subject",
+	"mail.approval.text": "mail.approval.text",
+	"userNotExist": "Böyle bir kullanıcı bulunmuyor.",
+	"codeAlreadyExist": "Zaten bir sıfırlama kodu almışsınız. Lütfen daha sonra tekrar deneyin.",
+	"resetPasswordCodeMessage": "Şifre sıfırlama için kodunuz: {{code}}.",
+	"messageProviderError": "Mesaj sağlayıcı ile alakalı bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+	"userAlreadyExist": "Böyle bir kullanıcı zaten bulunuyor.",
+	"approveCodeMessage": "Hesabınızı onaylamak için kodunuz: {{code}}",
+	"noUserFound": "noUserFound",
+	"invalidPhoneCode": "invalidPhoneCode",
+	"tooShortPassword": "tooShortPassword",
+	"userBlockedOrNotActive": "userBlockedOrNotActive",
+	"userNotConfirmed": "userNotConfirmed",
+	"phoneAlreadyConfirmed": "phoneAlreadyConfirmed"
+}

@@ -6,6 +6,8 @@ const GENDERS = require('./enums/Gender');
 const CAT_BREEDS = require('./enums/CatBreed');
 const DOG_BREEDS = require('./enums/DogBreed');
 const ANIMAL_TYPES = require('./enums/AnimalType');
+const AGE_INTERVALS = require('./enums/AgeInterval');
+const CHARACTERISTICS = require('./enums/Characteristic');
 
 // this will be our data base's data structure
 const AnimalSchema = new Schema(
@@ -16,15 +18,16 @@ const AnimalSchema = new Schema(
     code: {
       type: String,
       unique: true,
-      required: true
     },
     breed: {
       type: String,
       enum: [...CAT_BREEDS, ...DOG_BREEDS],
       required: true
     },
-    birthdate: {
-      type: Date
+    ageInterval: {
+      type: String,
+      enum: AGE_INTERVALS,
+      required: true
     },
     gender: {
       type: String,
@@ -38,20 +41,28 @@ const AnimalSchema = new Schema(
       required: true
     },
     description: {
-      type: String
+      type: String,
+      required: true
     },
     healthProblems: {
       type: String
     },
-    owner: {
+    characteristics: [
+      {
+        type: String,
+        enum: CHARACTERISTICS
+      }
+    ],
+    profilePhoto: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'File',
+      required: true,
     },
-    shelter: {
+    images: [{
       type: Schema.Types.ObjectId,
-      ref: 'Shelter'
-    },
-
+      ref: 'File'
+    }],
+    
     createdBy: {
       type: String
     },

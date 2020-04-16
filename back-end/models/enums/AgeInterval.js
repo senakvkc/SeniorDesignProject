@@ -1,0 +1,3 @@
+const AGE_INTERVAL = ['ZERO_SIX', 'SIX_TWELVE', 'TWELVE_TWOFOUR', 'TWOFOUR_MORE'];
+
+module.exports = AGE_INTERVAL;

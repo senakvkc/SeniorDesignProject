@@ -4,6 +4,17 @@
     "DB_PASS": "Rawsly235844.",
     "DB_NAME": "shelty",
     "DB_HOST": "127.0.0.1:27017",
-    "APP_PORT": 8080
+    "BASE_URL": "http://localhost/",
+    "FRONTEND_URL": "http://localhost/3000/",
+    "APP_PORT": 4000,
+    "SECRET_KEY": "SHELTY_SECRET_KEY",
+    "FORGOT_PASSWORD_SECRET_KEY": "SHELTY_FORGOT_PASSWORD",
+    "RESET_MAIL": "reset@sheltyapp.com",
+    "ADMIN_MAIL": "sheltyapp@gmail.com",
+    "ADMIN_MAIL_PASS": "Shelty123.",
+    "GMAIL_CLIENT_ID": "241033288150-ka3vco8jrau38mg8cv24kk9mldhb91on.apps.googleusercontent.com",
+    "GMAIL_CLIENT_SECRET": "IeMG_eCT80ZxrGyu6rnnn18E",
+    "GMAIL_CLIENT_REFRESH_TOKEN": "1/nUoIiuhzaRK0v9srbz_s6A9y1FgfljI-ti59_nXCn4k",
+    "GMAIL_CLIENT_ACCESS_TOKEN": "ya29.Il-iBzJ5Xqej2D-6xWbxDndJ6U5yW6gEOGHX5eH4IZcIg5ISVM5Tpo3xAqwhOXweaksed2sBwrPYLtChVQDU1xtVevT83dhaLOfIF1brgqWdTjOjuqzWYvruRhYDD4BMXQ"
   }
 }
