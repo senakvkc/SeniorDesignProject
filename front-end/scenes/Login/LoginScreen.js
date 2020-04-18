@@ -1,4 +1,4 @@
-import React, { Component, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,6 +8,7 @@ import {
   Alert,
   AsyncStorage,
   KeyboardAvoidingView,
+  ImageBackground
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { withTranslation } from 'react-i18next';
@@ -19,11 +20,10 @@ import { Button } from 'react-native-elements';
 
 import { validateEmptyFields, validateFields } from '../../utils/Validator';
 import { COLORS, SIZES } from '../../constants/theme';
-import Background from '../../assets/bg.svg';
 import LogoText from '../../components/common/LogoText';
-import { PHONE_MASK } from '../../constants';
-import { TextInputMask } from 'react-native-masked-text';
-import { unmaskPhone } from '../../utils/Generator';
+import MainButton from '../../components/common/MainButton';
+import { parsePhoneNumber } from '../../utils/FormValidator';
+import bgImage from '../../assets/bg.png';
 
 const LOGIN_MUTATION = gql`
   mutation login($phone: String!, $password: String!) {
@@ -62,11 +62,11 @@ const LoginScreen = ({ t, navigation }) => {
 
   const handleLogin = async () => {
     const { phone, password } = loginData;
-    const [unmaskedPhone, actualPhone] = unmaskPhone(phone);
+    const parsedPhone = parsePhoneNumber(phone);
     const validationResult = validateFields([
       {
         type: 'phone',
-        value: actualPhone
+        value: parsedPhone
       },
       {
         type: 'password',
@@ -79,7 +79,7 @@ const LoginScreen = ({ t, navigation }) => {
     } else {
       setIsLoading(true);
       await logUserIn({
-        variables: { phone: actualPhone, password },
+        variables: { phone: parsedPhone, password },
       })
         .then(async (res) => {
           await AsyncStorage.setItem('userToken', JSON.stringify(res.data.login));
@@ -118,100 +118,84 @@ const LoginScreen = ({ t, navigation }) => {
     navigation.navigate('RegisterStepOne');
   };
 
-  const handleInputChange = (name, value) => {
-    setLoginData({ ...loginData, [name]: value });
-  };
-
   const InputIcon = ({ name }) => <Icon name={name} size={14} color="#FEA195" style={styles.inputIcon} />;
 
   InputIcon.propTypes = {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({ ...loginData });
+  const isDisabled = validateEmptyFields({ ...loginData }) || isLoading;
 
   const focusPasswordField = () => passwordInputRef.current.focus();
 
   return (
     <View style={styles.container}>
-      <View style={styles.background}>
-        <Background />
-      </View>
-
-      <LogoText text={t('shelty')} />
-      <KeyboardAvoidingView behavior="padding">
-        <View>
-          <View style={styles.inputContainer}>
-            <View style={styles.input}>
-              <InputIcon name="md-phone-portrait" />
-              <TextInputMask
-                style={styles.textInput}
-                value={loginData.phone}
-                placeholder="(90) 555 555 55 55"
-                underlineColorAndroid="transparent"
-                onChangeText={(text) => setLoginData({ ...loginData, phone: text })}
-                returnKeyType="next"
-                clearButtonMode="while-editing"
-                type="cel-phone"
-                blurOrSubmit={false}
-                onSubmitEditing={() => focusPasswordField()}
-                options={{
-                  maskType: "BRL",
-                  withDDD: true,
-                  dddMask: '(90) 999 999 99 99'
-                }}
-                ref={phoneInputRef}
-                mask={PHONE_MASK}
-              />
+      <ImageBackground source={bgImage} style={styles.bgImage}>
+        <LogoText text={t('shelty')} />
+        <KeyboardAvoidingView behavior="padding">
+          <View>
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <InputIcon name="md-phone-portrait" />
+                <TextInput
+                  style={styles.textInput}
+                  value={loginData.phone}
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setLoginData({ ...loginData, phone: text })}
+                  returnKeyType="next"
+                  placeholder={t('phoneInput')}
+                  blurOrSubmit={false}
+                  onSubmitEditing={() => focusPasswordField()}
+                  clearButtonMode="while-editing"
+                  ref={phoneInputRef}
+                  keyboardType="numeric"
+                />
+              </View>
             </View>
-          </View>
 
-          <View style={styles.inputContainer}>
-            <View style={styles.input}>
-              <InputIcon name="md-lock" />
-              <TextInput
-                style={styles.textInput}
-                value={loginData.password}
-                secureTextEntry={!showPassword}
-                clearButtonMode="while-editing"
-                underlineColorAndroid="transparent"
-                onChangeText={(text) => handleInputChange('password', text)}
-                placeholder={t('password')}
-                ref={passwordInputRef}
-              />
-              <View style={styles.showPasswordButton}>
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} activeOpacity={0.8}>
-                  <Icon name={!showPassword ? 'md-eye' : 'md-eye-off'} size={SIZES.NORMAL_TEXT} color="#FEA195" />
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <InputIcon name="md-lock" />
+                <TextInput
+                  style={styles.textInput}
+                  value={loginData.password}
+                  secureTextEntry={!showPassword}
+                  clearButtonMode="while-editing"
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setLoginData({ ...loginData, password: text })}
+                  placeholder={t('password')}
+                  ref={passwordInputRef}
+                />
+                <View style={styles.showPasswordButton}>
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)} activeOpacity={0.8}>
+                    <Icon name={!showPassword ? 'md-eye' : 'md-eye-off'} size={SIZES.NORMAL_TEXT} color="#FEA195" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <View style={styles.forgotPasswordContainer}>
+                <Button
+                  title={t('forgotPasswordText')}
+                  onPress={() => navigation.navigate('PasswordResetStepOne')}
+                  type="clear"
+                  titleStyle={styles.actionText}
+                />
+              </View>
+
+              <MainButton disabled={isDisabled} loading={isLoading} onPress={handleLogin} text={t('login')}/>
+
+              <View style={styles.registerContainer}>
+                <Text style={styles.registerText}>{t('noAccount')}</Text>
+                <TouchableOpacity onPress={goToRegister} style={styles.basicButton} activeOpacity={0.8}>
+                  <Text style={styles.actionText}>{t('register')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-
-          <View style={styles.actionContainer}>
-            <View style={styles.forgotPasswordContainer}>
-              <Button
-                title={t('forgotPasswordText')}
-                onPress={() => navigation.navigate('PasswordResetStepOne')}
-                type="clear"
-                titleStyle={styles.actionText}
-              />
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity disabled={isDisabled} onPress={handleLogin} style={styles.button} activeOpacity={0.8}>
-                <Text style={[styles.buttonText, isDisabled && styles.disabled]}>{t('login')}</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.registerContainer}>
-              <Text style={styles.registerText}>{t('noAccount')}</Text>
-              <TouchableOpacity onPress={goToRegister} style={styles.basicButton} activeOpacity={0.8}>
-                <Text style={styles.actionText}>{t('register')}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     </View>
   );
 };
@@ -219,36 +203,13 @@ const LoginScreen = ({ t, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-  },
-  button: {
-    width: 200,
-    height: 40,
-    backgroundColor: COLORS.WHITE_F9,
-    padding: 10,
-    margin: 5,
-    borderRadius: 5,
-    alignItems: 'center',
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 0.8,
-    elevation: 6,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 },
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#FEA195',
-    fontFamily: 'RalewayBold',
-    fontSize: 14,
-    marginTop: 2,
+  bgImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   inputContainer: {
     alignItems: 'flex-start',
@@ -300,9 +261,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginRight: 5,
     fontFamily: 'RalewayBold',
-  },
-  disabled: {
-    color: '#C9C9C9',
   },
 });
 

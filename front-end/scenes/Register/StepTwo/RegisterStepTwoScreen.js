@@ -1,10 +1,9 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   ImageBackground,
-  Image,
   TextInput,
   TouchableOpacity,
   Alert,
@@ -19,17 +18,11 @@ import { useMutation } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 
-import {
-  validateEmptyFields,
-  validateEmailAndPhone,
-  validateUsername,
-  validateEmail,
-  validatePhone
-} from '../../../utils/Validator';
-import Background from '../../../assets/bg.svg';
-
-import { COLORS, SIZES } from '../../../constants/theme';
+import { validateEmptyFields } from '../../../utils/Validator';
+import bgImage from '../../../assets/bg.png';
+import { COLORS } from '../../../constants/theme';
 import LogoText from '../../../components/common/LogoText';
+import MainButton from '../../../components/common/MainButton';
 
 const REGISTER_MUTATION = gql`
   mutation register($userRegisterInput: UserRegisterInput!) {
@@ -86,6 +79,7 @@ const RegisterStepTwoScreen = ({ t, navigation }) => {
     })
       .then(async res => {
         setIsLoading(false);
+        console.log("navigation next screen...");
         navigation.navigate('RegisterStepThreeScreen', { user: res.data.registeredUser });
       })
       .catch(err => {
@@ -111,70 +105,63 @@ const RegisterStepTwoScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const nextInput = () => surnameRef && surnameRef.current.focus();
+  const nextInput = () => surnameRef.current.focus();
 
-  const isDisabled = validateEmptyFields({ ...registerData });
+  const isDisabled = validateEmptyFields({ ...registerData }) || isLoading;
 
   return (
     <View style={styles.container}>
-      <View style={styles.background}>
-        <Background />
-      </View>
+      <ImageBackground source={bgImage} style={styles.bgImage}>
+        <LogoText text={t('shelty')} />
 
-      <LogoText text={t('shelty')} />
+        <KeyboardAvoidingView behavior="padding">
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <InputIcon name="md-create" />
+                <TextInput
+                  style={styles.textInput}
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setRegisterData({ ...registerData, name: text })}
+                  returnKeyType="next"
+                  blurOrSubmit={false}
+                  onSubmitEditing={() => nextInput()}
+                  clearButtonMode="while-editing"
+                  value={registerData.name}
+                  placeholder={t('nameInput')}
+                />
+              </View>
+            </View>
 
-      <KeyboardAvoidingView behavior="padding">
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <InputIcon name="md-create" />
+                <TextInput
+                  style={styles.textInput}
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setRegisterData({ ...registerData, surname: text })}
+                  returnKeyType="next"
+                  clearButtonMode="while-editing"
+                  value={registerData.surname}
+                  placeholder={t('surnameInput')}
+                  ref={surnameRef}
+                />
+              </View>
+            </View>
 
-      <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <View style={styles.input}>
-            <InputIcon name="md-create" />
-            <TextInput
-              style={styles.textInput}
-              underlineColorAndroid="transparent"
-              onChangeText={(text) => setRegisterData({ ...registerData, name: text })}
-              returnKeyType="next"
-              blurOrSubmit={false}
-              onSubmitEditing={() => nextInput()}
-              clearButtonMode="while-editing"
-              value={registerData.name}
-              placeholder={t('nameInput')}
-            />
+            <View style={styles.actionContainer}>
+              <MainButton disabled={isDisabled} onPress={handleRegister} text={t('register')} loading={isLoading} />
+
+              <View style={styles.loginContainer}>
+                <Text style={styles.loginText}>{t('hasAccount')}</Text>
+                <TouchableOpacity onPress={goToLogin} style={styles.basicButton} activeOpacity={0.8}>
+                <Text style={styles.actionText}>{t('login')}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <View style={styles.input}>
-            <InputIcon name="md-create" />
-            <TextInput
-              style={styles.textInput}
-              underlineColorAndroid="transparent"
-              onChangeText={(text) => setRegisterData({ ...registerData, surname: text })}
-              returnKeyType="next"
-              clearButtonMode="while-editing"
-              value={registerData.surname}
-              placeholder={t('surnameInput')}
-              ref={surnameRef}
-            />
-          </View>
-        </View>
-
-        <View style={styles.actionContainer}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity disabled={isDisabled} onPress={handleRegister} style={styles.button} activeOpacity={0.8}>
-  <Text style={[styles.buttonText, isDisabled && styles.disabled]}>{t('register')}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.loginContainer}>
-  <Text style={styles.loginText}>{t('hasAccount')}</Text>
-            <TouchableOpacity onPress={goToLogin} style={styles.basicButton} activeOpacity={0.8}>
-  <Text style={styles.actionText}>{t('login')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     </View>
   );
 };
@@ -182,34 +169,13 @@ const RegisterStepTwoScreen = ({ t, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
+    flexDirection: 'column',
   },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%'
-  },
-  logoText: {
-    fontSize: 32,
-    color: COLORS.SILVER_PINK,
-    textAlign: 'center'
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  bgImage: {
+    flex: 1,
+    resizeMode: 'cover',
     justifyContent: 'center',
-    backgroundColor: COLORS.WHITE_LIGHT,
-    borderRadius: 5,
-    width: 200,
-    height: 40,
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 0.8,
-    elevation: 6,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 }
+    alignItems: 'center'
   },
   showPasswordButton: {
     justifyContent: 'flex-end',
@@ -218,49 +184,31 @@ const styles = StyleSheet.create({
     alignContent: 'flex-end',
     marginHorizontal: 10
   },
-  buttonText: {
-    textAlign: 'center',
-    color: '#FEA195',
-    fontFamily: 'RalewayBold'
-  },
-  disabled: {
-    color: '#C9C9C9',
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginBottom: 15
-  },
-  logoText: {
-    color: COLORS.WHITE,
-    fontSize: SIZES.TITLE_TEXT,
-    marginVertical: 10,
-    opacity: 0.7
-  },
   inputContainer: {
     alignItems: 'flex-start',
-    marginBottom: 25
+    marginBottom: 20,
   },
   input: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.WHITE_LIGHT,
+    backgroundColor: COLORS.WHITE_F9,
     borderRadius: 5,
     width: 200,
-    height: 40,
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 0.8,
-    elevation: 6,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 }
+    height: 50,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    elevation: 1,
+    shadowRadius: 5,
+    shadowOffset: { width: 1, height: 3 },
   },
   inputIcon: {
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   textInput: {
     color: '#5C5C5C',
     fontSize: 14,
     flex: 1,
-    fontFamily: 'Raleway'
+    fontFamily: 'Raleway',
   },
   nextIcon: {
     alignSelf: 'center',
