@@ -1,47 +1,53 @@
 import React from 'react'
-import { withTranslation } from 'react-i18next'
 import { View, StyleSheet } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
+import PropTypes from 'prop-types';
+
 import { COLORS } from '../../constants/theme';
 
-const CreateSteps = ({ t, step }) => {
+const CreateSteps = ({ step, stepCount }) => {
   const customStyles = {
     stepIndicatorSize: 30,
     currentStepIndicatorSize: 35,
     separatorStrokeWidth: 2,
     currentStepStrokeWidth: 3,
-    stepStrokeCurrentColor: COLORS.PURPLE,
+    stepStrokeCurrentColor: '#fe9595',
     stepStrokeWidth: 3,
-    stepStrokeFinishedColor: COLORS.PURPLE,
-    stepStrokeUnFinishedColor: COLORS.POMP,
-    separatorFinishedColor: COLORS.PURPLE,
-    separatorUnFinishedColor: COLORS.POMP,
-    stepIndicatorFinishedColor: COLORS.PURPLE,
+    stepStrokeFinishedColor: "#fe9595",
+    stepStrokeUnFinishedColor: "#fe9595",
+    separatorFinishedColor: "#fe9595",
+    separatorUnFinishedColor: "#fe9595",
+    stepIndicatorFinishedColor: "#fe9595",
     stepIndicatorUnFinishedColor: COLORS.WHITE_F9,
-    stepIndicatorCurrentColor: COLORS.PURPLE,
+    stepIndicatorCurrentColor: "#fe9595",
     stepIndicatorLabelFontSize: 13,
     currentStepIndicatorLabelFontSize: 13,
     stepIndicatorLabelCurrentColor: COLORS.WHITE_F9,
     stepIndicatorLabelFinishedColor: COLORS.WHITE_F9,
-    stepIndicatorLabelUnFinishedColor: COLORS.POMP,
+    stepIndicatorLabelUnFinishedColor: "#fe9595",
     labelColor: '#999999',
     labelSize: 13,
-    currentStepLabelColor: COLORS.PURPLE
+    currentStepLabelColor: "#fe9595"
   };
 
   return (
     <View style={styles.stepContainer}>
-      <StepIndicator customStyles={customStyles} currentPosition={step} stepCount={3} />
+      <StepIndicator customStyles={customStyles} currentPosition={step} stepCount={stepCount} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   stepContainer: {
-    flex: 1,
-    backgroundColor: COLORS.WHITE_F9,
-    marginBottom: 15
+    paddingVertical: 10,
+    backgroundColor: 'rgb(252, 252, 252)',
+    height: 60
   },
 });
 
-export default withTranslation()(CreateSteps);
+CreateSteps.propTypes = {
+  step: PropTypes.number.isRequired,
+  stepCount: PropTypes.number.isRequired
+}
+
+export default CreateSteps;

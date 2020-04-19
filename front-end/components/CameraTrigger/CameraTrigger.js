@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Icon } from 'react-native-elements';
-import { COLORS, SIZES } from '../../constants/theme';
 
 const CameraTrigger = ({ navigation }) => {
   const openCamera = () => {
@@ -9,7 +8,7 @@ const CameraTrigger = ({ navigation }) => {
 
   return (
     <Button
-      icon={<Icon name="camera" type="feather" color={COLORS.PURPLE} size={SIZES.MENU_ICON} />}
+      icon={<Icon name="camera" type="feather" color="#FE9595" size={24} />}
       type="clear"
       containerStyle={{ marginLeft: 15 }}
       onPress={() => openCamera()}

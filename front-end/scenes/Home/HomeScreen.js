@@ -10,13 +10,16 @@ import _ from 'lodash';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
-import { STORIES, ANIMALS } from '../../constants';
+import { STORIES, ANIMALS, NO_SHADOW } from '../../constants';
 import StoryPanel from '../../components/StoryPanel';
 import { COLORS } from '../../constants/theme';
 import SearchBox from '../../components/SearchBox';
 import PetCard from '../../components/PetCard';
+import CameraTrigger from '../../components/CameraTrigger';
+import SettingsTrigger from '../../components/SettingsTrigger';
 
-const HomeScreen = (props, { navigation }) => {
+
+const HomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
   const [searchValue, setSearchValue] = useState('');
@@ -69,9 +72,24 @@ const HomeScreen = (props, { navigation }) => {
   );
 };
 
-HomeScreen.navigationOptions = {
-  title: 'Shelty'
-}
+HomeScreen.navigationOptions = ({ navigation }) => ({
+  title: 'shelty',
+  headerTitleStyle: {
+    flex: 1,
+    textAlign: 'center',
+    alignSelf: 'center',
+    color: '#FE9595',
+    fontFamily: 'Rancho',
+    textTransform: 'lowercase',
+    fontSize: 32
+  },
+  headerStyle: {
+    backgroundColor: '#FFF',
+    ...NO_SHADOW
+  },
+  headerLeft: <CameraTrigger navigation={navigation} />,
+  headerRight: <SettingsTrigger navigation={navigation} />
+});
 
 const styles = StyleSheet.create({
   container: {

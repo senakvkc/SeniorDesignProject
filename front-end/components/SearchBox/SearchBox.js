@@ -12,16 +12,28 @@ const SearchBox = ({ t, onSearch, value, filterIcon, searchIcon }) => {
     console.log('filter clicked');
   };
 
+  const SearchIcon = ({ name, style, onPress }) => (
+    <Icon type="feather" name={name} size={16} color="rgba(0,0,0,0.3)" style={style} onPress={onPress} />
+  );
+
+  SearchIcon.propTypes = {
+    name: PropTypes.string.isRequired,
+    style: PropTypes.shape({}),
+    onPress: PropTypes.func
+  };
+
+  SearchIcon.defaultProps = {
+    style: {},
+    onPress: () => {}
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.bottomMask} />
       <View style={styles.inputContainer}>
         {searchIcon && (
-          <Icon
-            type="feather"
+          <SearchIcon
             name="search"
-            size={SIZES.NORMAL_TEXT}
-            color={COLORS.BLACK_A}
             style={styles.searchIcon}
           />
         )}
@@ -34,11 +46,8 @@ const SearchBox = ({ t, onSearch, value, filterIcon, searchIcon }) => {
           underlineColorAndroid={COLORS.TRANSPARENT}
         />
         {filterIcon && (
-          <Icon
-            type="feather"
+          <SearchIcon
             name="filter"
-            size={SIZES.NORMAL_TEXT}
-            color={COLORS.BLACK_A}
             style={styles.filterIcon}
             onPress={showFilters}
           />

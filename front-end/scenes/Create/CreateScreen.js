@@ -19,7 +19,7 @@ const CreateScreen = ({ t, navigation }) => {
 
   const CreatePetButton = () => (
     <View style={styles.buttonContainer}>
-     <MainButton onPress={goToCreateScreen} text={selectedType === 'dog' ? t('addNewDog') : t('addNewCat')} />  
+     <MainButton onPress={goToCreateScreen} textStyle={selectedType === 'dog' ? styles.dogColor : styles.catColor} text={selectedType === 'dog' ? t('addNewDog') : t('addNewCat')} />  
     </View>
   );
 
@@ -101,6 +101,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: (screenWidth / 2) - 40
+  },
+  dogColor: {
+    color: '#29CCBC',
+  },
+  catColor: {
+    color: '#CCE389'
   }
 });
 

@@ -2,13 +2,13 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
-const MainButton = ({ text, onPress, disabled, loading }) => {
+const MainButton = ({ text, onPress, disabled, loading, textStyle }) => {
   return (
   	<TouchableOpacity disabled={disabled} onPress={onPress} style={styles.button} activeOpacity={0.8}>
 	    {loading ? (
 	        <ActivityIndicator size="small" color="#FEA195" />
 	      ) : (
-	        <Text style={[styles.buttonText, disabled && styles.disabled]}>{text}</Text>
+	        <Text style={[styles.buttonText, disabled && styles.disabled, textStyle]}>{text}</Text>
 	      )
 	    }
   	</TouchableOpacity>
@@ -47,12 +47,14 @@ MainButton.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	disabled: PropTypes.bool,
 	loading: PropTypes.bool,
+  textStyle: PropTypes.shape({})
 }
 
 MainButton.defaultProps = {
   text: '',
   disabled: false,
-  loading: false
+  loading: false,
+  textStyle: {}
 }
 
 export default MainButton;

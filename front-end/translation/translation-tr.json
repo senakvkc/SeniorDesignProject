@@ -85,5 +85,12 @@
   "passwordResetted": "Şifre sıfırlandı.",
   "passwordResettedSuccess": "Şifreniz başarılı bir şekilde sıfırlandı.",
   "emptyCode": "Lütfen sıfırlama kodunuzu yazın.",
-  "emptyPassword": "Lütfen tüm alanları doldurun."
+  "emptyPassword": "Lütfen tüm alanları doldurun.",
+  "settings": "Ayarlar",
+  "notifications": "Bildirimler",
+  "changePassword": "Şifremi Değiştir",
+  "reportProblem": "Bir Sorun Bildir",
+  "aboutUs": "Hakkımızda",
+  "help": "Yardım",
+  "logout": "Çıkış Yap"
 }

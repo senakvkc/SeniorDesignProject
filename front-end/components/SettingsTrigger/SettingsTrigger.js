@@ -10,7 +10,7 @@ const SettingsTrigger = ({ navigation }) => {
 
   return (
     <Button
-      icon={<Icon name="ios-settings" type="ionicon" color={COLORS.PURPLE} size={SIZES.MENU_ICON} />}
+      icon={<Icon name="align-right" type="feather" color="#FE9595" size={24} />}
       type="clear"
       containerStyle={{ marginRight: 15 }}
       onPress={() => openSettings()}
