@@ -51,14 +51,14 @@ const SearchBox = ({ t, onSearch, value, filterIcon, searchIcon }) => {
 const styles = StyleSheet.create({
   container: {
     width: screenWidth - 80,
-    height: 30,
+    height: 50,
     borderRadius: 20,
     backgroundColor: COLORS.WHITE,
     marginBottom: 10
   },
   bottomMask: {
     width: screenWidth - 80,
-    height: 30,
+    height: 50,
     borderRadius: 20,
     backgroundColor: COLORS.MASK,
     position: 'absolute',

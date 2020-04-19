@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { withTranslation } from 'react-i18next';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import PropTypes from 'prop-types';
 
-import { COLORS } from '../../constants/theme';
 import Background from '../../assets/bg.svg';
 import LogoText from '../../components/common/LogoText';
+import MainButton from '../../components/common/MainButton';
 
 
 const LandingScreen = ({ t, navigation }) => {
@@ -18,19 +17,8 @@ const LandingScreen = ({ t, navigation }) => {
     navigation.navigate('RegisterStepOne');
   };
 
-  const Button = ({ onPress, text }) => (
-    <TouchableOpacity onPress={onPress} style={styles.button} activeOpacity={0.8}>
-      <Text style={styles.buttonText}>{text}</Text>
-    </TouchableOpacity>
-  );
-
-  Button.propTypes = {
-    onPress: PropTypes.func.isRequired,
-    text: PropTypes.string.isRequired
-  };
-
   const MainText = ({ text }) => (
-  <Text style={styles.mainText}>{text}</Text>
+    <Text style={styles.mainText}>{text}</Text>
   );
 
   MainText.propTypes = {
@@ -52,8 +40,8 @@ const LandingScreen = ({ t, navigation }) => {
       </View>
       
       <View style={styles.actionContainer}>
-        <Button onPress={goToLogin} text={t('login')} />
-        <Button onPress={goToRegister} text={t('register')} />
+        <MainButton onPress={goToLogin} text={t('login')} />
+        <MainButton onPress={goToRegister} text={t('register')} />
       </View>
     </View>
   );
@@ -74,35 +62,16 @@ const styles = StyleSheet.create({
   },
   mainText: {
     fontSize: 30,
-    color: COLORS.WHITE,
+    color: "#fff",
     textAlign: 'center',
     fontFamily: 'Raleway',
     textShadowColor: 'rgba(0,0,0,0.1)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
   },
-  button: {
-    width: 100,
-    height: 40,
-    backgroundColor: COLORS.WHITE,
-    margin: 5,
-    borderRadius: 5,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 1,
-    elevation: 1,
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 14,
-    textAlign: 'center',
-    lineHeight: 40,
-    marginTop: 2,
-    color: '#FE9595',
-    fontFamily: 'RalewayBold',
-  },
+  actionContainer: {
+    width: 120
+  }
 });
 
 LandingScreen.propTypes = {

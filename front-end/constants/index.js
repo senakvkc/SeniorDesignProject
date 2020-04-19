@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { t } from '../utils/Translate';
-export const LAN_ADDRESS = 'http://192.168.1.25'
+import i18n from '../i18n';
+export const LAN_ADDRESS = 'http://192.168.1.25';
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const USER_TOKEN = 'userToken';
@@ -13,13 +13,13 @@ export const PHOTOS_DIR = 'shelty';
 export const PHONE_MASK = "+90 ([000]) [000] [00] [00]";
 
 export const SEX = Object.freeze({
-  MALE: {
+MALE: {
     CODE: 'MALE',
-    text: () => t('male')
+    text: () => i18n.t('male')
   },
   FEMALE: {
     CODE: 'FEMALE',
-    text: () => t('female')
+    text: () => i18n.t('female')
   }
 });
 
@@ -607,12 +607,12 @@ export const AGE_INTERVALS = ['0-6 ay', '6-12 ay', '12-24 ay', '24+ ay'];
 
 export const ANIMAL_TYPES = Object.freeze({
   CAT: {
-    text: t('cat'),
+    text: i18n.t('cat'),
     key: 'CAT',
     value: 'CAT'
   },
   DOG: {
-    text: t('dog'),
+    text: i18n.t('dog'),
     key: 'DOG',
     value: 'DOG'
   }

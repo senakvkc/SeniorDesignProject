@@ -44,7 +44,7 @@ graphqlServer.listen(8080).then(({ url }) => {
 });
 
 // database connection
-const DB_URL = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`;
+const DB_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 mongoose
   .connect(DB_URL, {
     useNewUrlParser: true,

@@ -56,14 +56,14 @@ const BottomTabNavigator = createBottomTabNavigator(
             type="feather"
             name={iconName}
             size={routeName === 'Create' ? SIZES.NEW_POST_ICON : SIZES.MENU_ICON}
-            color={routeName === 'Create' ? COLORS.PURPLE : tintColor}
+            color={routeName === 'Create' ? '#FE9595' : tintColor}
             key={routeName}
           />
         );
       }
     }),
     tabBarOptions: {
-      activeTintColor: COLORS.PURPLE,
+      activeTintColor: '#FE9595',
       inactiveTintColor: COLORS.BLACK_A,
       showLabel: false
     }

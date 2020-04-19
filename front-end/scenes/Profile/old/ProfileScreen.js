@@ -9,7 +9,8 @@ import {
   Dimensions,
   FlatList,
   ImageBackground,
-  StatusBar
+  StatusBar,
+  TouchableOpacity
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
 import _ from 'lodash';
@@ -21,7 +22,6 @@ import { withTranslation } from 'react-i18next';
 import ProfileImages from '../../components/ProfileImages';
 import ProfileInfoCard from '../../components/ProfileInfoCard';
 import OwnerInfo from '../../components/OwnerInfo';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import SheltyButton from '../../components/common/SheltyButton';
 import BasicSheltyButton from '../../components/common/BasicSheltyButton';
 

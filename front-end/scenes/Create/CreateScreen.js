@@ -1,35 +1,67 @@
-import React from 'react';
-import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native';
-import { Button, Icon, Image } from 'react-native-elements';
-import { SIZES, COLORS } from '../../constants/theme';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions, StatusBar, ImageBackground } from 'react-native';
 import { withTranslation } from 'react-i18next';
-import { ANIMAL_TYPES } from '../../constants';
-import CatBg from '../../assets/cat.svg';
-import DogBg from '../../assets/dog.svg';
-import { SvgUri } from 'react-native-svg';
 
+import catBg from '../../assets/cat-bg.png';
+import dogBg from '../../assets/dog-bg.png';
+import catBgThumb from '../../assets/cat-bg-thumb.png';
+import dogBgThumb from '../../assets/dog-bg-thumb.png';
+import catPawBg from '../../assets/cat-paw-bg.png';
+import dogBoneBg from '../../assets/dog-bone-bg.png';
+
+import MainButton from '../../components/common/MainButton';
+import ProgressiveImage from '../../components/common/ProgressiveImage';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CreateScreen = ({ t, navigation }) => {
-  handleNewPetClick = type => {
-    navigation.navigate('CreatePet', {
-      type: type.key
-    });
-  };
+  const [selectedType, setSelectedType] = useState(null);
+
+  const CreatePetButton = () => (
+    <View style={styles.buttonContainer}>
+     <MainButton onPress={goToCreateScreen} text={selectedType === 'dog' ? t('addNewDog') : t('addNewCat')} />  
+    </View>
+  );
+
+  const goToCreateScreen = () => {
+    if (selectedType !== null) {
+      navigation.navigate('CreatePet', { type: selectedType });
+    }
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.section, styles.dog]}>
-        <DogBg
-        />
+    <>
+      <StatusBar hidden />
+      <View style={styles.container}>
+        <ImageBackground source={dogBoneBg} style={[styles.bg, selectedType === null || selectedType === 'dog' ? styles.fullOpacity : styles.lowOpacity]}>
+          <View style={styles.section}>
+            <TouchableOpacity onPress={() => setSelectedType('dog')} activeOpacity={1} style={styles.innerSection}>
+              <View />
+              {selectedType === 'dog' && <CreatePetButton />}
+               <ProgressiveImage
+                  thumb={dogBgThumb}
+                  source={dogBg}
+                  style={styles.bgImage}
+                />
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+        <ImageBackground source={catPawBg} style={[styles.bg, selectedType === null || selectedType === 'cat' ? styles.fullOpacity : styles.lowOpacity]}>
+          <View style={styles.section}>
+            <TouchableOpacity onPress={() => setSelectedType('cat')} activeOpacity={1} style={styles.innerSection}>
+              <View />
+              {selectedType === 'cat' && <CreatePetButton />}
+              <ProgressiveImage
+                thumb={catBgThumb}
+                source={catBg}
+                style={styles.bgImage}
+              />
+            </TouchableOpacity>
+          </View>
+       </ImageBackground>
       </View>
-      <View style={[styles.section, styles.cat]}>
-        <CatBg
-        />
-        
-      </View>
-    </View>
+    </>
+    
   );
 };
 
@@ -40,21 +72,35 @@ CreateScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    backgroundColor: COLORS.WHITE_LIGHT,
-    alignItems: 'center'
+    flexDirection: 'row',
   },
   section: {
+    flex: 1
+  },
+  bg: {
     flex: 1,
-    alignItems: 'center',
+    resizeMode: 'cover',
     justifyContent: 'center',
-    width: '100%'
+    alignItems: 'center'
   },
-  dog: {
-    backgroundColor: '#FFF5F4',
+  innerSection: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
-  cat: {
-    backgroundColor: '#F0FFF5'
+  bgImage: {
+    width: (screenWidth / 2) - 40,
+    height: (screenWidth / 2) - 40
+  },
+  fullOpacity: {
+    opacity: 1
+  },
+  lowOpacity: {
+    opacity: 0.5
+  },
+  buttonContainer: {
+    width: (screenWidth / 2) - 40
   }
 });
 

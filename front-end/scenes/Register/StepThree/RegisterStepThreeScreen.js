@@ -21,15 +21,12 @@ import { Button } from 'react-native-elements';
 
 import {
   validateEmptyFields,
-  validateEmailAndPhone,
-  validateUsername,
-  validateEmail,
-  validatePhone
 } from '../../../utils/Validator';
-import Background from '../../../assets/bg.svg';
+import bgImage from '../../../assets/bg.png';
 
 import { COLORS, SIZES } from '../../../constants/theme';
 import LogoText from '../../../components/common/LogoText';
+import MainButton from '../../../components/common/MainButton';
 
 const ACTIVATE_ACCOUNT_WITH_PHONE = gql`
   mutation activateAccountWithPhone($phone: String!, $phoneCode: String!) {
@@ -94,47 +91,41 @@ const RegisterStepThreeScreen = ({ t, navigation }) => {
     navigation.navigate('Login');
   };
 
-  const isDisabled = validateEmptyFields({ phoneCode: currentPhoneCode });
+  const isDisabled = validateEmptyFields({ phoneCode: currentPhoneCode }) || isLoading;
 
   return (
     <View style={styles.container}>
-      <View style={styles.background}>
-        <Background />
-      </View>
+      <ImageBackground source={bgImage} style={styles.bgImage}>
+        <LogoText text={t('shelty')} />
 
-      <LogoText text={t('shelty')} />
+        <KeyboardAvoidingView behavior="padding">
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <TextInput
+                  style={styles.textInput}
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setCurrentPhoneCode(text)}
+                  returnKeyType="next"
+                  value={currentPhoneCode}
+                />,
+              </View>
+            </View>
 
-      <KeyboardAvoidingView behavior="padding">
+            <View style={styles.actionContainer}>
+              <MainButton disabled={isDisabled} onPress={activateUser} text={t('register')} loading={isLoading} />
 
-      <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <View style={styles.input}>
-            <TextInput
-              style={styles.textInput}
-              underlineColorAndroid="transparent"
-              onChangeText={(text) => setCurrentPhoneCode(text)}
-              returnKeyType="next"
-              value={currentPhoneCode}
-            />,
+              <View style={styles.loginContainer}>
+                <Text style={styles.loginText}>{t('hasAccount')}</Text>
+                <TouchableOpacity onPress={goToLogin} style={styles.basicButton} activeOpacity={0.8}>
+                  <Text style={styles.actionText}>{t('login')}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
 
-        <View style={styles.actionContainer}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity disabled={isDisabled} onPress={activateUser} style={styles.button} activeOpacity={0.8}>
-              <Text style={[styles.buttonText, isDisabled && styles.disabled]}>{t('register')}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.loginContainer}>
-            <Text style={styles.loginText}>{t('hasAccount')}</Text>
-            <TouchableOpacity onPress={goToLogin} style={styles.basicButton} activeOpacity={0.8}>
-              <Text style={styles.actionText}>{t('login')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-      </KeyboardAvoidingView>
+      </ImageBackground>
     </View>
   );
 };
@@ -142,59 +133,13 @@ const RegisterStepThreeScreen = ({ t, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
+    flexDirection: 'column',
   },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%'
-  },
-  logoText: {
-    fontSize: 32,
-    color: COLORS.SILVER_PINK,
-    textAlign: 'center'
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  bgImage: {
+    flex: 1,
+    resizeMode: 'cover',
     justifyContent: 'center',
-    backgroundColor: COLORS.WHITE_LIGHT,
-    borderRadius: 5,
-    width: 200,
-    height: 40,
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 0.8,
-    elevation: 6,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 }
-  },
-  showPasswordButton: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    alignSelf: 'center',
-    alignContent: 'flex-end',
-    marginHorizontal: 10
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#FEA195',
-    fontFamily: 'RalewayBold'
-  },
-  disabled: {
-    color: '#C9C9C9',
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginBottom: 15
-  },
-  logoText: {
-    color: COLORS.WHITE,
-    fontSize: SIZES.TITLE_TEXT,
-    marginVertical: 10,
-    opacity: 0.7
+    alignItems: 'center'
   },
   inputContainer: {
     alignItems: 'flex-start',
@@ -203,28 +148,21 @@ const styles = StyleSheet.create({
   input: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.WHITE_LIGHT,
+    backgroundColor: COLORS.WHITE_F9,
     borderRadius: 5,
     width: 200,
-    height: 40,
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 0.8,
-    elevation: 6,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 }
-  },
-  inputIcon: {
-    marginHorizontal: 10
+    height: 50,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    elevation: 1,
+    shadowRadius: 5,
+    shadowOffset: { width: 1, height: 3 },
   },
   textInput: {
     color: '#5C5C5C',
     fontSize: 14,
     flex: 1,
-    fontFamily: 'Raleway'
-  },
-  nextIcon: {
-    alignSelf: 'center',
-    marginLeft: 10
+    fontFamily: 'Raleway',
   },
   actionText: {
     color: COLORS.WHITE,

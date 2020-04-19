@@ -9,7 +9,8 @@ import {
   Dimensions,
   FlatList,
   ImageBackground,
-  StatusBar
+  StatusBar,
+  TouchableOpacity
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
 import _ from 'lodash';
@@ -17,7 +18,6 @@ import _ from 'lodash';
 import { COLORS, SIZES } from '../../constants/theme';
 import { SHARED_PHOTOS, USER_TOKEN } from '../../constants';
 import { withTranslation } from 'react-i18next';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import FriendlySvg from '../../assets/svgs/friendly-cat.svg';
 

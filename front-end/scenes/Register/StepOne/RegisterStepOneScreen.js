@@ -1,21 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  TextInput, 
+  TouchableOpacity, 
+  KeyboardAvoidingView, 
+  Alert, 
+  ImageBackground 
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-import { validateField, validateFields, validateEmptyFields } from '../../../utils/Validator';
-import Background from '../../../assets/bg.svg';
+import { validateFields, validateEmptyFields } from '../../../utils/Validator';
+import bgImage from '../../../assets/bg.png';
 import { COLORS, SIZES } from '../../../constants/theme';
 import LogoText from '../../../components/common/LogoText';
-import { PHONE_MASK } from '../../../constants';
-import { TextInputMask } from 'react-native-masked-text';
-import { unmaskPhone } from '../../../utils/Generator';
+import MainButton from '../../../components/common/MainButton';
+import { parsePhoneNumber } from '../../../utils/FormValidator';
 
 const RegisterStepOneScreen = ({ t, navigation }) => {
-  const phoneFieldRef = useRef(null);
-  const passwordFieldRef = useRef(null);
+  const phoneFieldRef = React.createRef();
+  const passwordFieldRef = React.createRef();
 
   const [showPassword, setShowPassword] = useState(false);
   const [registerData, setRegisterData] = useState({
@@ -32,8 +40,7 @@ const RegisterStepOneScreen = ({ t, navigation }) => {
   const nextStep = () => {
     setIsLoading(true);
     const { phone, email, password } = registerData;
-    const [unmaskedPhone, actualPhone] = unmaskPhone(phone);
-    const nextScreenData = { ...registerData, phone: actualPhone };
+    const parsedPhone = parsePhoneNumber(phone);
     const validationResult = validateFields([
       {
         type: 'email',
@@ -41,7 +48,7 @@ const RegisterStepOneScreen = ({ t, navigation }) => {
       },
       {
         type: 'phone',
-        value: actualPhone
+        value: parsedPhone
       },
       {
         type: 'password',
@@ -54,6 +61,7 @@ const RegisterStepOneScreen = ({ t, navigation }) => {
       Alert.alert(validationResult);
     } else {
       setIsLoading(false);
+      const nextScreenData = { ...registerData, phone: parsedPhone };
       navigation.navigate('RegisterStepTwo', { registerData: nextScreenData });
     }
   };
@@ -64,105 +72,89 @@ const RegisterStepOneScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({ ...registerData });
+  const isDisabled = validateEmptyFields({ ...registerData }) || isLoading;
 
-  const focusPhoneField = () => phoneFieldRef && phoneFieldRef.current.focus();
-  const focusPasswordField = () => passwordFieldRef && passwordFieldRef.current.focus();
+  const focusPhoneField = () => phoneFieldRef.current.focus();
+  const focusPasswordField = () => passwordFieldRef.current.focus();
 
   return (
     <View style={styles.container}>
-      <View style={styles.background}>
-        <Background />
-      </View>
+      <ImageBackground source={bgImage} style={styles.bgImage}>
+        <LogoText text={t('shelty')} />
 
-      <LogoText text={t('shelty')} />
-
-      <KeyboardAvoidingView behavior="padding">
-        <View style={styles.formContainer}>
-          <View style={styles.inputContainer}>
-            <View style={styles.input}>
-              <InputIcon name="md-mail" />
-              <TextInput
-                style={styles.textInput}
-                value={registerData.email}
-                underlineColorAndroid="transparent"
-                onChangeText={(text) => setRegisterData({ ...registerData, email: text })}
-                returnKeyType="next"
-                placeholder={t('emailInput')}
-                blurOrSubmit={false}
-                onSubmitEditing={() => focusPhoneField()}
-                clearButtonMode="while-editing"
-              />
+        <KeyboardAvoidingView behavior="padding">
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <InputIcon name="md-mail" />
+                <TextInput
+                  style={styles.textInput}
+                  value={registerData.email}
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setRegisterData({ ...registerData, email: text })}
+                  returnKeyType="next"
+                  placeholder={t('emailInput')}
+                  blurOrSubmit={false}
+                  onSubmitEditing={() => focusPhoneField()}
+                  clearButtonMode="while-editing"
+                />
+              </View>
             </View>
-          </View>
 
-          <View style={styles.inputContainer}>
-            <View style={styles.input}>
-              <InputIcon name="md-phone-portrait" />
-              <TextInputMask
-                style={styles.textInput}
-                value={registerData.phone}
-                placeholder="(90) 555 555 55 55"
-                underlineColorAndroid="transparent"
-                onChangeText={(text) => setRegisterData({ ...registerData, phone: text })}
-                returnKeyType="next"
-                clearButtonMode="while-editing"
-                type="cel-phone"
-                options={{
-                  maskType: "BRL",
-                  withDDD: true,
-                  dddMask: '(90) 999 999 99 99'
-                }}
-                ref={phoneFieldRef}
-                mask={PHONE_MASK}
-              />
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <InputIcon name="md-phone-portrait" />
+                <TextInput
+                  style={styles.textInput}
+                  value={registerData.phone}
+                  underlineColorAndroid="transparent"
+                  onChangeText={(text) => setRegisterData({ ...registerData, phone: text })}
+                  returnKeyType="next"
+                  placeholder={t('phoneInput')}
+                  blurOrSubmit={false}
+                  onSubmitEditing={() => focusPasswordField()}
+                  clearButtonMode="while-editing"
+                  ref={phoneFieldRef}
+                  keyboardType="numeric"
+                />
+              </View>
             </View>
-          </View>
 
-          <View style={styles.inputContainer}>
-            <View style={styles.input}>
-              <InputIcon name="md-lock" />
-              <TextInput
-                style={styles.textInput}
-                value={registerData.password}
-                underlineColorAndroid="transparent"
-                secureTextEntry={!showPassword}
-                onChangeText={(text) => setRegisterData({ ...registerData, password: text })}
-                returnKeyType="next"
-                ref={passwordFieldRef}
-                clearButtonMode="while-editing"
-                placeholder={t('passwordInput')}
-              />
-              <View style={styles.showPasswordButton}>
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} activeOpacity={0.8}>
-                  <Icon name={!showPassword ? 'md-eye' : 'md-eye-off'} size={SIZES.NORMAL_TEXT} color="#FEA195" />
+            <View style={styles.inputContainer}>
+              <View style={styles.input}>
+                <InputIcon name="md-lock" />
+                <TextInput
+                  style={styles.textInput}
+                  value={registerData.password}
+                  underlineColorAndroid="transparent"
+                  secureTextEntry={!showPassword}
+                  onChangeText={(text) => setRegisterData({ ...registerData, password: text })}
+                  returnKeyType="next"
+                  ref={passwordFieldRef}
+                  clearButtonMode="while-editing"
+                  placeholder={t('passwordInput')}
+                />
+                <View style={styles.showPasswordButton}>
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)} activeOpacity={0.8}>
+                    <Icon name={!showPassword ? 'md-eye' : 'md-eye-off'} size={SIZES.NORMAL_TEXT} color="#FEA195" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <MainButton disabled={isDisabled} onPress={nextStep} text={t('nextStep')} loading={isLoading} />
+
+              <View style={styles.loginContainer}>
+                <Text style={styles.loginText}>{t('hasAccount')}</Text>
+                <TouchableOpacity onPress={goToLogin} style={styles.basicButton} activeOpacity={0.8}>
+                  <Text style={styles.actionText}>{t('login')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-
-          <View style={styles.actionContainer}>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity disabled={isDisabled} onPress={nextStep} activeOpacity={0.8}>
-                <Text style={[styles.buttonText, isDisabled && styles.disabled]}>{t('nextStep')}</Text>
-              </TouchableOpacity>
-              <Icon
-                name="md-arrow-forward"
-                size={SIZES.NORMAL_TEXT}
-                color={isDisabled ? COLORS.DARK_GREY : '#FEA195'}
-                style={styles.nextIcon}
-              />
-            </View>
-
-            <View style={styles.loginContainer}>
-              <Text style={styles.loginText}>{t('hasAccount')}</Text>
-              <TouchableOpacity onPress={goToLogin} style={styles.basicButton} activeOpacity={0.8}>
-                <Text style={styles.actionText}>{t('login')}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     </View>
   );
 };
@@ -170,30 +162,13 @@ const RegisterStepOneScreen = ({ t, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  bgImage: {
+    flex: 1,
+    resizeMode: 'cover',
     justifyContent: 'center',
-    backgroundColor: COLORS.WHITE,
-    borderRadius: 5,
-    width: 200,
-    height: 50,
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 0.8,
-    elevation: 6,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 },
-    marginTop: 10,
+    alignItems: 'center'
   },
   showPasswordButton: {
     justifyContent: 'flex-end',
@@ -201,14 +176,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignContent: 'flex-end',
     marginHorizontal: 10,
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#FEA195',
-    fontFamily: 'RalewayBold',
-  },
-  disabled: {
-    color: '#C9C9C9',
   },
   inputContainer: {
     alignItems: 'flex-start',
