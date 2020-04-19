@@ -18,10 +18,13 @@ export const fieldGenerator = field => {
 
 export const unmaskPhone = (phone) => {
   let unmasked = phone;
-  unmasked = unmasked.replace("(90)", "90");
+  // remove 0 if it starts with 0
+  if (unmasked.startsWith("0")) {
+    unmasked = unmasked.substring(1);
+  }
+  // remove spaces between numbers
   unmasked = unmasked.replace(/\s+/g, '');
-  const actualPhone = unmasked.substring(2);
-  return [unmasked, actualPhone];
+  return unmasked;
 }
 
 const PHONE_PREFIX = [
