@@ -24,7 +24,9 @@ const CreateScreen = ({ t, navigation }) => {
   );
 
   const goToCreateScreen = () => {
-    navigation.navigate('')
+    if (selectedType !== null) {
+      navigation.navigate('CreatePet', { type: selectedType });
+    }
   }
 
   return (
