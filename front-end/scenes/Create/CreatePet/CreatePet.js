@@ -13,7 +13,7 @@ import MainButton from '../../../components/common/MainButton';
 import ProgressiveImage from '../../../components/common/ProgressiveImage';
 
 import dogBoneBg from '../../../assets/dog-bone-bg.png';
-import catPawBg from '../../../assets/dog-bone-bg.png';
+import catPawBg from '../../../assets/cat-paw-bg.png';
 import catBg from '../../../assets/cat-bg.png';
 import dogBg from '../../../assets/dog-bg.png';
 import catBgThumb from '../../../assets/cat-bg-thumb.png';
@@ -23,13 +23,8 @@ import { validateEmptyFields } from '../../../utils/Validator';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CreatePet = ({ t, navigation, data }) => {
-  const [formData, setFormData] = useState({ ...data, breed: BREEDS[0], age: AGE_INTERVALS[0] });
+  const [formData, setFormData] = useState({ ...data, breed: BREEDS[0], age: AGE_INTERVALS[0], type: navigation.state.params.type });
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const { type } = navigation.state.params;
-    setFormData({ ...formData, type })
-  }, []);
 
   const InputIcon = ({ name }) => <Icon name={name} size={14} color="#FEA195" style={styles.inputIcon} />;
 
@@ -211,7 +206,7 @@ const styles = StyleSheet.create({
   petImage: {
     position: 'absolute',
     bottom: 110,
-    right: 10,
+    right: 30,
     width: (screenWidth / 2) - 40,
     height: (screenWidth / 2) - 40
   },
