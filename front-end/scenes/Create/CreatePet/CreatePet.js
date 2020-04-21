@@ -23,7 +23,8 @@ import { validateEmptyFields } from '../../../utils/Validator';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CreatePet = ({ t, navigation, data }) => {
-  const [formData, setFormData] = useState({ ...data, breed: BREEDS[0], age: AGE_INTERVALS[0], type: navigation.state.params.type });
+  const { type } = navigation.state.params;
+  const [formData, setFormData] = useState({ ...data, breed: BREEDS[0], age: AGE_INTERVALS[0], type });
   const [isLoading, setIsLoading] = useState(false);
 
   const InputIcon = ({ name }) => <Icon name={name} size={14} color="#FEA195" style={styles.inputIcon} />;
@@ -33,7 +34,7 @@ const CreatePet = ({ t, navigation, data }) => {
   };
 
   const nextStep = () => {
-    console.log("nextStep");
+    navigation.navigate('CreateAdditional', { data: formData });
   }
 
   const MAIN_COLOR = formData.type === 'dog' ? '#29CCBC' : '#CCE389';
