@@ -91,7 +91,7 @@ const RegisterStepThreeScreen = ({ t, navigation }) => {
     navigation.navigate('Login');
   };
 
-  const isDisabled = validateEmptyFields({ phoneCode: currentPhoneCode }) || isLoading;
+  const isDisabled = validateEmptyFields([currentPhoneCode]) || isLoading;
 
   return (
     <View style={styles.container}>

@@ -83,7 +83,7 @@ const ActivateAccountStepTwoScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({ code: activateAccountData.code, phone: activateAccountData.phone });
+  const isDisabled = validateEmptyFields([activateAccountData.code, activateAccountData.phone]);
 
   return (
     <View style={styles.container}>

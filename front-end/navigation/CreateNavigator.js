@@ -7,6 +7,7 @@ import CreateFinal from '../scenes/Create/CreateFinal';
 import { NO_SHADOW } from '../constants';
 import i18n from '../i18n';
 import BackHandler from '../components/common/BackHandler';
+import SheltyPicker from '../components/common/SheltyPicker';
 
 const CreateNavigator = createStackNavigator(
   {
@@ -21,7 +22,7 @@ const CreateNavigator = createStackNavigator(
     CreatePet: {
       screen: CreatePet,
       navigationOptions: ({ navigation }) => ({
-        title: i18n.t('settings'),
+        title: i18n.t('createPet'),
         headerTitleStyle: {
           flex: 1,
           textAlign: 'center',
@@ -42,6 +43,9 @@ const CreateNavigator = createStackNavigator(
     CreateFinal: {
       screen: CreateFinal,
     },
+    SheltyPicker: {
+      screen: SheltyPicker
+    }
   }, 
 );
 

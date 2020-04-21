@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import i18n from '../i18n';
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -7,47 +8,47 @@ const phoneRegex = /(05|5)([0-9]){9}/;
 const usernameRegex = /^[A-Za-z0-9]+(?:[A-Za-z0-9_]+)*$/;
 
 // checking if all fields are non-empty.
-export const validateEmptyFields = fields => _.some(Object.keys(fields), field => _.isEmpty(_.trim(fields[field])));
+export const validateEmptyFields = fields => _.some(fields, field => _.isEmpty(_.trim(field)));
 
 export const validateWithRegex = (regex, value) => _.isEqual(_.first(regex.exec(value)), value)
 
 // validating email.
 export const validateEmail = value => {
-  const isEmpty = validateEmptyFields({ value });
+  const isEmpty = validateEmptyFields([value]);
   if (isEmpty) {
-    return 'E-posta adresi zorunlu.';
+    return i18n.t('emailRequired');
   }
 
   const isValid = validateWithRegex(emailRegex, value);
   if (!isValid) {
-    return 'Geçersiz e-posta adresi.';
+    return i18n.t('invalidEmail');
   }
 
   return null;
 };
 
 export const validatePhone = value => {
-  const isEmpty = validateEmptyFields({ value });
+  const isEmpty = validateEmptyFields([value]);
   if (isEmpty) {
-    return 'Telefon zorunlu.';
+    return i18n.t('phoneRequired');
   }
 
   const isValid = validateWithRegex(phoneRegex, value);
   if (!isValid) {
-    return 'Geçersiz telefon numarası.';
+    return i18n.t('invalidPhone');
   }
 
   return null;
 };
 
 export const validatePassword = value => {
-  const isEmpty = validateEmptyFields({ value });
+  const isEmpty = validateEmptyFields([value]);
   if (isEmpty) {
-    return 'Şifre zorunlu.';
+    return i18n.t('passwordRequired');
   }
 
   if (value.length < 6) {
-    return 'Şifre en az 6 karakter olmalı.';
+    return i18n.t('tooShortPassword');
   }
 
   return null;
@@ -61,7 +62,7 @@ export const validateField = (value, type) => {
   } else if (_.isEqual(type, 'password')) {
     return validatePassword(value);
   } else {
-    return validateEmptyFields({ value });
+    return validateEmptyFields([value]);
   }
 
   return true;

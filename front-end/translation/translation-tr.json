@@ -92,5 +92,16 @@
   "reportProblem": "Bir Sorun Bildir",
   "aboutUs": "Hakkımızda",
   "help": "Yardım",
-  "logout": "Çıkış Yap"
+  "logout": "Çıkış Yap",
+  "name": "Ad",
+  "sex": "Cinsiyet",
+  "selectAge": "Yaşını Seçin",
+  "selectBreed": "Cinsini Seçin",
+  "emailRequired": "E-posta adresi zorunlu.",
+  "invalidEmail": "Geçersiz e-posta adresi.",
+  "phoneRequired": "Telefon zorunlu.",
+  "invalidPhone": "Geçersiz telefon numarası.",
+  "passwordRequired": "Şifre zorunlu.",
+  "tooShortPassword": "Şifre en az 6 karakter olmalı.",
+  "createPet": "Evcil Hayvan Ekle"
 }

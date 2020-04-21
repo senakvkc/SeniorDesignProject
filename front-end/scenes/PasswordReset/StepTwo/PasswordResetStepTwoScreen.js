@@ -42,7 +42,7 @@ const PasswordResetStepTwoScreen = ({ t, navigation }) => {
 
   const checkCode = async () => {
     const { phone, code } = resetPasswordData;
-    const isCodeEmpty = validateEmptyFields({ code });
+    const isCodeEmpty = validateEmptyFields([code]);
     
     if (!isCodeEmpty) {
       await checkResetPasswordCode({
@@ -87,7 +87,7 @@ const PasswordResetStepTwoScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({ code: resetPasswordData.code });
+  const isDisabled = validateEmptyFields([resetPasswordData.code]);
 
   return (
     <View style={styles.container}>

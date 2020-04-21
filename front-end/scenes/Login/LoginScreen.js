@@ -124,7 +124,7 @@ const LoginScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({ ...loginData }) || isLoading;
+  const isDisabled = validateEmptyFields([loginData.phone, loginData.password]) || isLoading;
 
   const focusPasswordField = () => passwordInputRef.current.focus();
 
