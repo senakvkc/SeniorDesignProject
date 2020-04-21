@@ -107,7 +107,7 @@ const RegisterStepTwoScreen = ({ t, navigation }) => {
 
   const nextInput = () => surnameRef.current.focus();
 
-  const isDisabled = validateEmptyFields({ ...registerData }) || isLoading;
+  const isDisabled = validateEmptyFields([registerData.name, registerData.surname]) || isLoading;
 
   return (
     <View style={styles.container}>

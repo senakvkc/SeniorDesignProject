@@ -49,7 +49,7 @@ const ActivateAccountStepOneScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({ phone });
+  const isDisabled = validateEmptyFields([phone]);
 
   return (
     <View style={styles.container}>

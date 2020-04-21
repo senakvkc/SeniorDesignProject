@@ -72,7 +72,7 @@ const RegisterStepOneScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({ ...registerData }) || isLoading;
+  const isDisabled = validateEmptyFields([registerData.email, registerData.phone, registerData.password]) || isLoading;
 
   const focusPhoneField = () => phoneFieldRef.current.focus();
   const focusPasswordField = () => passwordFieldRef.current.focus();
@@ -83,7 +83,7 @@ const RegisterStepOneScreen = ({ t, navigation }) => {
         <LogoText text={t('shelty')} />
 
         <KeyboardAvoidingView behavior="padding">
-          <View style={styles.formContainer}>
+          <View>
             <View style={styles.inputContainer}>
               <View style={styles.input}>
                 <InputIcon name="md-mail" />

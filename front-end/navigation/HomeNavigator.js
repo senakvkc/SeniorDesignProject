@@ -1,15 +1,20 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
-import { NAVIGATION_OPTIONS } from './NavigationOptions';
+import { Icon } from 'react-native-elements';
+
 import HomeScreen from '../scenes/Home';
 import SheltyCamera from '../components/SheltyCamera';
 import TakenPhoto from '../components/TakenPhoto';
 import SettingsScreen from '../scenes/Settings';
 import CreateScreen from '../scenes/Create';
 import _ from 'lodash';
+
+import i18n from '../i18n';
 import { COLORS } from '../constants/theme';
+import { NO_SHADOW } from '../constants';
 import CameraTrigger from '../components/CameraTrigger';
 import SettingsTrigger from '../components/SettingsTrigger';
+import BackHandler from '../components/common/BackHandler';
 
 
 const screensWithHiddenBottomBar = ['SheltyCamera', 'TakenPhoto'];
@@ -18,21 +23,6 @@ const HomeNavigator = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,
-      navigationOptions: ({ navigation }) => ({
-        headerTitleStyle: {
-          flex: 1,
-          textAlign: 'center',
-          alignSelf: 'center',
-          color: COLORS.PURPLE
-        },
-        headerStyle: {
-          shadowColor: 'transparent',
-          backgroundColor: COLORS.WHITE,
-          elevation: 1
-        },
-        headerLeft: <CameraTrigger navigation={navigation} />,
-        headerRight: <SettingsTrigger navigation={navigation} />
-      }),
     },
     SheltyCamera: {
       screen: SheltyCamera,
@@ -48,7 +38,21 @@ const HomeNavigator = createStackNavigator(
     },
     Settings: {
       screen: SettingsScreen,
-      navigationOptions: NAVIGATION_OPTIONS
+      navigationOptions: ({ navigation }) => ({
+        title: i18n.t('settings'),
+        headerTitleStyle: {
+          flex: 1,
+          textAlign: 'center',
+          alignSelf: 'center',
+          color: '#FE9595',
+          fontFamily: 'Raleway',
+          fontSize: 18
+        },
+        headerStyle: {
+          ...NO_SHADOW
+        },
+        headerLeft: <BackHandler navigation={navigation} />,
+      })
     },
     Create: {
       screen: CreateScreen,

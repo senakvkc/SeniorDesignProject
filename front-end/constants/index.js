@@ -12,6 +12,23 @@ export const PHOTOS_DIR = 'shelty';
 
 export const PHONE_MASK = "+90 ([000]) [000] [00] [00]";
 
+export const SHADOW = {
+  shadowColor: 'rgba(0,0,0,0.15)',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 1,
+  shadowRadius: 2,
+  elevation: 1,
+}
+
+export const NO_SHADOW = {
+  shadowColor: 'transparent',
+  backgroundColor: '#fff',
+  shadowOpacity: 0,
+  elevation: 0,
+  borderBottomColor: 'transparent',
+  borderBottomWidth: 0
+}
+
 export const SEX = Object.freeze({
 MALE: {
     CODE: 'MALE',

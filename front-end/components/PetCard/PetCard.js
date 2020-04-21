@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { COLORS, SIZES } from '../../constants/theme';
 import { Icon, Button } from 'react-native-elements';
-import { SEX } from '../../constants';
+import { SEX, SHADOW } from '../../constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import SheltyButton from '../common/SheltyButton';
 import BasicSheltyButton from '../common/BasicSheltyButton';
@@ -108,11 +108,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     alignItems: 'center',
     backgroundColor: '#f9f9f9',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 1,
+    ...SHADOW,
     borderRadius: 15,
     padding: 10,
   },

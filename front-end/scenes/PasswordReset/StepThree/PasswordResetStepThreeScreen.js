@@ -45,7 +45,7 @@ const PasswordResetStepThreeScreen = ({ t, navigation }) => {
 
   const resetPasswordFinal = async () => {
     const { phone, code, newPassword, newPasswordRepeat } = resetPasswordData;
-    const isEmpty = validateEmptyFields({ newPassword, newPasswordRepeat });
+    const isEmpty = validateEmptyFields([newPassword, newPasswordRepeat]);
 
     if (isEmpty) {
       Alert.alert(t('emptyPassword'));
@@ -101,10 +101,10 @@ const PasswordResetStepThreeScreen = ({ t, navigation }) => {
     name: PropTypes.string.isRequired,
   };
 
-  const isDisabled = validateEmptyFields({
+  const isDisabled = validateEmptyFields([{
     password: resetPasswordData.newPassword,
     passwordRepeat: resetPasswordData.newPasswordRepeat,
-  });
+  }]);
   const focusRepeatField = () => newPasswordRepeatRef.current.focus();
 
   return (
