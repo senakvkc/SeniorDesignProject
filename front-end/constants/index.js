@@ -1,6 +1,15 @@
 import _ from 'lodash';
 import moment from 'moment';
 import i18n from '../i18n';
+import docile from '../assets/features/docile.png';
+import energetic from '../assets/features/energetic.png';
+import freeSpirited from '../assets/features/free-spirited.png';
+import friendly from '../assets/features/friendly.png';
+import grooming from '../assets/features/grooming.png';
+import intelligent from '../assets/features/intelligent.png';
+import playful from '../assets/features/playful.png';
+import trained from '../assets/features/trained.png';
+
 export const LAN_ADDRESS = 'http://192.168.1.25';
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
@@ -27,7 +36,109 @@ export const NO_SHADOW = {
   elevation: 0,
   borderBottomColor: 'transparent',
   borderBottomWidth: 0
-}
+};
+
+export const DOG_CHARACTERISTICS = [
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('shed'),
+    value: 'SHED',
+    image: grooming
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('docile'),
+    value: 'DOCILE',
+    image: docile
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('playful'),
+    value: 'PLAYFUL',
+    image: playful
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('energetic'),
+    value: 'ENERGETIC',
+    image: energetic
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('trained'),
+    value: 'TRAINED',
+    image: trained
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('friendly'),
+    value: 'FRIENDLY',
+    image: friendly
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('intelligent'),
+    value: 'INTELLIGENT',
+    image: intelligent
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('freeSpirited'),
+    value: 'FREE_SPIRITED',
+    image: freeSpirited
+  }
+];
+
+export const CAT_CHARACTERISTICS = [
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('shed'),
+    value: 'SHED',
+    image: grooming
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('docile'),
+    value: 'DOCILE',
+    image: docile
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('playful'),
+    value: 'PLAYFUL',
+    image: playful
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('energetic'),
+    value: 'ENERGETIC',
+    image: energetic
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('trained'),
+    value: 'TRAINED',
+    image: trained
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('friendly'),
+    value: 'FRIENDLY',
+    image: friendly
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('intelligent'),
+    value: 'INTELLIGENT',
+    image: intelligent
+  },
+  {
+    key: _.uniqueId('char_'),
+    text: i18n.t('freeSpirited'),
+    value: 'FREE_SPIRITED',
+    image: freeSpirited
+  }
+];
 
 export const SEX = Object.freeze({
 MALE: {

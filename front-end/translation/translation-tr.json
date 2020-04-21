@@ -103,5 +103,14 @@
   "invalidPhone": "Geçersiz telefon numarası.",
   "passwordRequired": "Şifre zorunlu.",
   "tooShortPassword": "Şifre en az 6 karakter olmalı.",
-  "createPet": "Evcil Hayvan Ekle"
+  "createPet": "Evcil Hayvan Ekle",
+  "shed": "Tüy Döken",
+  "docile": "Uysal",
+  "playful": "Oyuncu",
+  "energetic": "Enerjik",
+  "trained": "Eğitimli",
+  "friendly": "Dost Canlısı",
+  "intelligent": "Zeki",
+  "freeSpirited": "Özgür Ruhlu",
+  "chooseFeatures": "Evcil hayvanınızın öne çıkan üç özelliğini seçin."
 }

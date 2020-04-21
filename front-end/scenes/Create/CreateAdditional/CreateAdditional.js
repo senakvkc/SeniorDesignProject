@@ -1,124 +1,147 @@
 import React, { useState } from 'react'
-import { Text, View, ScrollView, KeyboardAvoidingView, StyleSheet, Picker } from 'react-native'
+import { Text, View, ScrollView, StyleSheet, ImageBackground, Dimensions, Image, TouchableOpacity } from 'react-native'
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
-import CreateSteps from '../../../components/CreateSteps';
-import { CHARACTERISTICS } from '../../../constants/form';
-import { COLORS } from '../../../constants/theme';
-import BasicSheltyButton from '../../../components/common/BasicSheltyButton';
+import { DOG_CHARACTERISTICS, CAT_CHARACTERISTICS, SHADOW } from '../../../constants';
+import MainButton from '../../../components/common/MainButton';
+import ProgressiveImage from '../../../components/common/ProgressiveImage';
+import dogBoneBg from '../../../assets/dog-bone-bg.png';
+import catPawBg from '../../../assets/cat-paw-bg.png';
+import catBg from '../../../assets/cat-bg.png';
+import dogBg from '../../../assets/dog-bg.png';
+import catBgThumb from '../../../assets/cat-bg-thumb.png';
+import dogBgThumb from '../../../assets/dog-bg-thumb.png';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CreateAdditional = ({ t, navigation }) => {
   const { data } = navigation.state.params;
-
   const [formData, setFormData] = useState({
     ...data,
-    characteristics: [CHARACTERISTICS[0].value, CHARACTERISTICS[1].value, CHARACTERISTICS[2].value],
+    characteristics: []
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleCharacteristicsChange = (itemValue, itemIndex, index) => {
-    let newCharacteristics = formData.characteristics;
-    newCharacteristics[index] = itemValue;
+  const MAIN_COLOR = formData.type === 'dog' ? '#29CCBC' : '#CCE389';
 
-    setFormData({ ...formData, characteristics: newCharacteristics });
-  }
-
-  const handleNext = () => {
+  const nextStep = () => {
     navigation.navigate('CreateFinal', {
       data: formData
     });
   };
 
-  const renderChar = index => (
-    <View style={styles.fieldContainer}>
-      <View style={styles.pickerContainer}>
-        <Text style={styles.pickerText}>Characteristics</Text>
-        <Picker
-          selectedValue={formData.characteristics[index]}
-          style={styles.formPickerField}
-          onValueChange={(itemValue, itemIndex) => handleCharacteristicsChange(itemValue, itemIndex, index)}
-          itemStyle={styles.formPickerItem}
-          mode="dropdown"
-        >
-          {_.map(CHARACTERISTICS, characteristics => (
-            <Picker.Item key={characteristics.value} label={characteristics.text} value={characteristics.value} />
-          ))}
-        </Picker>
-      </View>
-    </View>
-  );
+  const isSelected = item => _.includes(formData.characteristics, item);
 
-  const renderForm = () => (
-    <>
-      {renderChar(1)}
-      {renderChar(2)}
-      {renderChar(3)}
-    </>
-  );
+  const getTextStyles = (item) => {
+    return {
+      color: isSelected(item) ? MAIN_COLOR : '#777',
+      fontFamily: isSelected(item) ? 'RalewayBold' : 'Raleway'
+    }
+  }
 
-  const isNextDisabled = _.uniq(formData.characteristics).length !== 3;
+  const selectChar = item => {
+    const { characteristics } = formData;
+    if (!_.includes(characteristics, item)) {
+      if (characteristics.length < 3) {
+        setFormData({ ...formData, characteristics: [...characteristics, item] })
+      }
+    } else {
+      setFormData({ ...formData, characteristics: _.filter(characteristics, char => !_.isEqual(char, item)) })
+    }
+  }
 
-  const renderNextButton = () => (
-    <View style={styles.stepActionContainer}>
-      <BasicSheltyButton disabled={isNextDisabled} onPress={handleNext} text={t('nextStep')} containerStyle={styles.stepButton} />
-    </View>
-  );
+  const isDisabled = formData.characteristics.length < 3;
+
+  const CHARACTERISTICS = formData.type === 'dog' ? DOG_CHARACTERISTICS : CAT_CHARACTERISTICS;
 
   return (
-    <View style={styles.container}>
-      <CreateSteps step={1} />
-      <ScrollView>
-        <KeyboardAvoidingView behaviour="padding" style={styles.formContainer}>
-          {renderForm()}
-          {renderNextButton()}
-        </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
+    <ImageBackground source={formData.type === 'dog' ? dogBoneBg : catPawBg} style={styles.bgImage}>
+      <View style={styles.container}>
+        <ScrollView style={styles.innerContainer}>
+          <Text style={styles.featuresMessage}>{t('chooseFeatures')}</Text>
+          <View style={styles.charItemContainer}>
+            {_.map(CHARACTERISTICS, (char, index) => (
+              <TouchableOpacity activeOpacity={1} onPress={() => selectChar(char)} key={char.key} style={[styles.charItem, { marginLeft: index % 2 === 0 ? 0 : 10, marginRight: index % 2 === 0 ? 10 : 0 }]}>
+                <Image source={char.image} style={styles.charImage} />
+                <Text style={[styles.charText, getTextStyles(char)]}>{char.text}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <MainButton textStyle={{ color: isDisabled ? '#C9C9C9' : MAIN_COLOR }} disabled={isDisabled} onPress={nextStep} text={t('nextStep')} loading={isLoading} />
+        </ScrollView>
+        
+      </View>
+      <ProgressiveImage
+        thumb={formData.type === 'dog' ? dogBgThumb : catBgThumb}
+        source={formData.type === 'dog' ? dogBg : catBg}
+        style={styles.petImage}
+      />
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    overflow: 'hidden',
-    padding: 15,
-    marginTop: 10,
-    backgroundColor: COLORS.WHITE_FB
+    flexDirection: 'column',
+    paddingTop: 25,
   },
-  fieldContainer: {
-    marginVertical: 10
+  bgImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: screenWidth,
+    height: screenHeight,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  pickerContainer: {
-    height: 60,
-    borderWidth: 1,
-    borderColor: COLORS.WHITE_D9,
-    borderRadius: 5,
-    paddingLeft: 15,
-    color: COLORS.BLACK_63,
-    paddingTop: 5
-  },
-  pickerText: {
-    fontSize: 12,
-    fontWeight: '400',
-    color: COLORS.WHITE_D9,
-  },
-  formPickerField: {
-    color: COLORS.BLACK_63,
-    marginLeft: -5,
-    fontSize: 12,
-    position: 'relative',
-    bottom: 5,
-  },
-  formPickerItem: {
-    fontSize: 12
-  },
-  stepButton: {
+  innerContainer: {
     flex: 1,
-    borderRadius: 10,
-    height: 40
+    flexDirection: 'column',
+    width: screenWidth - 80,
   },
+  charItemContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  charItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+    width: (screenWidth - 100) / 2,
+    height: 50,
+    ...SHADOW,
+    marginBottom: 30,
+    backgroundColor: '#fff',
+    paddingHorizontal: 10
+  },
+  petImage: {
+    position: 'absolute',
+    bottom: 110,
+    right: 30,
+    width: (screenWidth / 2) - 40,
+    height: (screenWidth / 2) - 40
+  },
+  featuresMessage: {
+    fontSize: 16,
+    fontFamily: 'RalewayBold',
+    color: '#fff',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20
+  },
+  charImage: {
+    width: 20,
+    height: 20,
+    marginRight: 10
+  },
+  charText: {
+    fontSize: 16,
+    fontFamily: 'Raleway'
+  }
 });
 
 
