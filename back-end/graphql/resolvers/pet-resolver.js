@@ -34,13 +34,6 @@ module.exports = {
   createPet: async ({ createPetInput }, context) => {
     // validate fields.
     const { type, name, age, breed, characteristics, description, gender, image } = createPetInput;
-    const { createReadStream, filename, mimetype, encoding } = await image;
-
-    const fileStream = createReadStream();
-
-    fileStream.pipe(fs.createWriteStream(PET_PROFILE_UPLOAD_DIR));
-
-    const slicedCharacteristics = _.slice(characteristics, 0, 4);
 
     const newPet = new Animal({
       type,
@@ -51,11 +44,13 @@ module.exports = {
       gender,
       animalType,
       description,
-      characteristics: slicedCharacteristics,
+      characteristics,
       profileImage: image,
     });
 
-    console.log(newPet, context);
+    console.log("new pet saved", newPet);
+
+    return newPet;
   },
 
   getPostsWithPage: async (args, req) => {

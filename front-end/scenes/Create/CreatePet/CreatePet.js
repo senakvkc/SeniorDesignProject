@@ -1,13 +1,24 @@
-import React, { useState, createRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { TouchableOpacity, Dimensions, Text, View, StyleSheet, ScrollView, Picker, KeyboardAvoidingView, TextInput, ImageBackground } from 'react-native';
+import { 
+  TouchableOpacity, 
+  Dimensions, 
+  Text, 
+  View, 
+  StyleSheet, 
+  ScrollView, 
+  Picker, 
+  KeyboardAvoidingView, 
+  TextInput, 
+  ImageBackground 
+} from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
 
-import { GENDERS, AGE_INTERVALS, BREEDS } from '../../../constants/form';
-import { SHADOW } from '../../../constants';
+import { AGE_INTERVALS, BREEDS } from '../../../constants/form';
+import { SHADOW, ANIMAL_TYPES, GENDERS } from '../../../constants';
 
 import MainButton from '../../../components/common/MainButton';
 import ProgressiveImage from '../../../components/common/ProgressiveImage';
@@ -24,38 +35,31 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CreatePet = ({ t, navigation, data }) => {
   const { type } = navigation.state.params;
-  const [formData, setFormData] = useState({ ...data, breed: BREEDS[0], age: AGE_INTERVALS[0], type });
+  const [formData, setFormData] = useState({ ...data, breed: BREEDS[0], age: AGE_INTERVALS[0], type, sex: { value: '' } });
   const [isLoading, setIsLoading] = useState(false);
-
-  const InputIcon = ({ name }) => <Icon name={name} size={14} color="#FEA195" style={styles.inputIcon} />;
-
-  InputIcon.propTypes = {
-    name: PropTypes.string.isRequired,
-  };
 
   const nextStep = () => {
     navigation.navigate('CreateAdditional', { data: formData });
   }
 
-  const MAIN_COLOR = formData.type === 'dog' ? '#29CCBC' : '#CCE389';
+  const MAIN_COLOR = formData.type.value === ANIMAL_TYPES.DOG.value ? '#29CCBC' : '#CCE389';
 
   const getStyles = sex => {
-    const styles = {
-      color: formData.sex === sex ? MAIN_COLOR : '#777777',
-      fontFamily: formData.sex === sex ? 'RalewayBold' : 'Raleway',
-    }
-
-    return styles;
+    return {
+      color: formData.sex.value === sex.value ? MAIN_COLOR : '#777777',
+      fontFamily: formData.sex.value === sex.value ? 'RalewayBold' : 'Raleway',
+    };
   }
 
-  const handleBreedSelect = (breed) => setFormData({ ...formData, breed });
-
-  const handleAgeSelect = (age) => setFormData({ ...formData, age });
-
-  const isDisabled = validateEmptyFields([formData.name, formData.sex]) || isLoading;
+  const handleBreedSelect = (breed) => setFormData({ ...formData, breed }); 
+  const handleAgeSelect = (age) => setFormData({ ...formData, age }); 
+  const isDisabled = validateEmptyFields([formData.name, formData.sex.value]) || isLoading;
+  const isFemale = () => formData.sex.value === GENDERS.FEMALE.value;
+  const isMale = () => formData.sex.value === GENDERS.MALE.value;
+  const isDog = () => formData.type.value === ANIMAL_TYPES.DOG.value;
 
   return (
-    <ImageBackground source={formData.type === 'dog' ? dogBoneBg : catPawBg} style={styles.bgImage}>
+    <ImageBackground source={formData.type.value === ANIMAL_TYPES.DOG.value ? dogBoneBg : catPawBg} style={styles.bgImage}>
       <View style={styles.container}>
         <ScrollView style={styles.innerContainer}>
           <View>
@@ -76,7 +80,10 @@ const CreatePet = ({ t, navigation, data }) => {
 
             <View style={styles.inputContainer}>
               <Text style={styles.text}>{t('age')}</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SheltyPicker', { items: AGE_INTERVALS, selectedItem: formData.age, onSelect: handleAgeSelect, title: t('selectAge') })} activeOpacity={1}>
+              <TouchableOpacity 
+                onPress={() => navigation.navigate('SheltyPicker', { items: AGE_INTERVALS, selectedItem: formData.age, onSelect: handleAgeSelect, title: t('selectAge') })} 
+                activeOpacity={1}
+              >
                 <View style={styles.input}>
                   <Text style={styles.pickerText}>{formData.age.text}</Text>
                 </View>
@@ -86,46 +93,62 @@ const CreatePet = ({ t, navigation, data }) => {
             <View style={styles.inputContainer}>
               <Text style={styles.text}>{t('sex')}</Text>
               <View style={styles.buttonsContainer}>
-                <TouchableOpacity activeOpacity={1} style={[styles.sexButton, { marginRight: 10 }]} onPress={() => setFormData({...formData, sex: 'FEMALE'})}>
+                <TouchableOpacity 
+                  activeOpacity={1} style={[styles.sexButton, { marginRight: 10 }]} 
+                  onPress={() => setFormData({...formData, sex: GENDERS.FEMALE})}
+                >
                   <Icon
                     name="female-symbol"
                     type="foundation"
                     size={18}
-                    color={formData.sex === 'FEMALE' ? MAIN_COLOR : '#777777'}
+                    color={isFemale() ? MAIN_COLOR : '#777777'}
                     iconStyle={styles.sexIcon} 
                   />                    
-                  <Text style={[styles.sexText, getStyles('FEMALE')]}>{t('female')}</Text>
+                  <Text style={[styles.sexText, getStyles(GENDERS.FEMALE)]}>{t('female')}</Text>
                 </TouchableOpacity> 
-                <TouchableOpacity activeOpacity={1} style={[styles.sexButton, { marginLeft: 10 }]} onPress={() => setFormData({...formData, sex: 'MALE'})}>
+                <TouchableOpacity 
+                  activeOpacity={1} 
+                  style={[styles.sexButton, { marginLeft: 10 }]} 
+                  onPress={() => setFormData({...formData, sex: GENDERS.MALE})}
+                >
                   <Icon
                     name="male-symbol"
                     type="foundation"
                     size={18}
-                    color={formData.sex === 'MALE' ? MAIN_COLOR : '#777777'}
+                    color={isMale() ? MAIN_COLOR : '#777777'}
                     iconStyle={styles.sexIcon} 
                   />     
-                  <Text style={[styles.sexText, getStyles('MALE')]}>{t('male')}</Text>
+                  <Text style={[styles.sexText, getStyles(GENDERS.MALE)]}>{t('male')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={styles.text}>{t('breed')}</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SheltyPicker', { items: BREEDS, selectedItem: formData.breed, onSelect: handleBreedSelect, title: t('selectBreed') })} activeOpacity={1}>
+              <TouchableOpacity 
+                onPress={() => navigation.navigate('SheltyPicker', { items: BREEDS, selectedItem: formData.breed, onSelect: handleBreedSelect, title: t('selectBreed') })} 
+                activeOpacity={1}
+              >
                 <View style={styles.input}>
                   <Text style={styles.pickerText}>{formData.breed.text}</Text>
                 </View>
               </TouchableOpacity>
             </View>
             
-            <MainButton textStyle={{ color: isDisabled ? '#C9C9C9' : MAIN_COLOR }} disabled={isDisabled} onPress={nextStep} text={t('nextStep')} loading={isLoading} />
+            <MainButton 
+              textStyle={{ color: isDisabled ? '#C9C9C9' : MAIN_COLOR }} 
+              disabled={isDisabled} 
+              onPress={nextStep} 
+              text={t('nextStep')} 
+              loading={isLoading} 
+            />
           </View>
         </ScrollView>
       </View>
 
       <ProgressiveImage
-        thumb={formData.type === 'dog' ? dogBgThumb : catBgThumb}
-        source={formData.type === 'dog' ? dogBg : catBg}
+        thumb={isDog() ? dogBgThumb : catBgThumb}
+        source={isDog() ? dogBg : catBg}
         style={styles.petImage}
       />
     </ImageBackground>

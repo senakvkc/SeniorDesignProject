@@ -5,7 +5,7 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type User {
-    _id: ID!
+    _id: ID
     firstName: String
     lastName: String
     email: String
@@ -52,29 +52,23 @@ const typeDefs = gql`
   }
 
   type Animal {
-    _id: ID!
-    name: String!
-    code: Int!
+    _id: ID
+    name: String
+    code: Int
     breed: Breed
-    ageInterval: AgeInterval!
-    gender: Gender!
-    animalType: AnimalType!
-    description: String!
+    ageInterval: AgeInterval
+    gender: Gender
+    animalType: AnimalType
+    description: String
     healthProblems: String
-    characteristics: [Characteristic]!
-    profilePhoto: File!
-    images: [File]
+    characteristics: [Characteristic]
+    profilePhoto: String
+    images: [String]
 
     createdBy: String
     updatedBy: String
     createdAt: String
     updatedAt: String
-  }
-
-  type File {
-    filaneme: String!
-    mimetype: String!
-    encoding: String!
   }
 
   type Post {
@@ -135,11 +129,14 @@ const typeDefs = gql`
   }
 
   enum Characteristic {
-    CHAR_1
-    CHAR_2
-    CHAR_3
-    CHAR_4
-    CHAR_5
+    SHED
+    DOCILE
+    PLAYFUL
+    ENERGETIC
+    TRAINED
+    FRIENDLY
+    INTELLIGENT
+    FREE_SPIRITED
   }
     
   type AuthData {
@@ -163,14 +160,15 @@ const typeDefs = gql`
   }
 
   input CreatePetInput {
-    type: AnimalType!
-    name: String!
-    age: AgeInterval!
-    breed: Breed!
-    characteristics: [Characteristic!]!
-    description: String!
-    gender: Gender!
-    image: Upload!
+    type: AnimalType
+    name: String
+    age: AgeInterval
+    breed: Breed
+    characteristics: [Characteristic]
+    description: String
+    gender: Gender
+    image: String
+    phone: String
   }
 
   type Query {
@@ -196,7 +194,7 @@ const typeDefs = gql`
     activateAccountWithPhone(phone: String!, code: String!): Boolean
     activateAccount(phone: String!, code: String!): Boolean
 
-    createPet(createPetInput: CreatePetInput): Animal!
+    createPet(createPetInput: CreatePetInput): Animal
   }
 `;
 

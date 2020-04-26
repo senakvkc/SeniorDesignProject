@@ -54,14 +54,20 @@ const AnimalSchema = new Schema(
       }
     ],
     profilePhoto: {
-      type: Schema.Types.ObjectId,
-      ref: 'File',
+      type: String,
       required: true,
     },
     images: [{
-      type: Schema.Types.ObjectId,
-      ref: 'File'
+      type: String
     }],
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    shelter: {
+      type: Schema.Types.ObjectId,
+      ref: 'Shelter'
+    },
     
     createdBy: {
       type: String

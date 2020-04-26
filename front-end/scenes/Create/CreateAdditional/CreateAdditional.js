@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
-import { Text, View, ScrollView, StyleSheet, ImageBackground, Dimensions, Image, TouchableOpacity } from 'react-native'
+import { 
+  Text, 
+  View, 
+  ScrollView, 
+  StyleSheet, 
+  ImageBackground, 
+  Dimensions, 
+  Image, 
+  TouchableOpacity 
+} from 'react-native'
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
-import { DOG_CHARACTERISTICS, CAT_CHARACTERISTICS, SHADOW } from '../../../constants';
+import { DOG_CHARACTERISTICS, CAT_CHARACTERISTICS, SHADOW, ANIMAL_TYPES } from '../../../constants';
 import MainButton from '../../../components/common/MainButton';
 import ProgressiveImage from '../../../components/common/ProgressiveImage';
 import dogBoneBg from '../../../assets/dog-bone-bg.png';
@@ -22,8 +31,6 @@ const CreateAdditional = ({ t, navigation }) => {
     characteristics: []
   });
   const [isLoading, setIsLoading] = useState(false);
-
-  const MAIN_COLOR = formData.type === 'dog' ? '#29CCBC' : '#CCE389';
 
   const nextStep = () => {
     navigation.navigate('CreateFinal', {
@@ -51,18 +58,26 @@ const CreateAdditional = ({ t, navigation }) => {
     }
   }
 
+  const isDog = () => formData.type.value === ANIMAL_TYPES.DOG.value;
+  const MAIN_COLOR = isDog() ? '#29CCBC' : '#CCE389';
+  const isFemale = () => formData.sex.value === GENDERS.FEMALE.value;
   const isDisabled = formData.characteristics.length < 3;
-
-  const CHARACTERISTICS = formData.type === 'dog' ? DOG_CHARACTERISTICS : CAT_CHARACTERISTICS;
+  const CHARACTERISTICS = isDog() ? DOG_CHARACTERISTICS : CAT_CHARACTERISTICS;
 
   return (
-    <ImageBackground source={formData.type === 'dog' ? dogBoneBg : catPawBg} style={styles.bgImage}>
+    <ImageBackground 
+      source={formData.type.value === ANIMAL_TYPES.DOG.value ? dogBoneBg : catPawBg} 
+      style={styles.bgImage}
+    >
       <View style={styles.container}>
         <ScrollView style={styles.innerContainer}>
           <Text style={styles.featuresMessage}>{t('chooseFeatures')}</Text>
           <View style={styles.charItemContainer}>
             {_.map(CHARACTERISTICS, (char, index) => (
-              <TouchableOpacity activeOpacity={1} onPress={() => selectChar(char)} key={char.key} style={[styles.charItem, { marginLeft: index % 2 === 0 ? 0 : 10, marginRight: index % 2 === 0 ? 10 : 0 }]}>
+              <TouchableOpacity activeOpacity={1} 
+                onPress={() => selectChar(char)} key={char.key} 
+                style={[styles.charItem, { marginLeft: index % 2 === 0 ? 0 : 10, marginRight: index % 2 === 0 ? 10 : 0 }]}
+              >
                 <Image source={char.image} style={styles.charImage} />
                 <Text style={[styles.charText, getTextStyles(char)]}>{char.text}</Text>
               </TouchableOpacity>
@@ -73,8 +88,8 @@ const CreateAdditional = ({ t, navigation }) => {
         
       </View>
       <ProgressiveImage
-        thumb={formData.type === 'dog' ? dogBgThumb : catBgThumb}
-        source={formData.type === 'dog' ? dogBg : catBg}
+        thumb={isDog() ? dogBgThumb : catBgThumb}
+        source={isDog() ? dogBg : catBg}
         style={styles.petImage}
       />
     </ImageBackground>

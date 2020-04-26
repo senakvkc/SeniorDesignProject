@@ -11,33 +11,41 @@ import dogBoneBg from '../../assets/dog-bone-bg.png';
 
 import MainButton from '../../components/common/MainButton';
 import ProgressiveImage from '../../components/common/ProgressiveImage';
+import { ANIMAL_TYPES } from '../../constants';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CreateScreen = ({ t, navigation }) => {
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedType, setSelectedType] = useState({ value: '' });
 
   const CreatePetButton = () => (
     <View style={styles.buttonContainer}>
-     <MainButton onPress={goToCreateScreen} textStyle={selectedType === 'dog' ? styles.dogColor : styles.catColor} text={selectedType === 'dog' ? t('addNewDog') : t('addNewCat')} />  
+      <MainButton 
+        onPress={goToCreateScreen} 
+        textStyle={selectedType.value === ANIMAL_TYPES.DOG.value ? styles.dogColor : styles.catColor}
+        text={selectedType.value === ANIMAL_TYPES.DOG.value ? t('addNewDog') : t('addNewCat')} 
+      />  
     </View>
   );
 
   const goToCreateScreen = () => {
-    if (selectedType !== null) {
+    if (selectedType.value !== null) {
       navigation.navigate('CreatePet', { type: selectedType });
     }
-  }
+  };
 
   return (
     <>
       <StatusBar hidden />
       <View style={styles.container}>
-        <ImageBackground source={dogBoneBg} style={[styles.bg, selectedType === null || selectedType === 'dog' ? styles.fullOpacity : styles.lowOpacity]}>
+        <ImageBackground 
+          source={dogBoneBg} 
+          style={[styles.bg, selectedType.value === ANIMAL_TYPES.DOG.value ? styles.fullOpacity : styles.lowOpacity]}
+        >
           <View style={styles.section}>
-            <TouchableOpacity onPress={() => setSelectedType('dog')} activeOpacity={1} style={styles.innerSection}>
+            <TouchableOpacity onPress={() => setSelectedType(ANIMAL_TYPES.DOG)} activeOpacity={1} style={styles.innerSection}>
               <View />
-              {selectedType === 'dog' && <CreatePetButton />}
+              {selectedType.value === ANIMAL_TYPES.DOG.value && <CreatePetButton />}
                <ProgressiveImage
                   thumb={dogBgThumb}
                   source={dogBg}
@@ -46,11 +54,15 @@ const CreateScreen = ({ t, navigation }) => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
-        <ImageBackground source={catPawBg} style={[styles.bg, selectedType === null || selectedType === 'cat' ? styles.fullOpacity : styles.lowOpacity]}>
+
+        <ImageBackground 
+          source={catPawBg} 
+          style={[styles.bg, selectedType.value === ANIMAL_TYPES.CAT.value ? styles.fullOpacity : styles.lowOpacity]}
+        >
           <View style={styles.section}>
-            <TouchableOpacity onPress={() => setSelectedType('cat')} activeOpacity={1} style={styles.innerSection}>
+            <TouchableOpacity onPress={() => setSelectedType(ANIMAL_TYPES.CAT)} activeOpacity={1} style={styles.innerSection}>
               <View />
-              {selectedType === 'cat' && <CreatePetButton />}
+              {selectedType.value === ANIMAL_TYPES.CAT.value && <CreatePetButton />}
               <ProgressiveImage
                 thumb={catBgThumb}
                 source={catBg}
@@ -58,15 +70,10 @@ const CreateScreen = ({ t, navigation }) => {
               />
             </TouchableOpacity>
           </View>
-       </ImageBackground>
+        </ImageBackground>
       </View>
     </>
-    
   );
-};
-
-CreateScreen.navigationOptions = {
-  title: 'Evcil Hayvan Ekle'
 };
 
 const styles = StyleSheet.create({

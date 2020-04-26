@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-import Background from '../../assets/bg.svg';
 import LogoText from '../../components/common/LogoText';
 import MainButton from '../../components/common/MainButton';
-
+import bgImage from '../../assets/bg.png';
 
 const LandingScreen = ({ t, navigation }) => {
   const goToLogin = () => {
@@ -27,22 +26,20 @@ const LandingScreen = ({ t, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.background}>
-        <Background />
-      </View>
+      <ImageBackground source={bgImage} style={styles.bgImage}>
+        <LogoText text={t('shelty')} />
 
-      <LogoText text={t('shelty')} />
-
-      <View style={styles.mainContainer}>
-        <MainText text={t('shareLanding')} />
-        <MainText text={t('adoptLanding')} />
-        <MainText text={t('showLoveLanding')} />
-      </View>
-      
-      <View style={styles.actionContainer}>
-        <MainButton onPress={goToLogin} text={t('login')} />
-        <MainButton onPress={goToRegister} text={t('register')} />
-      </View>
+        <View style={styles.mainContainer}>
+          <MainText text={t('shareLanding')} />
+          <MainText text={t('adoptLanding')} />
+          <MainText text={t('showLoveLanding')} />
+        </View>
+        
+        <View style={styles.actionContainer}>
+          <MainButton onPress={goToLogin} text={t('login')} />
+          <MainButton onPress={goToRegister} text={t('register')} />
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -50,15 +47,13 @@ const LandingScreen = ({ t, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
+  bgImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   },
   mainText: {
     fontSize: 30,
