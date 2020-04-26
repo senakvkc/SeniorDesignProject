@@ -1,3 +1,12 @@
-const CHARACTERISTICS = ['CHAR_1', 'CHAR_2', 'CHAR_3', 'CHAR_4', 'CHAR_5'];
+const CHARACTERISTICS = [
+	'SHED',
+    'DOCILE',
+    'PLAYFUL',
+    'ENERGETIC',
+    'TRAINED',
+    'FRIENDLY',
+    'INTELLIGENT',
+    'FREE_SPIRITED'
+];
 
 module.exports = CHARACTERISTICS;

@@ -7,19 +7,31 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { useFonts } from '@use-expo/font';
 import { AppLoading } from 'expo';
+import { createUploadLink } from 'apollo-upload-client';
 
 import { COLORS } from './constants/theme';
-import { LAN_ADDRESS } from './constants';
+import { GRAPHQL_ENDPOINT } from './constants';
 import AppNavigator from './navigation/AppNavigator';
+
+global.XMLHttpRequest =
+  global.originalXMLHttpRequest || global.XMLHttpRequest;
+global.FormData = global.originalFormData || global.FormData;
+
+if (window.FETCH_SUPPORT) {
+  window.FETCH_SUPPORT.blob = false;
+} else {
+  global.Blob = global.originalBlob || global.Blob;
+  global.FileReader = global.originalFileReader || global.FileReader;
+}
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: `${LAN_ADDRESS}:8080/graphql`,
+  uri: GRAPHQL_ENDPOINT,
 });
 
 const client = new ApolloClient({
   cache,
-  link,
+  link
 });
 
 const App = () => {

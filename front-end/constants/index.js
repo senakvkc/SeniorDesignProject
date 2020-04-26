@@ -11,6 +11,8 @@ import playful from '../assets/features/playful.png';
 import trained from '../assets/features/trained.png';
 
 export const LAN_ADDRESS = 'http://192.168.1.25';
+export const GRAPHQL_ENDPOINT = `${LAN_ADDRESS}:8080/graphql`;
+export const REST_UPLOAD_ENDPOINT = `${LAN_ADDRESS}:4000/api/upload`;
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const USER_TOKEN = 'userToken';
@@ -29,6 +31,10 @@ export const SHADOW = {
   elevation: 1,
 }
 
+export const FILE_PREFIX = {
+  PET_PROFILE: 'pet'
+}
+
 export const NO_SHADOW = {
   shadowColor: 'transparent',
   backgroundColor: '#fff',
@@ -37,6 +43,17 @@ export const NO_SHADOW = {
   borderBottomColor: 'transparent',
   borderBottomWidth: 0
 };
+
+export const GENDERS = Object.freeze({
+  MALE: {
+    text: i18n.t('male'),
+    value: 'MALE'
+  },
+  FEMALE: {
+    text: i18n.t('female'),
+    value: 'FEMALE'
+  }
+})
 
 export const DOG_CHARACTERISTICS = [
   {

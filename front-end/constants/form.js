@@ -1,14 +1,16 @@
-import { t } from "../utils/Translate";
+import i18n from "../i18n";
 import _ from 'lodash';
+
+export const DESCRIPTION_MAX_LENGTH = 250;
 
 export const GENDERS = [
   {
     value: 'MALE',
-    text: t('male'),
+    text: i18n.t('male'),
   },
   {
     value: 'FEMALE',
-    text: t('female'),
+    text: i18n.t('female'),
   }
 ];
 
@@ -16,22 +18,22 @@ export const AGE_INTERVALS = [
   {
     key: _.uniqueId('age_'),
     value: 'ZERO_SIX',
-    text: t('ageInterval.firstInterval')
+    text: i18n.t('ageInterval.firstInterval')
   },
   {
     key: _.uniqueId('age_'),
     value: 'SIX_TWELVE',
-    text: t('ageInterval.secondInterval')
+    text: i18n.t('ageInterval.secondInterval')
   },
   {
     key: _.uniqueId('age_'),
     value: 'TWELVE_TWOFOUR',
-    text: t('ageInterval.thirdInterval')
+    text: i18n.t('ageInterval.thirdInterval')
   },
   {
     key: _.uniqueId('age_'),
     value: 'TWOFOUR_MORE',
-    text: t('ageInterval.lastInterval')
+    text: i18n.t('ageInterval.lastInterval')
   }
 ];
 

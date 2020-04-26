@@ -39,9 +39,39 @@ const CreateNavigator = createStackNavigator(
     },
     CreateAdditional: {
       screen: CreateAdditional,
+      navigationOptions: ({ navigation }) => ({
+        title: i18n.t('createPet'),
+        headerTitleStyle: {
+          flex: 1,
+          textAlign: 'center',
+          alignSelf: 'center',
+          color: '#FE9595',
+          fontFamily: 'Raleway',
+          fontSize: 18
+        },
+        headerStyle: {
+          ...NO_SHADOW
+        },
+        headerLeft: <BackHandler navigation={navigation} />,
+      })
     },
     CreateFinal: {
       screen: CreateFinal,
+      navigationOptions: ({ navigation }) => ({
+        title: i18n.t('createPet'),
+        headerTitleStyle: {
+          flex: 1,
+          textAlign: 'center',
+          alignSelf: 'center',
+          color: '#FE9595',
+          fontFamily: 'Raleway',
+          fontSize: 18
+        },
+        headerStyle: {
+          ...NO_SHADOW
+        },
+        headerLeft: <BackHandler navigation={navigation} />,
+      })
     },
     SheltyPicker: {
       screen: SheltyPicker

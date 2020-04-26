@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const i18n = require('i18n');
 const cors = require('cors');
 const { ApolloServer } = require('apollo-server');
+const multer = require('multer');
+const { uuid } = require('uuidv4');
 
 i18n.configure({
   locales: ['tr', 'en'],
@@ -53,8 +55,43 @@ mongoose
   })
   .then(() => {
     console.log('Connected to database.');
-    app.listen(process.env.APP_PORT);
+    app.listen(process.env.REST_API_PORT);
   })
   .catch(err => {
     console.log(err);
   });
+
+// file upload endpoints with multer
+const storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, './uploads');
+  },
+
+  filename: function(req, file, callback) {
+    callback(null, file.originalname + "_" + uuid());
+  }
+});
+
+const upload = multer({ storage });
+
+app.get('/', (req, res) => {
+  res.status(200).send("You can post to /api/upload");
+});
+
+app.get('/test', (req, res) => {
+  res.status(200).send("Testing!");
+});
+
+app.post('/test-post', (req, res) => {
+  res.status(200).send("Testing post");
+})
+
+app.post('/api/upload/pet-profile', upload.single('photo'), (req, res, next) => {
+  console.log('file', req.file);
+  console.log('body', req.body);
+  
+  res.status(200).json({
+    file: req.file,
+    success: true
+  });
+});

@@ -1,5 +1,16 @@
-import React, { useState, useRef } from 'react';
-import { Text, View, ScrollView, KeyboardAvoidingView, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { 
+  Platform, 
+  Text, 
+  View, 
+  ScrollView, 
+  KeyboardAvoidingView, 
+  TextInput, 
+  StyleSheet, 
+  TouchableOpacity, 
+  Alert,
+  AsyncStorage
+} from 'react-native';
 import _ from 'lodash';
 import { CheckBox, Icon, Image } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
@@ -13,7 +24,10 @@ import * as Permissions from 'expo-permissions';
 import CreateSteps from '../../../components/CreateSteps';
 import BasicSheltyButton from '../../../components/common/BasicSheltyButton';
 import { COLORS } from '../../../constants/theme';
-import { AGE_INTERVALS } from '../../../constants';
+import { USER_TOKEN } from '../../../constants';
+import { AGE_INTERVALS, FILE_PREFIX, LAN_ADDRESS, REST_UPLOAD_ENDPOINT } from '../../../constants';
+import { DESCRIPTION_MAX_LENGTH } from '../../../constants/form';
+import { AXIOS_API } from '../../../axios';
 
 
 const CREATE_PET_MUTATION = gql`
@@ -42,55 +56,118 @@ const CreateFinal = ({ t, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [createPet, { data }] = useMutation(CREATE_PET_MUTATION);
+  const [userData, setUserData] = useState(null);
 
-  const handleDescriptionChange = text => {
-    setFormData({ ...formData, description: text });
+  const getCurrentUser = async () => {
+    const userToken = await AsyncStorage.getItem(USER_TOKEN);
+    setUserData(JSON.parse(userToken));
   };
 
-  const handleIsApproved = () => setIsApproved(!isApproved);
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  const createPhotoData = () => {
+    let data = new FormData();
+    const { image } = formData;
+    const uri = Platform.OS === 'android' ? image.uri : image.uri.replace("file://", "");
+    const imageType = _.last(_.split(uri, '.'));
+    data.append("photo", {
+      name: FILE_PREFIX.PET_PROFILE,
+      type: `${image.type}/${imageType}`,
+      uri
+    });
+
+    return data;
+  };
+
+  const uploadPhoto = async () => {
+    const photoData = createPhotoData();
+    const uploadRes = await fetch(`${REST_UPLOAD_ENDPOINT}/pet-profile`, {
+      method: 'POST',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'multipart/form-data',
+      },
+      body: photoData
+    });
+
+    const uploadJson = await uploadRes.json();
+    if (uploadJson && uploadJson.success) {
+      return uploadJson.file;
+    }
+    
+    return null;
+  };
+
+  const savePet = async (petData, image) => {
+    const createPetInput = { ...petData, image };
+    const savedPet = await createPet({
+      variables: {
+        createPetInput
+      }
+    });
+
+    if (savedPet) {
+      return savedPet.data;
+    }
+
+    const jsonError = JSON.parse(JSON.stringify(err));
+    Alert.alert(t('defaultError'), _.replace(jsonError.message, 'GraphQL error: ', ''), [
+      {
+        text: t('ok'),
+        onPress: () => {},
+      },
+    ]);
+    setIsLoading(false);
+  };
 
   const handleSubmit = async () => {
-    // now, send request to backend.
+    // upload photo, then take photo name and save pet
     setIsLoading(true);
-    const { type, name, age, breed, characteristics, description, gender, image } = formData;
-    const createPetInput = { type, name, age, breed, characteristics, description, gender, image };
+    const photo = await uploadPhoto();
+    // if response success, then 
+    if (photo) {
+      // now send request to create a pet.
+      const { age, breed, characteristics, description, name, sex, type } = formData;
+      console.log(userData.user);
+      const petData = {
+        age: age.value,
+        breed: breed.value,
+        characteristics: _.map(characteristics, 'value'),
+        description,
+        name,
+        gender: sex.value,
+        type: type.value,
+        phone: userData.user.phone
+      };
+      const fileType = _.last(_.split(photo.mimetype, '/'));
+      const filename = `${photo.filename}.${fileType}`;
 
-    await createPet({
-      variables: { createPetInput }
-    })
-      .then(async res => {
-        setIsLoading(false);
-        console.log('res', res);
-        console.log('cpi', createPetInput);
-        navigation.navigate('Home');
-      })
-      .catch(err => {
-        const jsonError = JSON.parse(JSON.stringify(err));
-        console.log(jsonError);
-        setIsLoading(false);
-        return;
-      });
+      const savedPet = await savePet(petData, filename);
+      setIsLoading(false);
+    } else {
+      Alert.alert(t('photoUploadError'));
+    }
   };
 
   const descriptionLength = formData.description ? _.unescape(formData.description).length : 0;
-
-  const maxLength = 250;
 
   const renderDescription = () => (
     <View style={styles.fieldContainer}>
       <TextInput
         style={styles.formInputField}
-        onChangeText={text => handleDescriptionChange(text)}
+        onChangeText={text => setFormData({...formData, description: text})}
         value={formData.description}
         underlineColorAndroid="transparent"
-        maxLength={maxLength}
+        maxLength={DESCRIPTION_MAX_LENGTH}
         multiline
         numberOfLines={5}
         placeholder={t('writeSomething')}
         textAlignVertical="top"
         scrollEnabled={true}
       />
-      <Text style={styles.lengthText}>{`${descriptionLength}/${maxLength}`}</Text>
+      <Text style={styles.lengthText}>{`${descriptionLength}/${DESCRIPTION_MAX_LENGTH}`}</Text>
     </View>
   );
 
@@ -103,7 +180,7 @@ const CreateFinal = ({ t, navigation }) => {
       uncheckedIcon="circle"
       checkedColor={COLORS.PIGMENT}
       uncheckedColor={COLORS.PIGMENT}
-      onPress={handleIsApproved}
+      onPress={() => setIsApproved(!isApproved)}
       containerStyle={styles.approveContainer}
       textStyle={styles.approveText}
       activeOpacity={1}
@@ -114,7 +191,7 @@ const CreateFinal = ({ t, navigation }) => {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        Alert.alert("Kamera yetkisi gerekiyor.");
+        Alert.alert(t('cameraPermissionRequired'));
       }
     }
   };
@@ -128,22 +205,20 @@ const CreateFinal = ({ t, navigation }) => {
       quality: 0.9
     });
 
-    console.log(imageData);
-
     if (!imageData.cancelled) {
-      setFormData({ ...formData, image: imageData.uri });
+      setFormData({ ...formData, image: imageData });
     };
   }
 
   const renderImage = () => {
-    console.log(formData.image);
+    const { image } = formData;
 
     return (
       <View style={styles.imageContainer}>
         <TouchableOpacity onPress={openImageUploader} activeOpacity={0.8}>
-          {formData.image ? (
+          {image ? (
             <Image 
-              source={{uri: formData.image}}
+              source={{uri: image.uri}}
               containerStyle={styles.image}
             />
           ) : (
@@ -174,12 +249,12 @@ const CreateFinal = ({ t, navigation }) => {
     </>
   );
 
-  const isNextDisabled = _.isEmpty(_.unescape(_.trim(formData.description))) || !isApproved || isLoading;
+  const isDisabled = _.isEmpty(_.unescape(_.trim(formData.description))) || !isApproved || isLoading;
 
   const renderFinalButton = () => (
     <View style={styles.stepActionContainer}>
       <BasicSheltyButton
-        disabled={isNextDisabled}
+        disabled={isDisabled}
         onPress={handleSubmit}
         text={t('add')}
         containerStyle={styles.stepButton}
@@ -189,7 +264,6 @@ const CreateFinal = ({ t, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <CreateSteps step={2} />
       <ScrollView>
         <KeyboardAvoidingView behaviour="padding" style={styles.formContainer}>
           {renderForm()}
