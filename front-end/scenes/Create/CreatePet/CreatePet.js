@@ -7,13 +7,10 @@ import {
   View, 
   StyleSheet, 
   ScrollView, 
-  Picker, 
-  KeyboardAvoidingView, 
   TextInput, 
   ImageBackground 
 } from 'react-native';
 import _ from 'lodash';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
 
@@ -58,8 +55,15 @@ const CreatePet = ({ t, navigation, data }) => {
   const isMale = () => formData.sex.value === GENDERS.MALE.value;
   const isDog = () => formData.type.value === ANIMAL_TYPES.DOG.value;
 
+  const renderActions = (
+      <View style={styles.actionContainer}>
+        <Icon name="chevron-left" type="feather" size={24} color="#FFF" onPress={() => navigation.goBack()} />
+      </View>
+    )
+
   return (
     <ImageBackground source={formData.type.value === ANIMAL_TYPES.DOG.value ? dogBoneBg : catPawBg} style={styles.bgImage}>
+      {renderActions}
       <View style={styles.container}>
         <ScrollView style={styles.innerContainer}>
           <View>
@@ -229,7 +233,7 @@ const styles = StyleSheet.create({
   },
   petImage: {
     position: 'absolute',
-    bottom: 110,
+    bottom: 50,
     right: 30,
     width: (screenWidth / 2) - 40,
     height: (screenWidth / 2) - 40
@@ -238,6 +242,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: '#777',
     fontSize: 16
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    width: screenWidth - 80,
+    justifyContent: 'flex-start',
+    marginTop: 40
   }
 });
 

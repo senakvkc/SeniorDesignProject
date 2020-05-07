@@ -17,7 +17,7 @@ import SearchBox from '../../components/SearchBox';
 import PetCard from '../../components/PetCard';
 import CameraTrigger from '../../components/CameraTrigger';
 import SettingsTrigger from '../../components/SettingsTrigger';
-
+import getToken from '../../utils/User';
 
 const HomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);

@@ -11,20 +11,18 @@ const ERROR_TYPES = require('../../../errorTypes');
 
 
 const animalMutations = {
-	createPet: async (_, { createPetInput }) => {
+	createPet: async (_, { createPetInput }, { user }) => {
 		console.log("cpi:", createPetInput);
-		const { type, name, age, breed, characteristics, description, gender, image, phone } = createPetInput;
+		const { type, name, age, breed, characteristics, description, gender, image } = createPetInput;
 
 		const isEmpty = validator.isFieldsEmpty(createPetInput);
 		if (!isEmpty) {
-			const user = await User.findOne({ phone });
 			if (!user) {
 		      throw new AuthenticationError(ERROR_TYPES.AUTHENTICATION_ERROR.text, ERROR_TYPES.AUTHENTICATION_ERROR.code);
 		    }
 
 		    const newPet = new Animal({
 		    	name,
-		    	code: 1000,
 		    	breed,
 		    	ageInterval: age,
 		    	gender,

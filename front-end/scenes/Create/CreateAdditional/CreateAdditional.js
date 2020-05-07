@@ -9,6 +9,7 @@ import {
   Image, 
   TouchableOpacity 
 } from 'react-native'
+import { Icon } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
@@ -60,15 +61,21 @@ const CreateAdditional = ({ t, navigation }) => {
 
   const isDog = () => formData.type.value === ANIMAL_TYPES.DOG.value;
   const MAIN_COLOR = isDog() ? '#29CCBC' : '#CCE389';
-  const isFemale = () => formData.sex.value === GENDERS.FEMALE.value;
   const isDisabled = formData.characteristics.length < 3;
   const CHARACTERISTICS = isDog() ? DOG_CHARACTERISTICS : CAT_CHARACTERISTICS;
+
+  const renderActions = (
+    <View style={styles.actionContainer}>
+      <Icon name="chevron-left" type="feather" size={24} color="#FFF" onPress={() => navigation.goBack()} />
+    </View>
+  )
 
   return (
     <ImageBackground 
       source={formData.type.value === ANIMAL_TYPES.DOG.value ? dogBoneBg : catPawBg} 
       style={styles.bgImage}
     >
+      {renderActions}
       <View style={styles.container}>
         <ScrollView style={styles.innerContainer}>
           <Text style={styles.featuresMessage}>{t('chooseFeatures')}</Text>
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
   },
   petImage: {
     position: 'absolute',
-    bottom: 110,
+    bottom: 50,
     right: 30,
     width: (screenWidth / 2) - 40,
     height: (screenWidth / 2) - 40
@@ -156,6 +163,12 @@ const styles = StyleSheet.create({
   charText: {
     fontSize: 16,
     fontFamily: 'Raleway'
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    width: screenWidth - 80,
+    justifyContent: 'flex-start',
+    marginTop: 40
   }
 });
 

@@ -18,24 +18,25 @@ const User = require('../../../models/User');
 const userQueries = {
   currentUser: async (authorization) => {
     const bearerLength = 'Bearer '.length;
+
     if (authorization && authorization.length > bearerLength) {
       const token = authorization.slice(bearerLength);
-
       const { ok, result } = await new Promise((resolve) => verifyToken(resolve, token, process.env.SECRET_KEY));
 
       if (ok) {
-        const user = await User.findOne({ _id: ObjectId(result._id) });
+        const user = await User.findOne({ _id: ObjectId(result.userId) });
         return user;
-      } else {
-        return null;
       }
+      
+      return null;
     }
 
     return null;
   },
 
-  getUsers: async (args, req) => {
+  getUsers: async (args, req, context) => {
     // TODO: Yetki kontrolü
+    console.log("context", context);
 
     try {
       const users = await User.find();

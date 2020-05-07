@@ -32,6 +32,10 @@ const ERROR_TYPES = Object.freeze({
   PHONE_ALREADY_CONFIRMED: {
     text: i18n.__('phoneAlreadyConfirmed'),
     code: 'PHONE_ALREADY_CONFIRMED'
+  },
+  NOT_LOGGED_IN_ERROR: {
+    text: i18n.__('userNotLoggedIn'),
+    code: 'NOT_LOGGED_IN_ERROR'
   }
 });
 
