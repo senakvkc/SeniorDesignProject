@@ -4,19 +4,15 @@ import {
   View,
   AsyncStorage,
   StyleSheet,
-  ActivityIndicator,
-  ScrollView,
   Dimensions,
-  FlatList,
   ImageBackground,
   StatusBar,
-  TouchableOpacity
 } from 'react-native';
-import { Image, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import _ from 'lodash';
 
-import { COLORS, SIZES } from '../../constants/theme';
-import { SHARED_PHOTOS, USER_TOKEN } from '../../constants';
+import MainButton from '../../components/common/MainButton';
+import { USER_TOKEN } from '../../constants';
 import { withTranslation } from 'react-i18next';
 
 import FriendlySvg from '../../assets/svgs/friendly-cat.svg';
@@ -27,13 +23,16 @@ const pad = 24;
 const cardHeight = 100;
 const cardPosition =  ((cardHeight / 2) + 24) * -1; 
 
-const ProfileScreen = ({ t }) => {
+const ProfileScreen = ({ t, navigation }) => {
   const [userData, setUserData] = useState(null);
 
   const getCurrentUser = async () => {
     const userToken = await AsyncStorage.getItem(USER_TOKEN);
-    console.log(JSON.parse(userToken));
-    setUserData(JSON.parse(userToken));
+    if (userToken === null || userToken === undefined) {
+      navigation.navigate('Login');
+    } else {
+      setUserData(JSON.parse(userToken));
+    }
   };
 
   useEffect(() => {
@@ -53,14 +52,12 @@ const ProfileScreen = ({ t }) => {
     <>
       <StatusBar hidden />
       <View style={styles.container}>
-        <View style={styles.photoSection}>
+        <ImageBackground style={styles.photoSection} source={{ uri: "https://placedog.net/400/300" }}>
           <View style={styles.topActions}>
-
+            <Icon type="feather" name="arrow-left" size={24} color="#fff" />
+            <Icon type="feather" name="share" size={24} color="#fff" />
           </View>
-          <View style={styles.photo}>
-            <Text>Photo Section</Text>
-          </View>
-        </View>
+        </ImageBackground>
 
         <View style={styles.mainSection}>
           <View style={styles.petCard}>
@@ -69,15 +66,15 @@ const ProfileScreen = ({ t }) => {
                 <Text style={styles.petNameText}>
                   Daisy
                 </Text>
-                <Icon type="ionicon" name="ios-female" color="#AAA" size={18} />
+                <Icon type="ionicon" name="ios-female" color="#AAA" size={22} />
               </View>
               <Text style={styles.breed}>Absinian Cat</Text>
               <Text style={styles.age}>2 years old</Text>
             </View>
             <View style={styles.rightPetCard}>
               <View style={styles.petCardActions}>
-                <Icon iconStyle={styles.petCardActionIcon} type="feather" name="share-2" color="#FEA195" size={16} />
-                <Icon type="feather" name="heart" color="#FEA195" size={16} />
+                <Icon iconStyle={styles.petCardActionIcon} type="feather" name="share-2" color="#FEA195" size={18} />
+                <Icon type="feather" name="heart" color="#FEA195" size={18} />
               </View>
             </View>
           </View>
@@ -98,13 +95,11 @@ const ProfileScreen = ({ t }) => {
           </View>
 
           <View style={styles.owner}>
-          <Text>Owner</Text>
-
+            <Text>Owner</Text>
           </View>
 
           <View style={styles.contact}>
-          <Text>Contact</Text>
-
+            <MainButton onPress={goToAdopt} text={t('contact')} secondary />
           </View>
         </View>
       </View>
@@ -121,6 +116,15 @@ const styles = StyleSheet.create({
     flex: 4,
     backgroundColor: '#FEA195',
   },
+  topActions: {
+    width: screenWidth - 40,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    alignContent: 'center',
+    marginTop: 25
+  },  
   mainSection: {
     flex: 6,
     padding: pad,
@@ -134,8 +138,7 @@ const styles = StyleSheet.create({
   petCard: {
     height: 100,
     backgroundColor: '#fff',
-    position: 'relative',
-    top: cardPosition,
+    marginTop: ((cardHeight / 2) + 24) * -1,
     borderRadius: 10,
     padding: 16,
     shadowColor: '#000',
@@ -172,16 +175,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   petCardActionIcon: {
-    marginRight: 10
+    marginRight: 20
   },
-
 
   features: {
     height: 80,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'relative',
-    top: (cardHeight / 2) * -1
+    marginVertical: 25,
   },
   featureItem: {
     width: 80,
@@ -199,10 +200,10 @@ const styles = StyleSheet.create({
   owner: {
     flex: 10,
     backgroundColor: '#A4BEEA',
+    marginBottom: 25
   },
   contact: {
     flex: 5,
-    backgroundColor: '#8ED5A6',
   }
 });
 

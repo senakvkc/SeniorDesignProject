@@ -112,5 +112,6 @@
   "freeSpirited": "Özgür Ruhlu",
   "chooseFeatures": "Evcil hayvanınızın öne çıkan üç özelliğini seçin.",
   "photoUploadError": "Fotoğraf yüklenirken bir hata oluştu.",
-  "cameraPermissionRequired": "Kamera yetkisi gerekiyor."
+  "cameraPermissionRequired": "Kamera yetkisi gerekiyor.",
+  "contact": "İletişime Geç"
 }
