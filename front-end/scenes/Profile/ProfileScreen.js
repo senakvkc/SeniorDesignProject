@@ -1,209 +1,206 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  AsyncStorage,
-  StyleSheet,
-  ActivityIndicator,
-  ScrollView,
-  Dimensions,
-  FlatList,
-  ImageBackground,
-  StatusBar,
-  TouchableOpacity
-} from 'react-native';
-import { Image, Icon } from 'react-native-elements';
-import _ from 'lodash';
-
-import { COLORS, SIZES } from '../../constants/theme';
-import { SHARED_PHOTOS, USER_TOKEN } from '../../constants';
+import React from "react";
+import { Text, StyleSheet, Image, TouchableOpacity, View, Dimensions, Share } from "react-native";
+import { Icon } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
 
-import FriendlySvg from '../../assets/svgs/friendly-cat.svg';
+import MainButton from '../../components/common/MainButton';
+import { USER_TOKEN } from '../../constants';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-const actualHeight = screenHeight - 60;
-const pad = 24;
-const cardHeight = 100;
-const cardPosition =  ((cardHeight / 2) + 24) * -1; 
 
-const ProfileScreen = ({ t }) => {
-  const [userData, setUserData] = useState(null);
+const ProfileScreen = ({ t, navigation }) => {
 
-  const getCurrentUser = async () => {
-    const userToken = await AsyncStorage.getItem(USER_TOKEN);
-    console.log(JSON.parse(userToken));
-    setUserData(JSON.parse(userToken));
+  const actions = [
+    {
+      id: _.uniqueId('action_'),
+      icon: 'sms',
+      text: 'Konuşma Başlat',
+      onPress: () => startConversation(),
+      iconColor: '#8ED5A6',
+      iconBgColor: '#F0FFF5',
+      hasBorder: true
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'pets',
+      text: 'Evcil Hayvanlarım',
+      onPress: () => startConversation(),
+      iconColor: '#A4BEEA',
+      iconBgColor: '#F3F9FE',
+      hasBorder: true
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'favorite-border',
+      text: 'Beğendiklerim',
+      onPress: () => startConversation(),
+      iconColor: '#FEA195',
+      iconBgColor: '#FFF5F4',
+      hasBorder: true
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'create',
+      text: 'Blog Yazılarım',
+      onPress: () => startConversation(),
+      iconColor: '#C38ED5',
+      iconBgColor: '#F0F0FF',
+      hasBorder: true
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'person',
+      text: 'Profilim',
+      onPress: () => startConversation(),
+      iconColor: '#95BFFE',
+      iconBgColor: '#DFECFE',
+      hasBorder: false
+    },
+  ];
+
+  const getIconStyles = backgroundColor => {
+    return {
+      backgroundColor,
+      borderRadius: 5,
+      padding: 5
+    }
+  }
+
+  const startConversation = () => {
+    console.log("start");
+  }
+
+  const renderAction = ({ id, icon, text, onPress, iconColor, iconBgColor, hasBorder }) => {
+    return (
+      <TouchableOpacity key={id} onPress={onPress} style={[styles.actionContainer, { borderBottomWidth: hasBorder ? 1 : 0, paddingBottom: hasBorder ? 18 : 0 }]} activeOpacity={0.8}>
+        <View style={styles.actionLeft}>
+          <Icon type="material" name={icon} size={18} color={iconColor} containerStyle={getIconStyles(iconBgColor)} />
+          <Text style={styles.actionText}>
+            {text}
+          </Text>
+        </View>
+        <Icon type="material" name="chevron-right" size={22} color="#888" containerStyle={styles.chevron} />
+      </TouchableOpacity>
+    )
   };
 
-  useEffect(() => {
-    getCurrentUser();
-  }, []);
-
-  const getFullName = () => {
-    const { user } = userData;
-    return user.firstName + ' ' + user.lastName;
-  };
-
-  const goToAdopt = () => {
-    console.log('adopt');
-  };
+  
+  const reportProfile = () => {
+    console.log("report");
+  }
 
   return (
     <>
-      <StatusBar hidden />
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Icon name="chevron-left" type="material" size={20} containerStyle={styles.goBackButton} color="#000" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={reportProfile} activeOpacity={0} style={styles.reportButton}>
+        <Icon type="feather" name="alert-circle" size={24} color="#fff" />
+      </TouchableOpacity>
       <View style={styles.container}>
-        <View style={styles.photoSection}>
-          <View style={styles.topActions}>
-
-          </View>
-          <View style={styles.photo}>
-            <Text>Photo Section</Text>
-          </View>
+        <View style={styles.topSection}>
+          <Image source={{ uri: 'https://placedog.net/120/120' }} style={styles.profileImage} />
+          <Text style={styles.profileName}>
+            Ezgi İmamoğlu
+          </Text>
+          <Text style={styles.profileRole}>
+            Hayvansever
+          </Text>
+          <Icon type="feather" name="check-circle" size={24} color="#FEA195" containerStyle={styles.profileIcon} />
         </View>
-
-        <View style={styles.mainSection}>
-          <View style={styles.petCard}>
-            <View style={styles.leftPetCard}>
-              <View style={styles.petName}>
-                <Text style={styles.petNameText}>
-                  Daisy
-                </Text>
-                <Icon type="ionicon" name="ios-female" color="#AAA" size={18} />
-              </View>
-              <Text style={styles.breed}>Absinian Cat</Text>
-              <Text style={styles.age}>2 years old</Text>
-            </View>
-            <View style={styles.rightPetCard}>
-              <View style={styles.petCardActions}>
-                <Icon iconStyle={styles.petCardActionIcon} type="feather" name="share-2" color="#FEA195" size={16} />
-                <Icon type="feather" name="heart" color="#FEA195" size={16} />
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.features}>
-            <View style={styles.featureItem}>
-              <FriendlySvg width={30} height={30} />
-              <Text style={styles.featureText}>Friendly</Text>
-            </View>
-            <View style={styles.featureItem}>
-              <FriendlySvg width={30} height={30} />
-              <Text style={styles.featureText}>Friendly</Text>
-            </View>
-            <View style={styles.featureItem}>
-              <FriendlySvg width={30} height={30} />
-              <Text style={styles.featureText}>Friendly</Text>
-            </View>
-          </View>
-
-          <View style={styles.owner}>
-          <Text>Owner</Text>
-
-          </View>
-
-          <View style={styles.contact}>
-          <Text>Contact</Text>
-
-          </View>
+        <View style={styles.actionsSection}>
+          {_.map(actions, action => renderAction({...action}))}
         </View>
       </View>
     </>
-  );
+  )
 };
 
 const styles = StyleSheet.create({
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
+  reportButton: {
+    position: 'absolute',
+    right: 24,
+    top: 24
+  },
   container: {
-    height: actualHeight,
-    flexDirection: 'column',
+    flex: 1,
+    flexDirection: 'column'
   },
-  photoSection: {
+  topSection: {
     flex: 4,
-    backgroundColor: '#FEA195',
-  },
-  mainSection: {
-    flex: 6,
-    padding: pad,
+    backgroundColor: '#FFF5F4',
     flexDirection: 'column',
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    backgroundColor: '#fff',
-    position: 'relative',
-    top: -15,
-  },
-  petCard: {
-    height: 100,
-    backgroundColor: '#fff',
-    position: 'relative',
-    top: cardPosition,
-    borderRadius: 10,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  petName: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5
+    justifyContent: 'flex-end'
   },
-  petNameText: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginRight: 10,
-  },
-  breed: {
-    fontSize: 14,
-    marginBottom: 5,
-    color: '#454545'
-  },
-  age: {
-    fontSize: 14,
-    color: '#454545'
-  },
-  rightPetCard: {
-    justifyContent: 'center'
-  },
-  petCardActions: {
-    flexDirection: 'row',
-  },
-  petCardActionIcon: {
-    marginRight: 10
-  },
-
-
-  features: {
-    height: 80,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    position: 'relative',
-    top: (cardHeight / 2) * -1
-  },
-  featureItem: {
+  profileImage: {
+    padding: 2,
+    borderWidth: 1,
+    borderColor: '#FEA195',
     width: 80,
     height: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    backgroundColor: '#FFF5F4',
-    borderRadius: 10
+    marginBottom: 10,
+    borderRadius: 40,
+    overflow: 'hidden'
   },
-  featureText: {
-    color: '#FEA195'
+  profileName: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 5,
+    color: '#333'
   },
-
-  owner: {
-    flex: 10,
-    backgroundColor: '#A4BEEA',
+  profileRole: {
+    fontSize: 16,
+    color: '#888',
+    marginBottom: 5,
   },
-  contact: {
+  profileIcon: {
+    marginBottom: 30
+  },
+  actionsSection: {
     flex: 5,
-    backgroundColor: '#8ED5A6',
+    flexDirection: 'column',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    position: 'relative',
+    top: -20,
+    backgroundColor: '#fff',
+  },
+  actionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 18,
+    borderBottomColor: '#f4f4f1',
+    borderBottomWidth: 1
+  },
+  actionLeft: {
+    paddingLeft: 18,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  actionText: {
+    color: '#444',
+    fontWeight: '600',
+    fontSize: 18,
+    marginLeft: 15
+  },
+  chevron: {
+    paddingRight: 18,
   }
 });
+
+ProfileScreen.propTypes = {
+  t: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({}).isRequired
+}
 
 export default withTranslation()(ProfileScreen);

@@ -31,8 +31,6 @@
   "invalidUsername": "Kullanıcı adı sadece alfanumerik karakterler ve \"_\" içerebilir.",
   "invalidLoginInfo": "Böyle bir kullanıcı bulunmuyor.",
   "invalidLoginInfoDesc": "Girdiğiniz bilgiler hatalı olabilir. Lütfen tekrar deneyin.",
-  "invalidEmail": "Geçersiz e-posta adresi.",
-  "invalidPhone": "Geçersiz telefon numarası.",
   "defaultError": "Bir hata oluştu.",
   "defaultErrorDesc": "Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin",
   "tryAgain": "Tekrar Dene",
@@ -114,5 +112,6 @@
   "freeSpirited": "Özgür Ruhlu",
   "chooseFeatures": "Evcil hayvanınızın öne çıkan üç özelliğini seçin.",
   "photoUploadError": "Fotoğraf yüklenirken bir hata oluştu.",
-  "cameraPermissionRequired": "Kamera yetkisi gerekiyor."
+  "cameraPermissionRequired": "Kamera yetkisi gerekiyor.",
+  "contact": "İletişime Geç"
 }

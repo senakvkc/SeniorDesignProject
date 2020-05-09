@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements';
 
 import SheltersScreen from '../scenes/Shelters';
-import BlogScreen from '../scenes/Blog';
 import ProfileScreen from '../scenes/Profile';
 import { SIZES, COLORS } from '../constants/theme';
 

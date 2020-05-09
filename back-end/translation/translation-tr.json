@@ -35,5 +35,6 @@
 	"tooShortPassword": "tooShortPassword",
 	"userBlockedOrNotActive": "userBlockedOrNotActive",
 	"userNotConfirmed": "userNotConfirmed",
-	"phoneAlreadyConfirmed": "phoneAlreadyConfirmed"
+	"phoneAlreadyConfirmed": "phoneAlreadyConfirmed",
+	"userNotLoggedIn": "userNotLoggedIn"
 }

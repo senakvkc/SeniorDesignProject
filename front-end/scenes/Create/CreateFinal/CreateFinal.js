@@ -4,31 +4,36 @@ import {
   Text, 
   View, 
   ScrollView, 
-  KeyboardAvoidingView, 
   TextInput, 
   StyleSheet, 
   TouchableOpacity, 
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  Dimensions,
+  ImageBackground
 } from 'react-native';
 import _ from 'lodash';
 import { CheckBox, Icon, Image } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
-import DropdownAlert from 'react-native-dropdownalert';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 
-import CreateSteps from '../../../components/CreateSteps';
-import BasicSheltyButton from '../../../components/common/BasicSheltyButton';
-import { COLORS } from '../../../constants/theme';
-import { USER_TOKEN } from '../../../constants';
-import { AGE_INTERVALS, FILE_PREFIX, LAN_ADDRESS, REST_UPLOAD_ENDPOINT } from '../../../constants';
+import MainButton from '../../../components/common/MainButton';
+import { ANIMAL_TYPES, USER_TOKEN } from '../../../constants';
+import { SHADOW, FILE_PREFIX, REST_UPLOAD_ENDPOINT } from '../../../constants';
 import { DESCRIPTION_MAX_LENGTH } from '../../../constants/form';
-import { AXIOS_API } from '../../../axios';
+import ProgressiveImage from '../../../components/common/ProgressiveImage';
+import dogBoneBg from '../../../assets/dog-bone-bg.png';
+import catPawBg from '../../../assets/cat-paw-bg.png';
+import catBg from '../../../assets/cat-bg.png';
+import dogBg from '../../../assets/dog-bg.png';
+import catBgThumb from '../../../assets/cat-bg-thumb.png';
+import dogBgThumb from '../../../assets/dog-bg-thumb.png';
 
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CREATE_PET_MUTATION = gql`
   mutation createPet($createPetInput: CreatePetInput) {
@@ -72,9 +77,10 @@ const CreateFinal = ({ t, navigation }) => {
     const { image } = formData;
     const uri = Platform.OS === 'android' ? image.uri : image.uri.replace("file://", "");
     const imageType = _.last(_.split(uri, '.'));
+    const type = Platform.OS === 'android' ? `${image.type}/${imageType}` : image.type;
     data.append("photo", {
       name: FILE_PREFIX.PET_PROFILE,
-      type: `${image.type}/${imageType}`,
+      type,
       uri
     });
 
@@ -130,7 +136,6 @@ const CreateFinal = ({ t, navigation }) => {
     if (photo) {
       // now send request to create a pet.
       const { age, breed, characteristics, description, name, sex, type } = formData;
-      console.log(userData.user);
       const petData = {
         age: age.value,
         breed: breed.value,
@@ -139,7 +144,6 @@ const CreateFinal = ({ t, navigation }) => {
         name,
         gender: sex.value,
         type: type.value,
-        phone: userData.user.phone
       };
       const fileType = _.last(_.split(photo.mimetype, '/'));
       const filename = `${photo.filename}.${fileType}`;
@@ -150,42 +154,6 @@ const CreateFinal = ({ t, navigation }) => {
       Alert.alert(t('photoUploadError'));
     }
   };
-
-  const descriptionLength = formData.description ? _.unescape(formData.description).length : 0;
-
-  const renderDescription = () => (
-    <View style={styles.fieldContainer}>
-      <TextInput
-        style={styles.formInputField}
-        onChangeText={text => setFormData({...formData, description: text})}
-        value={formData.description}
-        underlineColorAndroid="transparent"
-        maxLength={DESCRIPTION_MAX_LENGTH}
-        multiline
-        numberOfLines={5}
-        placeholder={t('writeSomething')}
-        textAlignVertical="top"
-        scrollEnabled={true}
-      />
-      <Text style={styles.lengthText}>{`${descriptionLength}/${DESCRIPTION_MAX_LENGTH}`}</Text>
-    </View>
-  );
-
-  const renderApprove = () => (
-    <CheckBox
-      title={t('approveAgreement')}
-      checked={isApproved}
-      iconType="feather"
-      checkedIcon="check-circle"
-      uncheckedIcon="circle"
-      checkedColor={COLORS.PIGMENT}
-      uncheckedColor={COLORS.PIGMENT}
-      onPress={() => setIsApproved(!isApproved)}
-      containerStyle={styles.approveContainer}
-      textStyle={styles.approveText}
-      activeOpacity={1}
-    />
-  );
 
   const getPermissionsAsync = async () => {
     if (Constants.platform.ios) {
@@ -214,110 +182,152 @@ const CreateFinal = ({ t, navigation }) => {
     const { image } = formData;
 
     return (
-      <View style={styles.imageContainer}>
-        <TouchableOpacity onPress={openImageUploader} activeOpacity={0.8}>
-          {image ? (
-            <Image 
-              source={{uri: image.uri}}
-              containerStyle={styles.image}
-            />
-          ) : (
-            <View style={styles.imageIconContainer}>
-              <Icon 
+      <TouchableOpacity onPress={openImageUploader} activeOpacity={0.8} style={styles.imageContainer}>
+        {image ? (
+          <Image 
+            source={{uri: image.uri}}
+            containerStyle={styles.image}
+          />
+        ) : (
+          <View style={styles.imageIconContainer}>
+            <Icon 
               type="feather"
               name="plus"
               size={32}
-              color={COLORS.WHITE_D9}
+              color="#fff"
             />
-              <Text style={styles.imageIconText}>
-                {t('addPhoto')}
-              </Text>
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.imageIconText}>
+              {t('addPhoto')}
+            </Text>
+          </View>
+        )}
+      </TouchableOpacity>
     );
-  }
+  };
 
-  const renderForm = () => (
-    <>
-      <View style={styles.imageDescription}>
-        {renderImage()}
-        {renderDescription()}
-      </View>
-      {renderApprove()}
-    </>
+  const renderApprove = () => (
+    <CheckBox
+      title={t('approveAgreement')}
+      checked={isApproved}
+      iconType="feather"
+      checkedIcon="check-circle"
+      uncheckedIcon="circle"
+      checkedColor="#FFF"
+      uncheckedColor="#FFF"
+      onPress={() => setIsApproved(!isApproved)}
+      containerStyle={styles.approveContainer}
+      textStyle={styles.approveText}
+      activeOpacity={1}
+    />
   );
 
-  const isDisabled = _.isEmpty(_.unescape(_.trim(formData.description))) || !isApproved || isLoading;
-
-  const renderFinalButton = () => (
-    <View style={styles.stepActionContainer}>
-      <BasicSheltyButton
-        disabled={isDisabled}
-        onPress={handleSubmit}
-        text={t('add')}
-        containerStyle={styles.stepButton}
+  const renderDescription = () => (
+    <View>
+      <TextInput
+        style={styles.formInputField}
+        onChangeText={text => setFormData({...formData, description: text})}
+        value={formData.description}
+        underlineColorAndroid="transparent"
+        maxLength={DESCRIPTION_MAX_LENGTH}
+        multiline
+        numberOfLines={5}
+        placeholder={t('writeSomething')}
+        textAlignVertical="top"
+        scrollEnabled={true}
       />
+      <Text style={styles.lengthText}>{`${descriptionLength}/${DESCRIPTION_MAX_LENGTH}`}</Text>
     </View>
   );
+
+  const renderActions = (
+    <View style={styles.actionContainer}>
+      <Icon name="chevron-left" type="feather" size={24} color="#FFF" onPress={() => navigation.goBack()} />
+    </View>
+  )
+
+  const isDog = () => formData.type.value === ANIMAL_TYPES.DOG.value;
+  const MAIN_COLOR = isDog() ? '#29CCBC' : '#CCE389';
+  const isDisabled = _.isEmpty(_.unescape(_.trim(formData.description))) || !isApproved || isLoading;
+  const descriptionLength = formData.description ? _.unescape(formData.description).length : 0;
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        <KeyboardAvoidingView behaviour="padding" style={styles.formContainer}>
-          {renderForm()}
-          {renderFinalButton()}
-        </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
+    <ImageBackground 
+      source={formData.type.value === ANIMAL_TYPES.DOG.value ? dogBoneBg : catPawBg} 
+      style={styles.bgImage}
+    >
+      {renderActions}
+      <View style={styles.container}>
+        <ScrollView style={styles.innerContainer}>
+          <View style={styles.imageSection}>
+            {renderImage()}
+            <View style={styles.imageDesc}>
+              <Text style={styles.imageText}>
+                Evcil hayvanınızın bir fotoğrafını yükleyin.
+              </Text>
+            </View>
+
+          </View>
+          <View style={styles.descSection}>
+            {renderDescription()}
+          </View>
+          <View>
+            {renderApprove()}
+          </View>
+          <MainButton textStyle={{ color: isDisabled ? '#C9C9C9' : MAIN_COLOR }} disabled={isDisabled} onPress={handleSubmit} text={t('add')} loading={isLoading} />
+        </ScrollView>
+        
+      </View>
+      <ProgressiveImage
+        thumb={isDog() ? dogBgThumb : catBgThumb}
+        source={isDog() ? dogBg : catBg}
+        style={styles.petImage}
+      />
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    overflow: 'hidden',
-    padding: 15,
-    marginTop: 10,
-    backgroundColor: COLORS.WHITE_FB
-  },
-  fieldContainer: {
-    flex: 1,
-    height: 100,
-    marginLeft: 15
-  },
-  formInputField: {
-    borderWidth: 1,
-    borderColor: COLORS.WHITE_D9,
-    borderRadius: 5,
-    paddingLeft: 15,
+    flexDirection: 'column',
     paddingTop: 25,
-    color: COLORS.BLACK_25,
-    height: 100
   },
-  stepActionContainer: {
+  bgImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: screenWidth,
+    height: screenHeight,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  innerContainer: {
     flex: 1,
+    flexDirection: 'column',
+    width: screenWidth - 80,
+  },
+  petImage: {
+    position: 'absolute',
+    bottom: 50,
+    right: 30,
+    width: (screenWidth / 2) - 40,
+    height: (screenWidth / 2) - 40
+  },
+  actionContainer: {
     flexDirection: 'row',
-    marginTop: 10
-  },
-  stepButton: {
-    flex: 1,
-    borderRadius: 10,
-    height: 40
+    width: screenWidth - 80,
+    justifyContent: 'flex-start',
+    marginTop: 40
   },
   lengthText: {
     fontSize: 12,
-    color: COLORS.WHITE_D9,
+    color: '#fff',
     fontWeight: '400',
     alignSelf: 'flex-end',
-    marginVertical: 5
+    marginBottom: 20
   },
   approveContainer: {
     backgroundColor: 'transparent',
-    marginTop: 15,
     borderWidth: 0,
     borderColor: 'transparent',
     marginHorizontal: 0,
@@ -325,13 +335,28 @@ const styles = StyleSheet.create({
   },
   approveText: {
     fontWeight: '400',
-    color: COLORS.PIGMENT,
+    color: "#fff",
     fontSize: 13
   },
-  imageDescription: {
+  imageSection: {
     flex: 1,
     flexDirection: 'row',
-    height: 100
+    justifyContent: 'space-between'
+  },
+  imageDesc: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 100,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: "center",
+    alignItems: 'center',
+    alignContent: 'center',
+    marginLeft: 15
+  },
+  imageText: {
+    color: '#FFF',
+    textAlign: 'center'
   },
   imageContainer: {
     width: 100,
@@ -349,14 +374,24 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderWidth: 1,
-    borderColor: COLORS.WHITE_D9,
+    borderColor: "#fff",
     borderStyle: 'dashed',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center'
   },
   imageIconText: {
-    color: COLORS.WHITE_D9,
+    color: "#fff",
+  },
+  formInputField: {
+    flex: 1,
+    height: 150,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginTop: 20,
+    marginBottom: 5,
+    padding: 10,
+    ...SHADOW
   }
 });
 

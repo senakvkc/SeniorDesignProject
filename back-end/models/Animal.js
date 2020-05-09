@@ -17,7 +17,6 @@ const AnimalSchema = new Schema(
     },
     code: {
       type: String,
-      unique: true,
     },
     breed: {
       type: String,

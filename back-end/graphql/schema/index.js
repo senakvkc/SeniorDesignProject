@@ -168,7 +168,6 @@ const typeDefs = gql`
     description: String
     gender: Gender
     image: String
-    phone: String
   }
 
   type Query {

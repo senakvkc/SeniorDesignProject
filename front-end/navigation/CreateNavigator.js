@@ -21,57 +21,24 @@ const CreateNavigator = createStackNavigator(
     },
     CreatePet: {
       screen: CreatePet,
-      navigationOptions: ({ navigation }) => ({
-        title: i18n.t('createPet'),
-        headerTitleStyle: {
-          flex: 1,
-          textAlign: 'center',
-          alignSelf: 'center',
-          color: '#FE9595',
-          fontFamily: 'Raleway',
-          fontSize: 18
-        },
-        headerStyle: {
-          ...NO_SHADOW
-        },
-        headerLeft: <BackHandler navigation={navigation} />,
-      })
+      navigationOptions: {
+        header: null,
+        headerVisible: 'false'
+      }
     },
     CreateAdditional: {
       screen: CreateAdditional,
-      navigationOptions: ({ navigation }) => ({
-        title: i18n.t('createPet'),
-        headerTitleStyle: {
-          flex: 1,
-          textAlign: 'center',
-          alignSelf: 'center',
-          color: '#FE9595',
-          fontFamily: 'Raleway',
-          fontSize: 18
-        },
-        headerStyle: {
-          ...NO_SHADOW
-        },
-        headerLeft: <BackHandler navigation={navigation} />,
-      })
+      navigationOptions: {
+        header: null,
+        headerVisible: 'false'
+      }
     },
     CreateFinal: {
       screen: CreateFinal,
-      navigationOptions: ({ navigation }) => ({
-        title: i18n.t('createPet'),
-        headerTitleStyle: {
-          flex: 1,
-          textAlign: 'center',
-          alignSelf: 'center',
-          color: '#FE9595',
-          fontFamily: 'Raleway',
-          fontSize: 18
-        },
-        headerStyle: {
-          ...NO_SHADOW
-        },
-        headerLeft: <BackHandler navigation={navigation} />,
-      })
+      navigationOptions: {
+        header: null,
+        headerVisible: 'false'
+      }
     },
     SheltyPicker: {
       screen: SheltyPicker

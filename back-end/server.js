@@ -3,9 +3,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const i18n = require('i18n');
 const cors = require('cors');
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer, AuthenticationError } = require('apollo-server');
 const multer = require('multer');
 const { uuid } = require('uuidv4');
+const { currentUser } = require('./graphql/resolvers/queries/user-queries');
 
 i18n.configure({
   locales: ['tr', 'en'],
@@ -40,7 +41,18 @@ app.use(i18n.init);
 const graphqlPath = '/graphql';
 const typeDefs = require('./graphql/schema/index');
 const resolvers = require('./graphql/resolvers/index');
-const graphqlServer = new ApolloServer({ typeDefs, resolvers });
+const graphqlServer = new ApolloServer({ 
+  typeDefs, 
+  resolvers,
+  context: async ({ req }) => {
+    console.log(req.headers);
+    const token = req.headers.authorization || '';
+    const user = await currentUser(token);
+    console.log("tokenuser", user)
+    return { user };
+  },
+});
+
 graphqlServer.listen(8080).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 });
@@ -89,7 +101,7 @@ app.post('/test-post', (req, res) => {
 app.post('/api/upload/pet-profile', upload.single('photo'), (req, res, next) => {
   console.log('file', req.file);
   console.log('body', req.body);
-  
+
   res.status(200).json({
     file: req.file,
     success: true

@@ -2,13 +2,19 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
-const MainButton = ({ text, onPress, disabled, loading, textStyle }) => {
+const MainButton = ({ text, onPress, disabled, loading, textStyle, secondary, buttonStyle }) => {
+  const buttonColor = {
+    backgroundColor: secondary ? '#FEA195' : '#FFF'
+  };
+  const textColor = {
+    color: secondary ? '#FFF' : '#FE9595'
+  };
   return (
-  	<TouchableOpacity disabled={disabled} onPress={onPress} style={styles.button} activeOpacity={0.8}>
+  	<TouchableOpacity disabled={disabled} onPress={onPress} style={[styles.button, buttonColor, buttonStyle]} activeOpacity={0.8}>
 	    {loading ? (
 	        <ActivityIndicator size="small" color="#FEA195" />
 	      ) : (
-	        <Text style={[styles.buttonText, disabled && styles.disabled, textStyle]}>{text}</Text>
+	        <Text style={[styles.buttonText, textColor, textStyle, disabled && styles.disabled]}>{text}</Text>
 	      )
 	    }
   	</TouchableOpacity>
@@ -18,7 +24,6 @@ const MainButton = ({ text, onPress, disabled, loading, textStyle }) => {
 const styles = StyleSheet.create({
 	button: {
     height: 50,
-    backgroundColor: "#fff",
     marginVertical: 5,
     borderRadius: 5,
     alignItems: 'center',
@@ -34,7 +39,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 50,
     marginTop: 2,
-    color: '#FE9595',
     fontFamily: 'RalewayBold',
   },
 	disabled: {
@@ -47,14 +51,18 @@ MainButton.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	disabled: PropTypes.bool,
 	loading: PropTypes.bool,
-  textStyle: PropTypes.shape({})
+  textStyle: PropTypes.shape({}),
+  buttonStyle: PropTypes.shape({}),
+  secondary: PropTypes.bool,
 }
 
 MainButton.defaultProps = {
   text: '',
   disabled: false,
   loading: false,
-  textStyle: {}
+  textStyle: {},
+  buttonStyle: {},
+  secondary: false,
 }
 
 export default MainButton;
