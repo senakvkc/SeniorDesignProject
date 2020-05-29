@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { COLORS, SIZES } from '../../constants/theme';
 import { Icon, Button } from 'react-native-elements';
-import { SEX, SHADOW } from '../../constants';
+import { SEX, SHADOW, AGE_INTERVALS_OBJ } from '../../constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import SheltyButton from '../common/SheltyButton';
 import BasicSheltyButton from '../common/BasicSheltyButton';
@@ -12,16 +12,22 @@ import BasicSheltyButton from '../common/BasicSheltyButton';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const PetCard = ({ t, pet }) => {
+  console.log(pet);
   const goToPetProfile = () => {
     console.log('pet profile');
   };
+
+  const renderAgeInterval = () => {
+    const { ageInterval } = pet;
+    return AGE_INTERVALS_OBJ[ageInterval].value;
+  }
 
   const renderMainInfo = (
     <View style={styles.detail}>
       <View style={styles.mainInfo}>
         <View style={styles.mainInfoTop}>
           <Text style={styles.title}>{pet.name}</Text>
-          <Text style={styles.age}>{t('monthAge', { age: pet.age })}</Text>
+          <Text style={styles.age}>{t('monthAge', { age: renderAgeInterval() })}</Text>
         </View>
         <View>
           <Text style={styles.breed}>{pet.breed}</Text>
@@ -41,36 +47,32 @@ const PetCard = ({ t, pet }) => {
   const renderLocation = (
     <View style={styles.location}>
       <Icon type="feather" name="map-pin" size={SIZES.NORMAL_TEXT} color={COLORS.SILVER_PINK} style={styles.mapIcon} />
-      <Text style={styles.address}>{pet.shelter}</Text>
+      <Text style={styles.address}>Kısırkaya Hayvan Barınağı</Text>
     </View>
   );
 
-  const renderProfileButton = (
-    <BasicSheltyButton
-      onPress={goToPetProfile}
-      text="Profil"
-      containerStyle={styles.containerStyle}
-      profileButtonStyle={styles.profileButton}
-    />
-  );
+  const renderGenderText = () => {
+    const { gender } = pet;
+    return SEX[gender].text();
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} width={100} height={100} source={{ uri: pet.thumbnail }} />
+        <Image style={styles.image} width={100} height={100} source={{ uri: pet.profilePhoto }} />
       </View>
       <View style={styles.detailContainer}>
         <View>
           <View style={styles.nameContainer}>
-            <Text style={styles.nameText}>Charlie</Text>
+            <Text style={styles.nameText}>{pet.name}</Text>
             <Icon
               type="ionicon"
-              name={pet.sex === SEX.MALE.text() ? 'ios-male' : 'ios-female'}
+              name={pet.gender === SEX.MALE.CODE ? 'ios-male' : 'ios-female'}
               size={SIZES.NORMAL_TEXT}
               color={COLORS.BLACK_A}
             />
           </View>
-          <Text style={styles.breedText}>Labrador</Text>
+          <Text style={styles.breedText}>{renderGenderText()}</Text>
         </View>
         <View>
           <View style={styles.ageContainer}>
@@ -81,7 +83,7 @@ const PetCard = ({ t, pet }) => {
               color={COLORS.SILVER_PINK}
               style={styles.mapIcon}
             />
-          <Text style={styles.ageText}>18 aylık</Text>
+          <Text style={styles.ageText}>{renderAgeInterval()}</Text>
           </View>
           <View style={styles.locationContainer}>
             <Icon
@@ -91,7 +93,7 @@ const PetCard = ({ t, pet }) => {
               color={COLORS.SILVER_PINK}
               style={styles.mapIcon}
             />
-            <Text style={styles.locationText}>{pet.shelter}</Text>
+            <Text style={styles.locationText}>Kısırkaya Hayvan Barınağı</Text>
           </View>
         </View>
       </View>

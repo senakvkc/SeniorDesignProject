@@ -17,8 +17,8 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
 import MainButton from '../../components/common/MainButton';
-import { USER_TOKEN } from '../../constants';
 import FriendlySvg from '../../assets/svgs/friendly-cat.svg';
+import { getLoggedInUser } from '../../utils/User';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const actualHeight = screenHeight - 60;
@@ -28,17 +28,8 @@ const cardPosition =  ((cardHeight / 2) + 24) * -1;
 const PetProfileScreen = ({ t, navigation }) => {
   const [userData, setUserData] = useState(null);
 
-  const getCurrentUser = async () => {
-    const userToken = await AsyncStorage.getItem(USER_TOKEN);
-    if (userToken === null || userToken === undefined) {
-      navigation.navigate('Login');
-    } else {
-      setUserData(JSON.parse(userToken));
-    }
-  };
-
   useEffect(() => {
-    getCurrentUser();
+    setUserData(getLoggedInUser(navigation.navigate('Login')));
   }, []);
 
   const getFullName = () => {

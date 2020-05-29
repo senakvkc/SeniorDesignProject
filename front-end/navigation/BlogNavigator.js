@@ -11,7 +11,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
     textAlign: 'center',
     flex: 1,
     alignSelf: 'center',
-    color: COLORS.PURPLE
+    color: "#FEA195"
   },
   headerStyle: {
     shadowColor: 'transparent',
@@ -23,7 +23,7 @@ const NAVIGATION_OPTIONS = ({ navigation }) => ({
     <Icon
       type="feather"
       name="edit-3"
-      color={COLORS.PURPLE}
+      color="#FEA195"
       size={SIZES.MENU_ICON}
       containerStyle={{ marginRight: 15 }}
       onPress={() => console.log('new post')}

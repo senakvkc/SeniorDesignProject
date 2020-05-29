@@ -10,10 +10,7 @@ import CreateScreen from '../scenes/Create';
 import _ from 'lodash';
 
 import i18n from '../i18n';
-import { COLORS } from '../constants/theme';
 import { NO_SHADOW } from '../constants';
-import CameraTrigger from '../components/CameraTrigger';
-import SettingsTrigger from '../components/SettingsTrigger';
 import BackHandler from '../components/common/BackHandler';
 
 

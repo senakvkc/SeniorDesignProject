@@ -3,12 +3,12 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements';
 
 import SheltersScreen from '../scenes/Shelters';
-import ProfileScreen from '../scenes/Profile';
 import { SIZES, COLORS } from '../constants/theme';
 
 import HomeNavigator from './HomeNavigator';
 import BlogNavigator from './BlogNavigator';
 import CreateNavigator from './CreateNavigator';
+import ProfileNavigator from './ProfileNavigator';
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
@@ -29,7 +29,7 @@ const BottomTabNavigator = createBottomTabNavigator(
       navigationOptions: {}
     },
     Profile: {
-      screen: ProfileScreen,
+      screen: ProfileNavigator,
       navigationOptions: {}
     }
   },

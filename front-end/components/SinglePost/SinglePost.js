@@ -1,7 +1,6 @@
 import React from 'react';
-import moment from 'moment';
 import _ from 'lodash';
-import { View, ActivityIndicator, Text, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import { withTranslation } from 'react-i18next';
 import { COLORS, SIZES } from '../../constants/theme';
 import { Icon } from 'react-native-elements';
@@ -37,13 +36,13 @@ const SinglePost = ({ t, post }) => {
           <Text style={styles.postExcerpt}>Post kısa açıklaması. Post kısa açıklaması. Post kısa açıklaması...</Text>
           <View style={styles.postActionContainer}>
             <View style={styles.postActionIcons}>
-              <Icon type="feather" name="thumbs-up" size={SIZES.NORMAL_TEXT} color={COLORS.PURPLE} />
+              <Icon type="feather" name="thumbs-up" size={SIZES.NORMAL_TEXT} color="#FEA195" />
               <Icon
                 type="feather"
                 name="bookmark"
                 containerStyle={styles.postActionIcon}
                 size={SIZES.NORMAL_TEXT}
-                color={COLORS.PURPLE}
+                color="#FEA195"
               />
             </View>
             <SheltyButton
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     width: screenWidth - 40,
     height: 150,
     alignItems: 'center',
-    marginVertical: 5
+    marginVertical: 8
   },
   postDetailContainer: {
     flex: 1,
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.NORMAL_TEXT
   },
   metaContainer: {
-    marginVertical: 5,
+    marginVertical: 8,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -153,16 +152,15 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 120,
     height: 150,
+    alignSelf: 'center',
+  },
+  image: {
+    width: 120,
+    height: 120,
+    marginTop: 15,
     overflow: 'hidden',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
-    alignSelf: 'center',
-    marginTop: 30
-  },
-  image: {
-    overflow: 'hidden',
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20
   }
 });
 export default withTranslation()(SinglePost);

@@ -3,14 +3,12 @@ import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
 import { SIZES, COLORS } from '../../../constants/theme';
-import { Icon } from 'react-native-elements';
 
 const SheltyButton = (
   {
     buttonStyles,
     gradientStyles,
     textStyles,
-    activeOpacity,
     onPressFunction,
     colors,
     text,
@@ -71,7 +69,7 @@ SheltyButton.defaultProps = {
     lineHeight: 35
   },
   gradientStyles: {},
-  colors: ['#A653B3', '#6834A5'],
+  colors: ['#FEA195', '#FFBAB1'],
   activeOpacity: 0.8,
   onPressFunction: () => {},
   subText: null,

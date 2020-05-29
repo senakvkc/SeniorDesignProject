@@ -30,9 +30,12 @@
     "expo-media-library": "~7.0.0",
     "expo-network": "^1.0.0",
     "expo-permissions": "~7.0.0",
+    "expo-random": "~7.0.0",
     "expo-sms": "~7.0.0",
+    "firebase": "^7.14.5",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
+    "hoist-non-react-statics": "^3.3.2",
     "i18next": "^17.2.0",
     "metro-config": "^0.57.0",
     "moment": "^2.24.0",
@@ -59,7 +62,8 @@
     "react-navigation": "^4.0.10",
     "react-navigation-drawer": "^2.2.2",
     "react-navigation-stack": "^1.9.4",
-    "react-navigation-tabs": "^2.5.6"
+    "react-navigation-tabs": "^2.5.6",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^7.0.0",

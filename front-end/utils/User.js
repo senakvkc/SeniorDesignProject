@@ -16,4 +16,16 @@ const getToken = async () => {
 	return null;
 }
 
-export { getToken, logout };
+const getLoggedInUser = () => {
+	return AsyncStorage.getItem(USER_TOKEN)
+		.then(user => {
+			const parsedUser = JSON.parse(user);
+			return parsedUser;
+		})
+		.catch(e => {
+			console.error(e);
+			return null;
+		});
+}
+
+export { getToken, logout, getLoggedInUser };

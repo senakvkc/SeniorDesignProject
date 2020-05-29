@@ -20,6 +20,8 @@ import { useMutation } from '@apollo/react-hooks';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import * as firebase from 'firebase';
+import * as Random from 'expo-random';
 
 import MainButton from '../../../components/common/MainButton';
 import { ANIMAL_TYPES, USER_TOKEN } from '../../../constants';
@@ -51,7 +53,7 @@ const CREATE_PET_MUTATION = gql`
 `;
 
 const CreateFinal = ({ t, navigation }) => {
-
+  let firebaseRef = null;
   const { data: prevData } = navigation.state.params;
   const [formData, setFormData] = useState({
     ...prevData,
@@ -70,7 +72,25 @@ const CreateFinal = ({ t, navigation }) => {
 
   useEffect(() => {
     getCurrentUser();
+    initFirebase();
   }, []);
+
+  const initFirebase = () => {
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDW9p642_h65Kmz5D_NZMS4inrNQP2hVg",
+      authDomain: "shelty-7d102.firebaseapp.com",
+      databaseURL: "https://shelty-7d102.firebaseio.com",
+      projectId: "shelty-7d102",
+      storageBucket: "shelty-7d102.appspot.com",
+      messagingSenderId: "499556155188",
+      appId: "1:499556155188:web:2078cd8fad817844b82f61",
+      measurementId: "G-DHQPQ5LR7W"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+  }
 
   const createPhotoData = () => {
     let data = new FormData();
@@ -128,32 +148,52 @@ const CreateFinal = ({ t, navigation }) => {
     setIsLoading(false);
   };
 
-  const handleSubmit = async () => {
-    // upload photo, then take photo name and save pet
-    setIsLoading(true);
-    const photo = await uploadPhoto();
-    // if response success, then 
-    if (photo) {
-      // now send request to create a pet.
-      const { age, breed, characteristics, description, name, sex, type } = formData;
-      const petData = {
-        age: age.value,
-        breed: breed.value,
-        characteristics: _.map(characteristics, 'value'),
-        description,
-        name,
-        gender: sex.value,
-        type: type.value,
-      };
-      const fileType = _.last(_.split(photo.mimetype, '/'));
-      const filename = `${photo.filename}.${fileType}`;
+  const createFilename = async () => {
+    const { image } = formData;
+    const uri = Platform.OS === 'android' ? image.uri : image.uri.replace("file://", "");
+    const randomBytes = await Random.getRandomBytesAsync(16);
+    const date = +new Date();
+    const fileType = _.last(_.split(uri, '.'));
+    const filename = `pet_${randomBytes}-${date}.${fileType}`;
+    return filename;
+  }
 
-      const savedPet = await savePet(petData, filename);
-      setIsLoading(false);
-    } else {
-      Alert.alert(t('photoUploadError'));
-    }
+  const handleSubmit = async () => {
+    const { age, breed, characteristics, description, name, sex, type } = formData;
+    const filename = await createFilename();
+    setIsLoading(true);
+    const petData = {
+      age: age.value,
+      breed: breed.value,
+      characteristics: _.map(characteristics, 'value'),
+      description,
+      name,
+      gender: sex.value,
+      type: type.value,
+    };
+
+    uploadPhotoToFirebase(filename)
+      .then(async () => {
+        return firebaseRef.getDownloadURL();
+      })
+      .then(async photoUrl => {
+        const savedPet = await savePet(petData, photoUrl);
+        setIsLoading(false);
+      })
+      .catch(e => {
+        console.error(e)
+        setIsLoading(false);
+      });
   };
+
+  const uploadPhotoToFirebase = async filename => {
+    const { image } = formData;
+    const uri = Platform.OS === 'android' ? image.uri : image.uri.replace("file://", "");
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    firebaseRef = firebase.storage().ref().child(`images/${filename}`);
+    return firebaseRef.put(blob);
+  }
 
   const getPermissionsAsync = async () => {
     if (Constants.platform.ios) {
