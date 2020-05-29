@@ -13,6 +13,7 @@ import trained from '../assets/features/trained.png';
 export const LAN_ADDRESS = 'http://192.168.1.25';
 export const GRAPHQL_ENDPOINT = `${LAN_ADDRESS}:8080/graphql`;
 export const REST_UPLOAD_ENDPOINT = `${LAN_ADDRESS}:4000/api/upload`;
+export const SOCKET_BACKEND = `${LAN_ADDRESS}:8000`;
 // export const LAN_ADDRESS = 'http://172.20.10.2';
 
 export const USER_TOKEN = 'userToken';
@@ -34,6 +35,59 @@ export const SHADOW = {
 export const FILE_PREFIX = {
   PET_PROFILE: 'pet'
 }
+
+export const MESSAGES = [
+  {
+    id: _.uniqueId("message_"),
+    message: "Test message 1 Test message 1Test message 1Test message 1",
+    date: moment().subtract(1, 'minutes'),
+    user: {
+      _id: "5e9b78e86f5b0040acac8154",
+      firstName: "Ahmet",
+      lastName: "Özdemir"
+    },
+  },
+  {
+    id: _.uniqueId("message_"),
+    message: "Test message 2s Test message 2Test message 2Test message 2Test message 2",
+    date: moment().subtract(10, 'minutes'),
+    user: {
+      _id: "5e9b78e86f5b0040acac8154",
+      firstName: "Ahmet",
+      lastName: "Özdemir"
+    },
+  },
+  {
+    id: _.uniqueId("message_"),
+    message: "Test message 3Test message 3Test message 3Test message 3",
+    date: moment().subtract(15, 'minutes'),
+    user: {
+      _id: "5e9a0dd7662096087037aad9",
+      firstName: "Ezgi",
+      lastName: "İmamoğlu"
+    },
+  },
+  {
+    id: _.uniqueId("message_"),
+    message: "Test message 4",
+    date: moment().subtract(20, 'minutes'),
+    user: {
+      _id: "5e9b78e86f5b0040acac8154",
+      firstName: "Ahmet",
+      lastName: "Özdemir"
+    },
+  },
+  {
+    id: _.uniqueId("message_"),
+    message: "Test message 5 Test message 5Test message 5Test message 5Test message 5Test message 5 Test message 5Test message 5",
+    date: moment().subtract(22, 'minutes'),
+    user: {
+      _id: "5e9a0dd7662096087037aad9",
+      firstName: "Ezgi",
+      lastName: "İmamoğlu"
+    },
+  },
+];
 
 export const NO_SHADOW = {
   shadowColor: 'transparent',
@@ -749,6 +803,29 @@ export const CAT_BREEDS = [
 ];
 
 export const AGE_INTERVALS = ['0-6 ay', '6-12 ay', '12-24 ay', '24+ ay'];
+
+export const AGE_INTERVALS_OBJ = Object.freeze({
+  ZERO_SIX: {
+    text: () => i18n.t('zeroSix'),
+    key: 'ZERO_SIX',
+    value: '0-6 ay'
+  },
+  SIX_TWELVE: {
+    text: () => i18n.t('sixTwelve'),
+    key: 'SIX_TWELVE',
+    value: '6-12 ay'
+  },
+  TWELVE_TWOFOUR: {
+    text: () => i18n.t('twelveTwofour'),
+    key: 'TWELVE_TWOFOUR',
+    value: '12-24 ay'
+  },
+  TWOFOUR_MORE: {
+    text: () => i18n.t('twofourMore'),
+    key: 'TWOFOUR_MORE',
+    value: '24+ ay'
+  }
+})
 
 export const ANIMAL_TYPES = Object.freeze({
   CAT: {

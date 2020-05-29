@@ -1,27 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, Image, TouchableOpacity, View, Dimensions, Share } from "react-native";
 import { Icon } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { AppLoading } from 'expo';
 
-import MainButton from '../../components/common/MainButton';
-import { USER_TOKEN } from '../../constants';
+import { getLoggedInUser } from "../../utils/User";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const ProfileScreen = ({ t, navigation }) => {
+  const [loggedInUser, setLoggedInUser] = useState({});
 
-  const actions = [
-    {
-      id: _.uniqueId('action_'),
-      icon: 'sms',
-      text: 'Konuşma Başlat',
-      onPress: () => startConversation(),
-      iconColor: '#8ED5A6',
-      iconBgColor: '#F0FFF5',
-      hasBorder: true
-    },
+  useEffect(() => {
+    getLoggedInUser()
+      .then(user => {
+        console.log(user);
+        setLoggedInUser(user);
+      })
+      .catch(e => console.error(e));
+  }, []);
+
+  const selfActions = [
     {
       id: _.uniqueId('action_'),
       icon: 'pets',
@@ -29,7 +30,7 @@ const ProfileScreen = ({ t, navigation }) => {
       onPress: () => startConversation(),
       iconColor: '#A4BEEA',
       iconBgColor: '#F3F9FE',
-      hasBorder: true
+      hasBorder: true,
     },
     {
       id: _.uniqueId('action_'),
@@ -56,9 +57,66 @@ const ProfileScreen = ({ t, navigation }) => {
       onPress: () => startConversation(),
       iconColor: '#95BFFE',
       iconBgColor: '#DFECFE',
+      hasBorder: true
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'payment',
+      text: 'Hesabı Yükselt',
+      onPress: () => startConversation(),
+      iconColor: '#8ED5A6',
+      iconBgColor: '#F0FFF5',
       hasBorder: false
     },
   ];
+
+  const otherActions = [
+    {
+      id: _.uniqueId('action_'),
+      icon: 'sms',
+      text: 'Konuşma Başlat',
+      onPress: () => navigation.navigate('Conversation', { user: loggedInUser.user, targetUser: { _id: "5e9a0dd7662096087037aad9" , firstName: "Ezgi", lastName: "İmamoğlu" } }),
+      iconColor: '#8ED5A6',
+      iconBgColor: '#F0FFF5',
+      hasBorder: true,
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'pets',
+      text: 'Evcil Hayvanları',
+      onPress: () => startConversation(),
+      iconColor: '#A4BEEA',
+      iconBgColor: '#F3F9FE',
+      hasBorder: true,
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'create',
+      text: 'Blog Yazıları',
+      onPress: () => startConversation(),
+      iconColor: '#C38ED5',
+      iconBgColor: '#F0F0FF',
+      hasBorder: true
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'share',
+      text: 'Profili Paylaş',
+      onPress: () => startConversation(),
+      iconColor: '#95BFFE',
+      iconBgColor: '#DFECFE',
+      hasBorder: true
+    },
+    {
+      id: _.uniqueId('action_'),
+      icon: 'error-outline',
+      text: 'Şikayet Et',
+      onPress: () => startConversation(),
+      iconColor: '#8ED5A6',
+      iconBgColor: '#F0FFF5',
+      hasBorder: false
+    },
+  ]
 
   const getIconStyles = backgroundColor => {
     return {
@@ -91,22 +149,23 @@ const ProfileScreen = ({ t, navigation }) => {
     console.log("report");
   }
 
-  return (
-    <>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="chevron-left" type="material" size={20} containerStyle={styles.goBackButton} color="#000" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={reportProfile} activeOpacity={0} style={styles.reportButton}>
-        <Icon type="feather" name="alert-circle" size={24} color="#fff" />
-      </TouchableOpacity>
+  const getFullName = () => {
+    const first = _.upperFirst(loggedInUser.user.firstName);
+    const last = _.upperFirst(loggedInUser.user.lastName);
+    return `${first} ${last}`;
+  }
+
+  const isSelf = false;
+  const actions = isSelf ? selfActions : otherActions;
+  return loggedInUser && loggedInUser.user ? (
       <View style={styles.container}>
         <View style={styles.topSection}>
           <Image source={{ uri: 'https://placedog.net/120/120' }} style={styles.profileImage} />
           <Text style={styles.profileName}>
-            Ezgi İmamoğlu
+            {getFullName()}
           </Text>
           <Text style={styles.profileRole}>
-            Hayvansever
+            {loggedInUser.user.userType}
           </Text>
           <Icon type="feather" name="check-circle" size={24} color="#FEA195" containerStyle={styles.profileIcon} />
         </View>
@@ -114,21 +173,12 @@ const ProfileScreen = ({ t, navigation }) => {
           {_.map(actions, action => renderAction({...action}))}
         </View>
       </View>
-    </>
-  )
+    ) : (
+      <AppLoading />
+    );
 };
 
 const styles = StyleSheet.create({
-  goBackButton: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-  },
-  reportButton: {
-    position: 'absolute',
-    right: 24,
-    top: 24
-  },
   container: {
     flex: 1,
     flexDirection: 'column'
@@ -138,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF5F4',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'center'
   },
   profileImage: {
     padding: 2,
@@ -194,7 +244,7 @@ const styles = StyleSheet.create({
     marginLeft: 15
   },
   chevron: {
-    paddingRight: 18,
+    marginRight: 18
   }
 });
 

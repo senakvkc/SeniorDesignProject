@@ -4,7 +4,6 @@ import { Icon } from 'react-native-elements';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
-import { SHADOW } from '../../../constants';
 import BackHandler from '../BackHandler';
 
 const SheltyPicker = ({ navigation }) => {

@@ -28,6 +28,16 @@ module.exports = {
     });
   },
 
+  createRoomToken: (fromId, targetId, secretKey) => {
+    return jwt.sign(
+      {
+        fromId,
+        targetId,
+      },
+      secretKey
+    );
+  },
+
   createCode: () => {
     let code = Math.floor(Math.random() * 9999) + 1000;
     while (code > 9999) {

@@ -182,6 +182,8 @@ const typeDefs = gql`
     getPostsByUser(userId: ID!): [Post]
     getPostsByUserWithPage(offset: Int, limit: Int, userId: ID!): [Post]
 
+    getAnimalWithId(animalId: ID!): Animal
+    getAnimalsWithPage(offset: Int, limit: Int): [Animal]
   }
 
   type Mutation {

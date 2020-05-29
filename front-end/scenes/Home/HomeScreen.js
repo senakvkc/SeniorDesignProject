@@ -3,26 +3,57 @@ import { AppLoading } from 'expo';
 import {
   StyleSheet,
   View,
-  ScrollView
+  ScrollView,
+  FlatList,
+  RefreshControl
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import _ from 'lodash';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
-import { STORIES, ANIMALS, NO_SHADOW } from '../../constants';
+import { STORIES, NO_SHADOW } from '../../constants';
 import StoryPanel from '../../components/StoryPanel';
 import { COLORS } from '../../constants/theme';
 import SearchBox from '../../components/SearchBox';
 import PetCard from '../../components/PetCard';
 import CameraTrigger from '../../components/CameraTrigger';
 import SettingsTrigger from '../../components/SettingsTrigger';
-import getToken from '../../utils/User';
+import gql from 'graphql-tag';
+import { useLazyQuery } from '@apollo/react-hooks';
+
+const GET_ANIMALS = gql`
+  query animals($offset: Int, $limit: Int) {
+    animals: getAnimalsWithPage(offset: $offset, limit: $limit) {
+      _id
+      name
+      breed
+      ageInterval
+      gender
+      animalType
+      profilePhoto
+    }
+  }
+`;
 
 const HomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
   const [searchValue, setSearchValue] = useState('');
+  const [lastAnimals, setLastAnimals] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const defaultParams = {
+    limit: 10,
+    offset: 0
+  };
+  const [fetchData, { loading, data }] = useLazyQuery(GET_ANIMALS);
+
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData({ variables: defaultParams });
+  };
 
   async function loadFonts() {
     await Font.loadAsync({
@@ -32,11 +63,17 @@ const HomeScreen = ({ navigation }) => {
       Quicksand_bold: require('../../assets/fonts/Quicksand-SemiBold.ttf'),
       ...Ionicons.font
     });
-  }
+  };
+
+  useEffect(() => {
+    if (data && data.animals) {
+      setLastAnimals(data.animals);
+    }
+  }, [data])
 
   useEffect(() => {
     loadFonts().then(() => {
-      setIsLoading(false);
+      fetchData({ variables: defaultParams });
     });
   }, []);
 
@@ -55,17 +92,24 @@ const HomeScreen = ({ navigation }) => {
     />
   );
 
-  return isLoading ? (
+  console.log(lastAnimals);
+
+  return _.isEmpty(lastAnimals) ? (
     <AppLoading />
   ) : (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+      >
         <StoryPanel stories={STORIES} />
         <View style={styles.feedContainer}>
           <SearchBox filterIcon value={searchValue} onSearch={handleSearch} />
-          {_.map(ANIMALS, pet => (
-            <PetCard key={pet.id} pet={pet} />
-          ))}
+          <FlatList
+            data={lastAnimals}
+            renderItem={({ item }) => <PetCard pet={item} />}
+            keyExtractor={(item) => item._id}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
       </ScrollView>
     </View>
