@@ -1,20 +1,17 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, Text, Dimensions, Image } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { COLORS, SIZES } from '../../constants/theme';
-import { Icon, Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { SEX, SHADOW, AGE_INTERVALS_OBJ } from '../../constants';
-import { LinearGradient } from 'expo-linear-gradient';
-import SheltyButton from '../common/SheltyButton';
-import BasicSheltyButton from '../common/BasicSheltyButton';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const PetCard = ({ t, pet }) => {
-  console.log(pet);
+const PetCard = ({ navigation, t, pet }) => {
   const goToPetProfile = () => {
     console.log('pet profile');
+    navigation.navigate('PetProfile', { pet });
   };
 
   const renderAgeInterval = () => {
@@ -57,7 +54,7 @@ const PetCard = ({ t, pet }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={() => goToPetProfile()} activeOpacity={1} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} width={100} height={100} source={{ uri: pet.profilePhoto }} />
       </View>
@@ -97,7 +94,7 @@ const PetCard = ({ t, pet }) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

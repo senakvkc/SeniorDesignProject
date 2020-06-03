@@ -7,6 +7,7 @@ import SheltyCamera from '../components/SheltyCamera';
 import TakenPhoto from '../components/TakenPhoto';
 import SettingsScreen from '../scenes/Settings';
 import CreateScreen from '../scenes/Create';
+import PetProfileScreen from '../scenes/PetProfile';
 import _ from 'lodash';
 
 import i18n from '../i18n';
@@ -57,6 +58,12 @@ const HomeNavigator = createStackNavigator(
         header: null
       }
     },
+    PetProfile: {
+      screen: PetProfileScreen,
+      navigationOptions: {
+        header: null
+      }
+    }
   },
   {
     navigationOptions: ({ navigation }) => {

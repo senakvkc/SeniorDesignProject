@@ -64,6 +64,8 @@ const typeDefs = gql`
     characteristics: [Characteristic]
     profilePhoto: String
     images: [String]
+    user: User
+    shelter: Shelter
 
     createdBy: String
     updatedBy: String
