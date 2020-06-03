@@ -107,25 +107,6 @@ const CreateFinal = ({ t, navigation }) => {
     return data;
   };
 
-  const uploadPhoto = async () => {
-    const photoData = createPhotoData();
-    const uploadRes = await fetch(`${REST_UPLOAD_ENDPOINT}/pet-profile`, {
-      method: 'POST',
-      headers: {
-       'Accept': 'application/json',
-       'Content-Type': 'multipart/form-data',
-      },
-      body: photoData
-    });
-
-    const uploadJson = await uploadRes.json();
-    if (uploadJson && uploadJson.success) {
-      return uploadJson.file;
-    }
-    
-    return null;
-  };
-
   const savePet = async (petData, image) => {
     const createPetInput = { ...petData, image };
     const savedPet = await createPet({
@@ -179,6 +160,7 @@ const CreateFinal = ({ t, navigation }) => {
       .then(async photoUrl => {
         const savedPet = await savePet(petData, photoUrl);
         setIsLoading(false);
+        navigation.navigate('HomeScreen');
       })
       .catch(e => {
         console.error(e)
