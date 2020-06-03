@@ -5,7 +5,8 @@ import {
   View,
   ScrollView,
   FlatList,
-  RefreshControl
+  RefreshControl,
+  Dimensions
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import _ from 'lodash';
@@ -17,10 +18,13 @@ import StoryPanel from '../../components/StoryPanel';
 import { COLORS } from '../../constants/theme';
 import SearchBox from '../../components/SearchBox';
 import PetCard from '../../components/PetCard';
+import PetCardPlaceholder from '../../components/PetCardPlaceholder';
 import CameraTrigger from '../../components/CameraTrigger';
 import SettingsTrigger from '../../components/SettingsTrigger';
 import gql from 'graphql-tag';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const GET_ANIMALS = gql`
   query animals($offset: Int, $limit: Int) {
@@ -32,6 +36,14 @@ const GET_ANIMALS = gql`
       gender
       animalType
       profilePhoto
+      characteristics
+      user {
+        firstName
+        lastName
+        userType
+        profilePicture
+      }
+      description
     }
   }
 `;
@@ -47,12 +59,18 @@ const HomeScreen = ({ navigation }) => {
     limit: 10,
     offset: 0
   };
-  const [fetchData, { loading, data }] = useLazyQuery(GET_ANIMALS);
+  const { loading, error, data, refetch} = useQuery(GET_ANIMALS, defaultParams);
 
 
   const handleRefresh = () => {
     setRefreshing(true);
-    fetchData({ variables: defaultParams });
+    refetch()
+      .then(() => {
+        console.log(data);
+        setLastAnimals(data.animals);
+        setRefreshing(false);
+      })
+      .catch(e => console.error(e));
   };
 
   async function loadFonts() {
@@ -68,12 +86,13 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     if (data && data.animals) {
       setLastAnimals(data.animals);
+      setRefreshing(false);
     }
   }, [data])
 
   useEffect(() => {
     loadFonts().then(() => {
-      fetchData({ variables: defaultParams });
+      setIsLoading(false);
     });
   }, []);
 
@@ -92,9 +111,7 @@ const HomeScreen = ({ navigation }) => {
     />
   );
 
-  console.log(lastAnimals);
-
-  return _.isEmpty(lastAnimals) ? (
+  return isLoading ? (
     <AppLoading />
   ) : (
     <View style={styles.container}>
@@ -104,12 +121,16 @@ const HomeScreen = ({ navigation }) => {
         <StoryPanel stories={STORIES} />
         <View style={styles.feedContainer}>
           <SearchBox filterIcon value={searchValue} onSearch={handleSearch} />
-          <FlatList
-            data={lastAnimals}
-            renderItem={({ item }) => <PetCard pet={item} />}
-            keyExtractor={(item) => item._id}
-            showsVerticalScrollIndicator={false}
-          />
+          {_.isEmpty(lastAnimals) ? (
+            <PetCardPlaceholder number={3} width={screenWidth - 40} />
+          ) : (
+            <FlatList
+              data={lastAnimals}
+              renderItem={({ item }) => <PetCard pet={item} navigation={navigation} />}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
         </View>
       </ScrollView>
     </View>

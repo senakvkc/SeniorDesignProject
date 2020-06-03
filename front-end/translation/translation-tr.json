@@ -115,5 +115,10 @@
   "cameraPermissionRequired": "Kamera yetkisi gerekiyor.",
   "contact": "İletişime Geç",
   "yourMessage": "Mesajınız...",
-  "send": "Gönder"
+  "send": "Gönder",
+  "user": "Hayvansever",
+  "zeroSix": "0-6 ay",
+  "sixTwelve": "6-12 ay",
+  "twelveTwofour": "12-24 ay",
+  "twofourMore": "24+ ay"
 }

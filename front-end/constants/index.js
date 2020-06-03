@@ -107,7 +107,14 @@ export const GENDERS = Object.freeze({
     text: i18n.t('female'),
     value: 'FEMALE'
   }
-})
+});
+
+export const USER_TYPES = Object.freeze({
+  USER: {
+    text: i18n.t('user'),
+    value: 'USER'
+  },
+});
 
 export const DOG_CHARACTERISTICS = [
   {

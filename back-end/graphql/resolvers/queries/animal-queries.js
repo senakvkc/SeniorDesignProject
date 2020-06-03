@@ -34,7 +34,7 @@ const animalQueries = {
     const { offset, limit } = args;
     
     try {
-      const animals = await Animal.find().skip(offset).sort({ createdAt: -1 }).limit(limit);
+      const animals = await Animal.find().skip(offset).sort({ createdAt: -1 }).limit(limit).populate('user');
       console.log(animals.length);
       return animals;
     } catch (err) {
