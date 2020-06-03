@@ -345,8 +345,6 @@ const styles = StyleSheet.create({
     color: "#888",
     textAlign: "justify",
   },
-  contact: {
-  },
 });
 
 PetProfileScreen.propTypes = {
