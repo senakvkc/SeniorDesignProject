@@ -32,7 +32,7 @@
     "graphql-tag": "^2.10.1",
     "i18next": "^17.2.0",
     "metro-config": "^0.57.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-i18next": "^10.13.1",
